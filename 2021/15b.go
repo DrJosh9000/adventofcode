@@ -35,7 +35,7 @@ func main() {
 			cave[j][i] = int(sample[j][i] - '0')
 		}
 		for i := len(sample[j]); i < len(cave[j]); i++ {
-			cave[j][i] = (cave[j][i-len(sample[j])] + 1)
+			cave[j][i] = cave[j][i-len(sample[j])] + 1
 			for cave[j][i] > 9 {
 				cave[j][i] -= 9
 			}
@@ -43,7 +43,7 @@ func main() {
 	}
 	for j := len(sample); j < len(cave); j++ {
 		for i := range cave[j] {
-			cave[j][i] = (cave[j-len(sample)][i] + 1)
+			cave[j][i] = cave[j-len(sample)][i] + 1
 			for cave[j][i] > 9 {
 				cave[j][i] -= 9
 			}
