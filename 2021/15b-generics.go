@@ -45,7 +45,7 @@ func main() {
 	}
 
 	dist := makeGrid[int](w, h)
-	for j, row := range dist {
+	for _, row := range dist {
 		for i := range row {
 			row[i] = math.MaxInt
 		}
