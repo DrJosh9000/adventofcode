@@ -27,32 +27,27 @@ func main() {
 	}
 
 	// ok just make a copy 25 times larger then
-	w, h := 5*len(sample[0]), 5*len(sample)
+	sw, sh := len(sample[0]), len(sample)
+	w, h := 5*sw, 5*sh
 	cave := makeGrid[int](w, h)
 	for j := range sample {
 		for i := range sample[j] {
 			cave[j][i] = int(sample[j][i] - '0')
 		}
 		for i := len(sample[j]); i < w; i++ {
-			cave[j][i] = cave[j][i-len(sample[j])] + 1
-			for cave[j][i] > 9 {
-				cave[j][i] -= 9
-			}
+			cave[j][i] = cave[j][i-sw] % 9 + 1
 		}
 	}
 	for j := len(sample); j < h; j++ {
 		for i := range cave[j] {
-			cave[j][i] = cave[j-len(sample)][i] + 1
-			for cave[j][i] > 9 {
-				cave[j][i] -= 9
-			}
+			cave[j][i] = cave[j-sh][i]  % 9+ 1
 		}
 	}
 
 	dist := makeGrid[int](w, h)
-	for i, row := range dist {
-		for j := range row {
-			dist[i][j] = math.MaxInt
+	for j, row := range dist {
+		for i := range row {
+			row[i] = math.MaxInt
 		}
 	}
 	dist[0][0] = 0
