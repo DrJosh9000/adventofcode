@@ -45,11 +45,7 @@ func main() {
 	}
 
 	dist := makeGrid[int](w, h)
-	for _, row := range dist {
-		for i := range row {
-			row[i] = math.MaxInt
-		}
-	}
+	dist.fill(math.MaxInt)
 	dist[0][0] = 0
 
 	visited := makeGrid[bool](w, h)
@@ -101,4 +97,12 @@ func makeGrid[T any](w, h int) grid[T] {
 		g[j] = make([]T, w)
 	}
 	return g
+}
+
+func (g grid[T]) fill(v T) {
+	for _, row := range g {
+		for i := range row {
+			row[i] = v
+		}
+	}
 }
