@@ -40,7 +40,7 @@ func main() {
 	}
 	for j := len(sample); j < h; j++ {
 		for i := range cave[j] {
-			cave[j][i] = cave[j-sh][i]  % 9+ 1
+			cave[j][i] = cave[j-sh][i] % 9 + 1
 		}
 	}
 
