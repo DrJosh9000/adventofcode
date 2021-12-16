@@ -55,13 +55,10 @@ func main() {
 		visited[it.p.Y][it.p.X] = true
 		for _, d := range []image.Point{{-1, 0}, {1, 0}, {0, -1}, {0, 1}} {
 			p := it.p.Add(d)
-			if p.X < 0 || p.X >= w || p.Y < 0 || p.Y >= h {
+			if p.X < 0 || p.X >= w || p.Y < 0 || p.Y >= h || visited[p.Y][p.X] {
 				continue
 			}
-			if visited[p.Y][p.X] {
-				continue
-			}
-			if t := it.v + cave[p.Y][p.X]; t < dist[p.Y][p.X] {
+			if t := dist[it.p.Y][it.p.X] + cave[p.Y][p.X]; t < dist[p.Y][p.X] {
 				dist[p.Y][p.X] = t
 				heap.Push(pq, item{p: p, v: t})
 			}
