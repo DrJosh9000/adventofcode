@@ -68,7 +68,7 @@ func main() {
 		visited[it.p] = struct{}{}
 		for _, d := range []image.Point{{-1, 0}, {1, 0}, {0, -1}, {0, 1}} {
 			p := it.p.Add(d)
-			if p.X < 0 || p.X >= len(cave[0]) || p.Y < 0 || p.Y >= len(cave) {
+			if p.X < 0 || p.X >= w || p.Y < 0 || p.Y >= h {
 				continue
 			}
 			if _, no := visited[p]; no {
