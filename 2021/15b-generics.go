@@ -52,6 +52,9 @@ func main() {
 	pq := &priqueue{item{}}
 	for pq.Len() > 0 {
 		it := heap.Pop(pq).(item)
+		if visited[it.p.Y][it.p.X] {
+			continue
+		}
 		visited[it.p.Y][it.p.X] = true
 		for _, d := range []image.Point{{-1, 0}, {1, 0}, {0, -1}, {0, 1}} {
 			p := it.p.Add(d)
