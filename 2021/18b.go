@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sync"
 )
 
 type any = interface{}
@@ -30,18 +31,31 @@ func main() {
 		log.Fatalf("Couldn't sc.scan: %v", err)
 	}
 
-	maxmag := 0
+	maxi := make([]int, len(numbers))
+	var wg sync.WaitGroup
+	wg.Add(len(numbers))
 	for i, x := range numbers {
-		for j, y := range numbers {
-			if i == j {
-				continue
+		i, x := i, x
+		go func() {
+			for j, y := range numbers {
+				if i == j {
+					continue
+				}
+				if m := magnitude(reduce([]any{clone(x), clone(y)})); m > maxi[i] {
+					maxi[i] = m
+				}
 			}
-			if m := magnitude(reduce([]any{clone(x), clone(y)})); m > maxmag {
-				maxmag = m
-			}
+			wg.Done()
+		}()
+	}
+	wg.Wait()
+
+	maxmag := 0
+	for _, m := range maxi {
+		if m > maxmag {
+			maxmag = m
 		}
 	}
-
 	fmt.Println(maxmag)
 }
 
