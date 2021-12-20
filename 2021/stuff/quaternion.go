@@ -21,15 +21,14 @@ type Vec struct {
 	x, y, z float64
 }
 
+func (v Vec) Quaternion() Quaternion {
+	return Quaternion{0, v.x, v.y, v.z}
+}
+
 func (q Quaternion) Vec() Vec {
 	return Vec{q[1], q[2], q[3]}
 }
 
 func (q Quaternion) Rotate(v Vec) Vec {
-	// Promote v to a quaternion
-	p := Quaternion{0, v.x, v.y, v.z}
-	// Do the rotation
-	r := q.Mul(p).Mul(q.Inv())
-	// Return the vector part
-	return r.Vec()
+	return q.Mul(v.Quaternion()).Mul(q.Inv()).Vec()
 }
