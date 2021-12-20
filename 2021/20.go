@@ -58,6 +58,9 @@ func main() {
 		for p := range pic {
 			for _, o := range offsets {
 				q := p.Add(o)
+				if _, skip := newpic[q]; skip {
+					continue
+				}
 				newpic[q] = program[index(q, i%2 == 1)] == '#'
 			}
 		}
