@@ -115,3 +115,24 @@ func (q QR2nion) Vec() QR2Vec {
 func (q QR2nion) Rotate(v QR2Vec) QR2Vec {
 	return q.Mul(v.QR2nion()).Mul(q.Inv()).Vec()
 }
+
+/*
+type Field[F any] interface {
+	Add(F) F
+	Mul(F) F
+}
+
+type Quaternion[F Field[F]] [4]F
+
+type foo float64
+
+func (f foo) Add(g foo) foo { return f + g }
+func (f foo) Mul(g foo) foo { return f * g }
+
+func main() {
+	var f Field[foo] = foo(42)
+	fmt.Println(f.Mul(69))
+
+	fmt.Println(Quaternion[foo]{1, 2, 3, 4})
+}
+*/
