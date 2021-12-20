@@ -81,3 +81,37 @@ func (x QR2) Mul(y QR2) QR2 {
 		c: x.c * y.c,
 	}.Canon()
 }
+
+// Quaternions with this field.
+type QR2nion [4]QR2
+
+// Inv returns the quaternion inverse.
+func (q QR2nion) Inv() QR2nion {
+	return QR2nion{q[0], q[1].Neg(), q[2].Neg(), q[3].Neg()}
+}
+
+// Mul returns the quaternion product qr.
+func (q QR2nion) Mul(r QR2nion) QR2nion {
+	return QR2nion{
+		q[0].Mul(r[0]).Add(q[1].Mul(r[1]).Neg()).Add(q[2].Mul(r[2]).Neg()).Add(q[3].Mul(r[3]).Neg()),
+		q[0].Mul(r[1]).Add(q[1].Mul(r[0])).Add(q[2].Mul(r[3])).Add(q[3].Mul(r[2]).Neg()),
+		q[0].Mul(r[2]).Add(q[1].Mul(r[3]).Neg()).Add(q[2].Mul(r[0])).Add(q[3].Mul(r[1])),
+		q[0].Mul(r[3]).Add(q[1].Mul(r[2])).Add(q[2].Mul(r[1]).Neg()).Add(q[3].Mul(r[0])),
+	}
+}
+
+type QR2Vec struct {
+	x, y, z QR2
+}
+
+func (v QR2Vec) QR2nion() QR2nion {
+	return QR2nion{QR2Zero, v.x, v.y, v.z}
+}
+
+func (q QR2nion) Vec() QR2Vec {
+	return QR2Vec{q[1], q[2], q[3]}
+}
+
+func (q QR2nion) Rotate(v QR2Vec) QR2Vec {
+	return q.Mul(v.QR2nion()).Mul(q.Inv()).Vec()
+}
