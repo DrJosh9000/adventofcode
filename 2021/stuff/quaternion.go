@@ -27,7 +27,7 @@ func (x Real) Neg() Real       { return -x }
 func (x Real) Mul(y Real) Real { return x * y }
 func (x Real) Inv() Real       { return 1/x }
 
-type Quaternion[T Ring[T]] [4]T
+type Quaternion[T DivisionRing[T]] [4]T
 
 func (q Quaternion[T]) String() string { return fmt.Sprint(([4]T)(q)) }
 
@@ -39,9 +39,23 @@ func (q Quaternion[T]) Add(r Quaternion[T]) Quaternion[T] {
 	return Quaternion[T]{q[0].Add(r[0]), q[1].Add(r[1]), q[2].Add(r[2]), q[3].Add(r[3])}
 }
 
-// Inv returns the quaternion inverse.
-func (q Quaternion[T]) Inv() Quaternion[T] {
+// Conjugate returns the quaternion conjugate. This is equal to the inverse
+// for rotation quaternions (those with norm 1).
+func (q Quaternion[T]) Conjugate() Quaternion[T] {
 	return Quaternion[T]{q[0], q[1].Neg(), q[2].Neg(), q[3].Neg()}
+}
+
+func (q Quaternion[T]) Dot(r Quaternion[T]) T {
+	return q[0].Mul(r[0]).Add(q[1].Mul(r[1])).Add(q[2].Mul(r[2])).Add(q[3].Mul(r[3]))
+}
+
+// Inv returns the inverse quaternion.
+func (q Quaternion[T]) Inv() Quaternion[T] {
+	return q.Conjugate().ScalarMul(q.Dot(q).Inv())
+}
+
+func (q Quaternion[T]) ScalarMul(x T) Quaternion[T] {
+	return Quaternion[T]{q[0].Mul(x), q[1].Mul(x), q[2].Mul(x), q[3].Mul(x)}
 }
 
 // Mul returns the quaternion product fg.
@@ -61,7 +75,7 @@ func ExampleQuaternion() {
 	fmt.Println(Quaternion[Real]{1, 4, -3, 0}.Mul(Quaternion[Real]{-1, -1, 2, 7}))
 }
 
-type Vec3[T Ring[T]] struct {
+type Vec3[T DivisionRing[T]] struct {
 	x, y, z T
 }
 
