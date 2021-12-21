@@ -24,7 +24,7 @@ func main() {
 	type state struct {
 		p1pos, p2pos     int
 		p1score, p2score int
-		p2turn           bool
+		p1turn           bool
 	}
 	// start with the one initial universe
 	states := map[state]int{
@@ -33,7 +33,7 @@ func main() {
 			p2pos:   p2pos,
 			p1score: 0,
 			p2score: 0,
-			p2turn:  false,
+			p1turn:  true,
 		}: 1,
 	}
 
@@ -47,46 +47,28 @@ func main() {
 			delete(states, s)
 			// there are u universes in state s
 			// each splits into multiple universes
-			if !s.p2turn {
-				// p1's turn
-				for n, d := range splits {
-					if n == 0 {
-						continue
-					}
-					pos := (s.p1pos+n-1)%10 + 1
-					score := s.p1score + pos
-					if score >= goal {
+			for n, d := range splits {
+				if n == 0 {
+					continue
+				}
+				st := s
+				if s.p1turn {
+					st.p1pos = (s.p1pos+n-1)%10 + 1
+					st.p1score += st.p1pos
+					if st.p1score >= goal {
 						p1wins += d * u
 						continue
 					}
-					states[state{
-						p1pos:   pos,
-						p2pos:   s.p2pos,
-						p1score: score,
-						p2score: s.p2score,
-						p2turn:  true,
-					}] += d * u
-				}
-			} else {
-				// p2's turn
-				for n, d := range splits {
-					if n == 0 {
-						continue
-					}
-					pos := (s.p2pos+n-1)%10 + 1
-					score := s.p2score + pos
-					if score >= goal {
+				} else { // p2's turn
+					st.p2pos = (s.p2pos+n-1)%10 + 1
+					st.p2score += st.p2pos
+					if st.p2score >= goal {
 						p2wins += d * u
 						continue
 					}
-					states[state{
-						p1pos:   s.p1pos,
-						p2pos:   pos,
-						p1score: s.p1score,
-						p2score: score,
-						p2turn:  false,
-					}] += d * u
 				}
+				st.p1turn = !st.p1turn
+				states[st] += d * u
 			}
 		}
 	}
