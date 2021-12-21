@@ -1,7 +1,9 @@
 package stuff
 
-// Let's augment the rationals by √2.
-// x = (a + b√2)/c, where a, b, c are all ints.
+import "fmt"
+
+// Let's adjoin √2 onto the rationals.
+// Q(√2) = {(a + b√2)/c : a,b,c ∈ ℤ}.
 
 const sqrt2 = 1.414213562373095
 
@@ -116,23 +118,42 @@ func (q QR2nion) Rotate(v QR2Vec) QR2Vec {
 	return q.Mul(v.QR2nion()).Mul(q.Inv()).Vec()
 }
 
-/*
 type Field[F any] interface {
 	Add(F) F
+	Neg() F
 	Mul(F) F
+	Inv() F
 }
 
-type Quaternion[F Field[F]] [4]F
+type footernion[F Field[F]] [4]F
+
+func (f footernion[F]) String() string { return fmt.Sprint(([4]F)(f)) }
+
+// Inv returns the quaternion inverse.
+func (f footernion[F]) Inv() footernion[F] {
+	return footernion[F]{f[0], f[1].Neg(), f[2].Neg(), f[3].Neg()}
+}
+
+// Mul returns the quaternion product qr.
+func (f footernion[F]) Mul(g footernion[F]) footernion[F] {
+	return footernion[F]{
+		f[0].Mul(g[0]).Add(f[1].Mul(g[1]).Neg()).Add(f[2].Mul(g[2]).Neg()).Add(f[3].Mul(g[3]).Neg()),
+		f[0].Mul(g[1]).Add(f[1].Mul(g[0])).Add(f[2].Mul(g[3])).Add(f[3].Mul(g[2]).Neg()),
+		f[0].Mul(g[2]).Add(f[1].Mul(g[3]).Neg()).Add(f[2].Mul(g[0])).Add(f[3].Mul(g[1])),
+		f[0].Mul(g[3]).Add(f[1].Mul(g[2])).Add(f[2].Mul(g[1]).Neg()).Add(f[3].Mul(g[0])),
+	}
+}
 
 type foo float64
 
 func (f foo) Add(g foo) foo { return f + g }
+func (f foo) Neg() foo      { return -f }
 func (f foo) Mul(g foo) foo { return f * g }
+func (f foo) Inv() foo      { return 1/f }
 
-func main() {
+func exampleFoo() {
 	var f Field[foo] = foo(42)
-	fmt.Println(f.Mul(69))
-
-	fmt.Println(Quaternion[foo]{1, 2, 3, 4})
+	println(f.Mul(69))
+	println(footernion[foo]{1, 2, 3, 4}.String())
 }
-*/
+

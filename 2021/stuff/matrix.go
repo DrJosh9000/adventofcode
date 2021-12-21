@@ -88,7 +88,7 @@ func DigitsToMatrix(digits []string) Matrix[int] {
 		return nil
 	}
 	w := len(digits[0])
-	g := MakeMatrix(w, h)
+	g := MakeMatrix[int](w, h)
 	for j, row := range digits {
 		for i, d := range row {
 			g[j][i] = int(d - '0')
