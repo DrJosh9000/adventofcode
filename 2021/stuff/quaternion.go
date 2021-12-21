@@ -9,10 +9,14 @@ var (
 	_ DivisionRing[Quaternion[Real]] = Quaternion[Real]{}
 )
 
-type DivisionRing[T any] interface {
+type Ring[T any] interface {
 	Add(T) T
 	Neg() T
 	Mul(T) T
+}
+
+type DivisionRing[T any] interface {
+	Ring[T]
 	Inv() T
 }
 
@@ -23,7 +27,7 @@ func (x Real) Neg() Real       { return -x }
 func (x Real) Mul(y Real) Real { return x * y }
 func (x Real) Inv() Real       { return 1/x }
 
-type Quaternion[T DivisionRing[T]] [4]T
+type Quaternion[T Ring[T]] [4]T
 
 func (q Quaternion[T]) String() string { return fmt.Sprint(([4]T)(q)) }
 
@@ -57,7 +61,7 @@ func ExampleQuaternion() {
 	fmt.Println(Quaternion[Real]{1, 4, -3, 0}.Mul(Quaternion[Real]{-1, -1, 2, 7}))
 }
 
-type Vec3[T DivisionRing[T]] struct {
+type Vec3[T Ring[T]] struct {
 	x, y, z T
 }
 
