@@ -65,6 +65,14 @@ type Vec3[T Ring[T]] struct {
 	x, y, z T
 }
 
+func (v Vec3[T]) Add(w Vec3[T]) Vec3[T] {
+	return Vec3[T]{v.x.Add(w.x), v.y.Add(w.y), v.z.Add(w.z)}
+}
+
+func (v Vec3[T]) Neg() Vec3[T] {
+	return Vec3[T]{v.x.Neg(), v.y.Neg(), v.z.Neg()}
+}
+
 func (v Vec3[T]) Quaternion() Quaternion[T] {
 	return Quaternion[T]{1: v.x, 2: v.y, 3: v.z}
 }
