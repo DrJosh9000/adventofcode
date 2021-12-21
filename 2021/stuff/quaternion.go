@@ -1,34 +1,58 @@
 package stuff
 
-type Quaternion [4]float64
+import "fmt"
 
-// Inv returns the quaternion inverse.
-func (q Quaternion) Inv() Quaternion {
-	return Quaternion{q[0], -q[1], -q[2], -q[3]}
+type DivisionRing[T any] interface {
+	Add(T) T
+	Neg() T
+	Mul(T) T
+	Inv() T
 }
 
-// Mul returns the quaternion product qr.
-func (q Quaternion) Mul(r Quaternion) Quaternion {
-	return Quaternion{
-		q[0]*r[0] - q[1]*r[1] - q[2]*r[2] - q[3]*r[3],
-		q[0]*r[1] + q[1]*r[0] + q[2]*r[3] - q[3]*r[2],
-		q[0]*r[2] - q[1]*r[3] + q[2]*r[0] + q[3]*r[1],
-		q[0]*r[3] + q[1]*r[2] - q[2]*r[1] + q[3]*r[0],
+type Quaternion[T DivisionRing[T]] [4]T
+
+func (q Quaternion[T]) String() string { return fmt.Sprint(([4]T)(q)) }
+
+// Inv returns the quaternion inverse.
+func (q Quaternion[T]) Inv() Quaternion[T] {
+	return Quaternion[T]{q[0], q[1].Neg(), q[2].Neg(), q[3].Neg()}
+}
+
+// Mul returns the quaternion product fg.
+func (q Quaternion[T]) Mul(r Quaternion[T]) Quaternion[T] {
+	return Quaternion[T]{
+		q[0].Mul(r[0]).Add(q[1].Mul(r[1]).Neg()).Add(q[2].Mul(r[2]).Neg()).Add(q[3].Mul(r[3]).Neg()),
+		q[0].Mul(r[1]).Add(q[1].Mul(r[0])).Add(q[2].Mul(r[3])).Add(q[3].Mul(r[2]).Neg()),
+		q[0].Mul(r[2]).Add(q[1].Mul(r[3]).Neg()).Add(q[2].Mul(r[0])).Add(q[3].Mul(r[1])),
+		q[0].Mul(r[3]).Add(q[1].Mul(r[2])).Add(q[2].Mul(r[1]).Neg()).Add(q[3].Mul(r[0])),
 	}
 }
 
-type Vec struct {
-	x, y, z float64
+type Real float64
+
+func (x Real) Add(y Real) Real { return x + y }
+func (x Real) Neg() Real      { return -x }
+func (x Real) Mul(y Real) Real { return x * y }
+func (x Real) Inv() Real      { return 1/x }
+
+func ExampleFoo() {
+	var x DivisionRing[Real] = Real(42)
+	println(x.Mul(69))
+	println(Quaternion[Real]{1, 2, 3, 4}.String())
 }
 
-func (v Vec) Quaternion() Quaternion {
-	return Quaternion{0, v.x, v.y, v.z}
+type Vec3[T DivisionRing[T]] struct {
+	x, y, z T
 }
 
-func (q Quaternion) Vec() Vec {
-	return Vec{q[1], q[2], q[3]}
+func (v Vec3[T]) Quaternion() Quaternion[T] {
+	return Quaternion[T]{1: v.x, 2: v.y, 3: v.z}
 }
 
-func (q Quaternion) Rotate(v Vec) Vec {
-	return q.Mul(v.Quaternion()).Mul(q.Inv()).Vec()
+func (q Quaternion[T]) Vec3() Vec3[T] {
+	return Vec3[T]{q[1], q[2], q[3]}
+}
+
+func (q Quaternion[T]) Rotate(v Vec3[T]) Vec3[T] {
+	return q.Mul(v.Quaternion()).Mul(q.Inv()).Vec3()
 }

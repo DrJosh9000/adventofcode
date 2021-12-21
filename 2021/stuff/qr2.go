@@ -1,7 +1,5 @@
 package stuff
 
-import "fmt"
-
 // Let's adjoin √2 onto the rationals.
 // Q(√2) = {(a + b√2)/c : a,b,c ∈ ℤ}.
 
@@ -27,6 +25,8 @@ var (
 	QR2Zero            = QR2{0, 0, 1}
 	QR2OneOnRoot2      = QR2{0, 1, 2}
 	QR2One             = QR2{1, 0, 1}
+
+	_ DivisionRing[QR2] = QR2{}
 )
 
 func (x QR2) Float() float64 {
@@ -85,75 +85,4 @@ func (x QR2) Mul(y QR2) QR2 {
 }
 
 // Quaternions with this field.
-type QR2nion [4]QR2
-
-// Inv returns the quaternion inverse.
-func (q QR2nion) Inv() QR2nion {
-	return QR2nion{q[0], q[1].Neg(), q[2].Neg(), q[3].Neg()}
-}
-
-// Mul returns the quaternion product qr.
-func (q QR2nion) Mul(r QR2nion) QR2nion {
-	return QR2nion{
-		q[0].Mul(r[0]).Add(q[1].Mul(r[1]).Neg()).Add(q[2].Mul(r[2]).Neg()).Add(q[3].Mul(r[3]).Neg()),
-		q[0].Mul(r[1]).Add(q[1].Mul(r[0])).Add(q[2].Mul(r[3])).Add(q[3].Mul(r[2]).Neg()),
-		q[0].Mul(r[2]).Add(q[1].Mul(r[3]).Neg()).Add(q[2].Mul(r[0])).Add(q[3].Mul(r[1])),
-		q[0].Mul(r[3]).Add(q[1].Mul(r[2])).Add(q[2].Mul(r[1]).Neg()).Add(q[3].Mul(r[0])),
-	}
-}
-
-type QR2Vec struct {
-	x, y, z QR2
-}
-
-func (v QR2Vec) QR2nion() QR2nion {
-	return QR2nion{QR2Zero, v.x, v.y, v.z}
-}
-
-func (q QR2nion) Vec() QR2Vec {
-	return QR2Vec{q[1], q[2], q[3]}
-}
-
-func (q QR2nion) Rotate(v QR2Vec) QR2Vec {
-	return q.Mul(v.QR2nion()).Mul(q.Inv()).Vec()
-}
-
-type DivisionRing[T any] interface {
-	Add(T) T
-	Neg() T
-	Mul(T) T
-	Inv() T
-}
-
-type footernion[T DivisionRing[T]] [4]T
-
-func (f footernion[T]) String() string { return fmt.Sprint(([4]T)(f)) }
-
-// Inv returns the quaternion inverse.
-func (f footernion[T]) Inv() footernion[T] {
-	return footernion[T]{f[0], f[1].Neg(), f[2].Neg(), f[3].Neg()}
-}
-
-// Mul returns the quaternion product fg.
-func (f footernion[T]) Mul(g footernion[T]) footernion[T] {
-	return footernion[T]{
-		f[0].Mul(g[0]).Add(f[1].Mul(g[1]).Neg()).Add(f[2].Mul(g[2]).Neg()).Add(f[3].Mul(g[3]).Neg()),
-		f[0].Mul(g[1]).Add(f[1].Mul(g[0])).Add(f[2].Mul(g[3])).Add(f[3].Mul(g[2]).Neg()),
-		f[0].Mul(g[2]).Add(f[1].Mul(g[3]).Neg()).Add(f[2].Mul(g[0])).Add(f[3].Mul(g[1])),
-		f[0].Mul(g[3]).Add(f[1].Mul(g[2])).Add(f[2].Mul(g[1]).Neg()).Add(f[3].Mul(g[0])),
-	}
-}
-
-type foo float64
-
-func (f foo) Add(g foo) foo { return f + g }
-func (f foo) Neg() foo      { return -f }
-func (f foo) Mul(g foo) foo { return f * g }
-func (f foo) Inv() foo      { return 1/f }
-
-func ExampleFoo() {
-	var f DivisionRing[foo] = foo(42)
-	println(f.Mul(69))
-	println(footernion[foo]{1, 2, 3, 4}.String())
-}
-
+type QR2nion Quaternion[QR2]
