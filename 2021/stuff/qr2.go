@@ -1,9 +1,16 @@
 package stuff
 
-// Let's adjoin √2 onto the rationals.
+// Let's adjoin √2 onto the rationals. This is an algebraic number field.
 // Q(√2) = {(a + b√2)/c : a,b,c ∈ ℤ}.
 
 const sqrt2 = 1.414213562373095
+
+var (
+	// QR2 is a field (commutative division ring).
+	_ DivisionRing[QR2] = QR2{}
+	// Quaternions over QR2 are a division ring.
+	_ DivisionRing[Quaternion[QR2]] = Quaternion[QR2]{}
+)
 
 func gcd(a, b int) int {
 	if a < b {
@@ -83,6 +90,3 @@ func (x QR2) Mul(y QR2) QR2 {
 		c: x.c * y.c,
 	}.Canon()
 }
-
-// Quaternions with this field.
-type QR2nion Quaternion[QR2]
