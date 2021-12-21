@@ -2,6 +2,13 @@ package stuff
 
 import "fmt"
 
+var (
+	// The reals are a (commutative) division ring (also known as a field).
+	_ DivisionRing[Real] = Real(0)
+	// The quaternions over the reals are a (non-commutative) division ring.
+	_ DivisionRing[Quaternion[Real]] = Quaternion[Real]{}
+)
+
 type DivisionRing[T any] interface {
 	Add(T) T
 	Neg() T
@@ -9,9 +16,24 @@ type DivisionRing[T any] interface {
 	Inv() T
 }
 
+type Real float64
+
+func (x Real) Add(y Real) Real { return x + y }
+func (x Real) Neg() Real       { return -x }
+func (x Real) Mul(y Real) Real { return x * y }
+func (x Real) Inv() Real       { return 1/x }
+
 type Quaternion[T DivisionRing[T]] [4]T
 
 func (q Quaternion[T]) String() string { return fmt.Sprint(([4]T)(q)) }
+
+func (q Quaternion[T]) Neg() Quaternion[T] {
+	return Quaternion[T]{q[0].Neg(), q[1].Neg(), q[2].Neg(), q[3].Neg()}
+}
+
+func (q Quaternion[T]) Add(r Quaternion[T]) Quaternion[T] {
+	return Quaternion[T]{q[0].Add(r[0]), q[1].Add(r[1]), q[2].Add(r[2]), q[3].Add(r[3])}
+}
 
 // Inv returns the quaternion inverse.
 func (q Quaternion[T]) Inv() Quaternion[T] {
@@ -28,17 +50,11 @@ func (q Quaternion[T]) Mul(r Quaternion[T]) Quaternion[T] {
 	}
 }
 
-type Real float64
-
-func (x Real) Add(y Real) Real { return x + y }
-func (x Real) Neg() Real      { return -x }
-func (x Real) Mul(y Real) Real { return x * y }
-func (x Real) Inv() Real      { return 1/x }
-
-func ExampleFoo() {
+func ExampleQuaternion() {
 	var x DivisionRing[Real] = Real(42)
-	println(x.Mul(69))
-	println(Quaternion[Real]{1, 2, 3, 4}.String())
+	fmt.Println(x.Mul(69))
+	fmt.Println(Quaternion[Real]{1, 2, 3, 4})
+	fmt.Println(Quaternion[Real]{1, 4, -3, 0}.Mul(Quaternion[Real]{-1, -1, 2, 7}))
 }
 
 type Vec3[T DivisionRing[T]] struct {
