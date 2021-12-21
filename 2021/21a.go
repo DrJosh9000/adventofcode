@@ -23,13 +23,22 @@ func main() {
 	p1turn := true
 	for p1score < 1000 && p2score < 1000 {
 		if p1turn {
-			p1pos = (p1pos+3*(ddie+1)-1)%10 + 1
+			p1pos = (p1pos+ddie-1)%10 + 1
+			ddie = ddie%100 + 1
+			p1pos = (p1pos+ddie-1)%10 + 1
+			ddie = ddie%100 + 1
+			p1pos = (p1pos+ddie-1)%10 + 1
+			ddie = ddie%100 + 1
 			p1score += p1pos
 		} else {
-			p2pos = (p2pos+3*(ddie+1)-1)%10 + 1
+			p2pos = (p2pos+ddie-1)%10 + 1
+			ddie = ddie%100 + 1
+			p2pos = (p2pos+ddie-1)%10 + 1
+			ddie = ddie%100 + 1
+			p2pos = (p2pos+ddie-1)%10 + 1
+			ddie = ddie%100 + 1
 			p2score += p2pos
 		}
-		ddie = (ddie+2)%100 + 1
 		rolls += 3
 		p1turn = !p1turn
 	}
