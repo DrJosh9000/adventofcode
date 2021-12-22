@@ -85,10 +85,6 @@ lineLoop:
 
 type point struct{ x, y, z int }
 
-func (p point) in(r box) bool {
-	return r.p.x <= p.x && p.x < r.q.x && r.p.y <= p.y && p.y < r.q.y && r.p.z <= p.z && p.z < r.q.z
-}
-
 type box struct{ p, q point }
 
 func (r box) volume() int {
