@@ -166,14 +166,14 @@ var cost = []int{
 	'D': 1000,
 }
 
-var room = map[byte][4]int{
+var room = [][4]int{
 	'A': {7, 11, 15, 19},
 	'B': {8, 12, 16, 20},
 	'C': {9, 13, 17, 21},
 	'D': {10, 14, 18, 22},
 }
 
-var preroom = map[byte][2]int{
+var preroom = [][2]int{
 	'A': {1, 2},
 	'B': {2, 3},
 	'C': {3, 4},
