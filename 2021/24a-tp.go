@@ -46,7 +46,7 @@ func search(in []int) {
 }
 
 func eval(in []int) bool {
-	w, x, y, z := 0, 0, 0, 0
+	x, z := 0, 0
 	z += in[0] + 14
 	z *= 26
 	z += in[1] + 8
@@ -54,9 +54,8 @@ func eval(in []int) bool {
 	z += in[2] + 4
 	z *= 26
 	z += in[3] + 10
-	x = z % 26
+	x = z%26 - 3
 	z /= 26
-	x += -3
 	if x == in[4] {
 		x = 0
 	} else {
@@ -64,9 +63,8 @@ func eval(in []int) bool {
 	}
 	z *= 25*x + 1
 	z += (in[4] + 14) * x
-	x = z % 26
+	x = z%26 - 4
 	z /= 26
-	x += -4
 	if x == in[5] {
 		x = 0
 	} else {
@@ -74,235 +72,57 @@ func eval(in []int) bool {
 	}
 	z *= 25*x + 1
 	z += (in[5] + 10) * x
-	w = in[6]
-	x = 0
-	x += z
-	if x < 0 {
-		return false
-	}
-	x %= 26
-	x += 12
-	if x == w {
-		x = 1
-	} else {
-		x = 0
-	}
-	if x == 0 {
-		x = 1
-	} else {
-		x = 0
-	}
-	y = 0
-	y += 25
-	y *= x
-	y++
-	z *= y
-	y = 0
-	y += w
-	y += 4
-	y *= x
-	z += y
-	w = in[7]
-	x = 0
-	x += z
-	if x < 0 {
-		return false
-	}
-	x %= 26
+	z *= 26
+	z += in[6] + 4
+	x = z%26 - 8
 	z /= 26
-	x += -8
-	if x == w {
-		x = 1
-	} else {
+	if x == in[7] {
 		x = 0
-	}
-	if x == 0 {
-		x = 1
 	} else {
-		x = 0
+		x = 1
 	}
-	y = 0
-	y += 25
-	y *= x
-	y++
-	z *= y
-	y = 0
-	y += w
-	y += 14
-	y *= x
-	z += y
-	w = in[8]
-	x = 0
-	x += z
-	if x < 0 {
-		return false
-	}
-	x %= 26
+	z *= 25*x + 1
+	z += (in[7] + 14) * x
+	x = z%26 - 3
 	z /= 26
-	x += -3
-	if x == w {
-		x = 1
-	} else {
+	if x == in[8] {
 		x = 0
-	}
-	if x == 0 {
-		x = 1
 	} else {
-		x = 0
+		x = 1
 	}
-	y = 0
-	y += 25
-	y *= x
-	y++
-	z *= y
-	y = 0
-	y += w
-	y++
-	y *= x
-	z += y
-	w = in[9]
-	x = 0
-	x += z
-	if x < 0 {
-		return false
-	}
-	x %= 26
+	z *= 25*x + 1
+	z += (in[8] + 1) * x
+	x = z%26 - 12
 	z /= 26
-	x += -12
-	if x == w {
-		x = 1
-	} else {
+	if x == in[9] {
 		x = 0
-	}
-	if x == 0 {
-		x = 1
 	} else {
-		x = 0
-	}
-	y = 0
-	y += 25
-	y *= x
-	y++
-	z *= y
-	y = 0
-	y += w
-	y += 6
-	y *= x
-	z += y
-	w = in[10]
-	x = 0
-	x += z
-	if x < 0 {
-		return false
-	}
-	x %= 26
-	x += 14
-	if x == w {
 		x = 1
-	} else {
-		x = 0
 	}
-	if x == 0 {
-		x = 1
-	} else {
-		x = 0
-	}
-	y = 0
-	y += 25
-	y *= x
-	y++
-	z *= y
-	y = 0
-	y += w
-	y += 0
-	y *= x
-	z += y
-	w = in[11]
-	x = 0
-	x += z
-	if x < 0 {
-		return false
-	}
-	x %= 26
+	z *= 25*x + 1
+	z += (in[9] + 6) * x
+	z *= 26
+	z += in[10]
+	x = z%26 - 6
 	z /= 26
-	x += -6
-	if x == w {
-		x = 1
-	} else {
+	if x == in[11] {
 		x = 0
-	}
-	if x == 0 {
-		x = 1
 	} else {
-		x = 0
-	}
-	y = 0
-	y += 25
-	y *= x
-	y++
-	z *= y
-	y = 0
-	y += w
-	y += 9
-	y *= x
-	z += y
-	w = in[12]
-	x = 0
-	x += z
-	if x < 0 {
-		return false
-	}
-	x %= 26
-	x += 11
-	if x == w {
 		x = 1
-	} else {
-		x = 0
 	}
-	if x == 0 {
-		x = 1
-	} else {
-		x = 0
-	}
-	y = 0
-	y += 25
-	y *= x
-	y++
-	z *= y
-	y = 0
-	y += w
-	y += 13
-	y *= x
-	z += y
-	w = in[13]
-	x = 0
-	x += z
-	if x < 0 {
-		return false
-	}
-	x %= 26
+	z *= 25*x + 1
+	z += (in[11] + 9) * x
+	z *= 26
+	z += in[12] + 13
+	x = z%26 - 12
 	z /= 26
-	x += -12
-	if x == w {
-		x = 1
-	} else {
+	if x == in[13] {
 		x = 0
-	}
-	if x == 0 {
-		x = 1
 	} else {
-		x = 0
+		x = 1
 	}
-	y = 0
-	y += 25
-	y *= x
-	y++
-	z *= y
-	y = 0
-	y += w
-	y += 12
-	y *= x
-	z += y
+	z *= 25*x + 1
+	z += (in[13] + 12) * x
 	atomic.AddUint64(&evals, 1)
 	return z == 0
 }
