@@ -7,32 +7,31 @@ import (
 	
 func main() {
 	var wg sync.WaitGroup
-	const mp = 9
-	wg.Add(mp)
-	for i := 1; i <= mp; i++ {
+	for i := 1; i <= 9; i++ {
 		i := i
+		wg.Add(1)
 		go func() {
-			search([14]int{0: i}, 1)
+			in := make([]int, 0, 14)
+			search(append(in, i))
 			wg.Done()
 		}()
 	}
 	wg.Wait()
 }
 
-func search(in [14]int, i int) {
-	if i == 14 {
+func search(in []int) {
+	if len(in) == 14 {
 		if eval(in) {
 			fmt.Println(in)
 		}
 		return
 	}
-	for j := 1; j < 9; j++ {
-		in[i] = j
-		search(in, i+1)
+	for j := 1; j <= 9; j++ {
+		search(append(in, j))
 	}
 }
 
-func eval(in [14]int) bool {
+func eval(in []int) bool {
 	w, x, y, z := 0, 0, 0, 0
 	w = in[0]
 	x *= 0
