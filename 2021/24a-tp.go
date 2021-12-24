@@ -3,10 +3,21 @@ package main
 import (
 	"fmt"
 	"sync"
+	"sync/atomic"
+	"time"
 )
+
+var evals uint64
 	
 func main() {
 	fmt.Println("starting search")
+	start := time.Now()
+	go func() {
+		for range time.Tick(time.Minute) {
+			e := atomic.LoadUint64(&evals)
+			fmt.Println("evals/sec:", float64(e) / time.Since(start).Seconds())
+		}
+	}()
 	var wg sync.WaitGroup
 	for i := 9; i >= 1; i-- {
 		i := i
@@ -484,5 +495,6 @@ func eval(in []int) bool {
 	y += 12
 	y *= x
 	z += y
+	atomic.AddUint64(&evals, 1)
 	return z == 0
 }
