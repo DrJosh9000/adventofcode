@@ -45,15 +45,15 @@ func main() {
 		}
 		switch token[0] {
 		case "add":
-			registers[token[1]] = add{op1, op2}
+			registers[token[1]] = doAdd(op1, op2)
 		case "mul":
-			registers[token[1]] = mul{op1, op2}
+			registers[token[1]] = doMul(op1, op2)
 		case "div":
-			registers[token[1]] = div{op1, op2}
+			registers[token[1]] = doDiv(op1, op2)
 		case "mod":
-			registers[token[1]] = mod{op1, op2}
+			registers[token[1]] = doMod(op1, op2)
 		case "eql":
-			registers[token[1]] = eql{op1, op2}
+			registers[token[1]] = doEql(op1, op2)
 		}
 	}
 	if err := sc.Err(); err != nil {
@@ -64,36 +64,35 @@ func main() {
 	var wg sync.WaitGroup
 	wg.Add(mp)
 	z := registers["z"]
-	chunk := pow10[14] / mp
+	chunk := pow9[14] / mp
 	for i := 0; i < mp; i++ {
 		i := i
 		lo, hi := chunk*i, chunk*(i+1)
 		go func() {
 			var best int
-			for m := lo; m < hi; m++ {
+			for m := hi; m >= lo; m-- {
 				n, err := z.eval(m)
 				if err != nil {
 					continue
 				}
 				if n == 0 {
-					// m only ever increases...
-					best = m
+					fmt.Println("goroutine:", i, "best:", best)
+					wg.Done()
+					return
 				}
 			}
-			fmt.Println("goroutine:", i, "best:", best)
-			wg.Done()
 		}()
 	}
 	wg.Wait()
 }
 
-var pow10 = make([]int, 15)
+var pow9 = make([]int, 15)
 
 func init() {
 	x := 1
-	for i := range pow10 {
-		pow10[i] = x
-		x *= 10
+	for i := range pow9 {
+		pow9[i] = x
+		x *= 9
 	}
 }
 
@@ -103,19 +102,28 @@ type expr interface {
 
 type variable byte // variable representing digit 0-13 of the input
 
-var errInvalidInput = errors.New("invalid input")
-
 func (v variable) eval(m int) (int, error) {
-	d := (int(m) / pow10[13-v]) % 10
-	if d == 0 {
-		return 0, errInvalidInput
-	}
-	return d, nil
+	return (int(m)/pow9[13-v])%9 + 1, nil
 }
 
 type constant int // some literal in the program
 
 func (c constant) eval(int) (int, error) { return int(c), nil }
+
+func doAdd(a, b expr) expr {
+	if a == constant(0) {
+		return b
+	}
+	if b == constant(0) {
+		return a
+	}
+	ac, aok := a.(constant)
+	bc, bok := b.(constant)
+	if aok && bok {
+		return ac + bc
+	}
+	return add{a, b}
+}
 
 type add struct {
 	x, y expr
@@ -133,6 +141,24 @@ func (o add) eval(m int) (int, error) {
 	return a + b, nil
 }
 
+func doMul(a, b expr) expr {
+	if a == constant(0) || b == constant(0) {
+		return constant(0)
+	}
+	if a == constant(1) {
+		return b
+	}
+	if b == constant(1) {
+		return a
+	}
+	ac, aok := a.(constant)
+	bc, bok := b.(constant)
+	if aok && bok {
+		return ac * bc
+	}
+	return mul{a, b}
+}
+
 type mul struct {
 	x, y expr
 }
@@ -147,6 +173,21 @@ func (o mul) eval(m int) (int, error) {
 		return 0, err
 	}
 	return a * b, nil
+}
+
+func doDiv(a, b expr) expr {
+	if b == constant(1) {
+		return a
+	}
+	ac, aok := a.(constant)
+	bc, bok := b.(constant)
+	if aok && bok {
+		if bc == 0 {
+			log.Fatal("Input program always divides by zero")
+		}
+		return ac / bc
+	}
+	return div{a, b}
 }
 
 type div struct {
@@ -170,6 +211,18 @@ func (o div) eval(m int) (int, error) {
 	return a / b, nil
 }
 
+func doMod(a, b expr) expr {
+	ac, aok := a.(constant)
+	bc, bok := b.(constant)
+	if aok && bok {
+		if ac < 0 || bc <= 0 {
+			log.Fatal("Input program always performs invalid modulus")
+		}
+		return ac % bc
+	}
+	return div{a, b}
+}
+
 type mod struct {
 	x, y expr
 }
@@ -189,6 +242,18 @@ func (o mod) eval(m int) (int, error) {
 		return 0, errInvalidMod
 	}
 	return a % b, nil
+}
+
+func doEql(a, b expr) expr {
+	ac, aok := a.(constant)
+	bc, bok := b.(constant)
+	if aok && bok {
+		if ac == bc {
+			return constant(1)
+		}
+		return constant(0)
+	}
+	return eql{a, b}
 }
 
 type eql struct {
