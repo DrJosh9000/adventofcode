@@ -2,13 +2,11 @@ package main
 
 import (
 	"bufio"
-	"errors"
 	"fmt"
 	"log"
 	"os"
-	"strconv"
+	"os/exec"
 	"strings"
-	"sync"
 )
 
 func main() {
@@ -16,261 +14,102 @@ func main() {
 	if err != nil {
 		log.Fatalf("Couldn't read input: %v", err)
 	}
-	registers := map[string]expr{
-		"w": constant(0),
-		"x": constant(0),
-		"y": constant(0),
-		"z": constant(0),
+	defer f.Close()
+
+	tp, err := os.Create("24a-tp.go")
+	if err != nil {
+		log.Fatalf("Couldn't open intermediate: %v", err)
 	}
-	var nextvar variable
+	defer tp.Close()
+
+	_, err = tp.WriteString(`package main
+
+import (
+	"fmt"
+	"sync"
+)
+	
+func main() {
+	var wg sync.WaitGroup
+	const mp = 9
+	wg.Add(mp)
+	for i := 1; i <= mp; i++ {
+		i := i
+		go func() {
+			search([14]int{0: i}, 1)
+			wg.Done()
+		}()
+	}
+	wg.Wait()
+}
+
+func search(in [14]int, i int) {
+	if i == 14 {
+		if eval(in) {
+			fmt.Println(in)
+		}
+		return
+	}
+	for j := 1; j < 9; j++ {
+		in[i] = j
+		search(in, i+1)
+	}
+}
+
+func eval(in [14]int) bool {
+	w, x, y, z := 0, 0, 0, 0
+`)
+	if err != nil {
+		log.Fatalf("Couldn't write preamble: %v", err)
+	}
+
+	nextvar := 0
 	sc := bufio.NewScanner(f)
 	for sc.Scan() {
 		token := strings.Split(sc.Text(), " ")
 		if token[0] == "inp" {
-			registers[token[1]] = nextvar
+			fmt.Fprintf(tp, "\t%s = in[%d]\n", token[1], nextvar)
 			nextvar++
 			continue
 		}
-		op1 := registers[token[1]]
-		if op1 == nil {
-			log.Fatalf("first operand must be a register, got %q", token[1])
-		}
-		op2 := registers[token[2]]
-		if op2 == nil {
-			n, err := strconv.Atoi(token[2])
-			if err != nil {
-				log.Fatalf("second operand is neither a register nor a literal: %v", err)
-			}
-			op2 = constant(n)
-		}
 		switch token[0] {
 		case "add":
-			registers[token[1]] = doAdd(op1, op2)
+			fmt.Fprintf(tp, "\t%s += %s\n", token[1], token[2])
 		case "mul":
-			registers[token[1]] = doMul(op1, op2)
+			fmt.Fprintf(tp, "\t%s *= %s\n", token[1], token[2])
 		case "div":
-			registers[token[1]] = doDiv(op1, op2)
+			fmt.Fprintf(tp, `	if %s == 0 {
+		return false
+	}
+	%s /= %s
+`, token[2], token[1], token[2])
 		case "mod":
-			registers[token[1]] = doMod(op1, op2)
+			fmt.Fprintf(tp, `	if %s < 0 || %s <= 0 {
+		return false
+	}
+	%s %%= %s
+`, token[1], token[2], token[1], token[2])
 		case "eql":
-			registers[token[1]] = doEql(op1, op2)
+			fmt.Fprintf(tp, `	if %s == %s {
+		%s = 1
+	} else { 
+		%s = 0
+	}
+`, token[1], token[2], token[1], token[1])
 		}
 	}
 	if err := sc.Err(); err != nil {
 		log.Fatalf("Couldn't scan: %v", err)
 	}
 
-	const mp = 32
-	var wg sync.WaitGroup
-	wg.Add(mp)
-	z := registers["z"]
-	chunk := pow9[14] / mp
-	for i := 0; i < mp; i++ {
-		i := i
-		lo, hi := chunk*i, chunk*(i+1)
-		go func() {
-			var best int
-			for m := hi; m >= lo; m-- {
-				n, err := z.eval(m)
-				if err != nil {
-					continue
-				}
-				if n == 0 {
-					fmt.Println("goroutine:", i, "best:", best)
-					wg.Done()
-					return
-				}
-			}
-		}()
-	}
-	wg.Wait()
+	tp.WriteString(`	return z == 0
 }
+`)
+	if err := tp.Close(); err != nil {
+		log.Fatalf("Couldn't close intermediate: %v", err)
+	}
 
-var pow9 = make([]int, 15)
-
-func init() {
-	x := 1
-	for i := range pow9 {
-		pow9[i] = x
-		x *= 9
+	if err := exec.Command("go", "run", "24a-tp.go").Run(); err != nil {
+		log.Fatalf("Couldn't run intermediate: %v", err)
 	}
-}
-
-type expr interface {
-	eval(int) (int, error)
-}
-
-type variable byte // variable representing digit 0-13 of the input
-
-func (v variable) eval(m int) (int, error) {
-	return (int(m)/pow9[13-v])%9 + 1, nil
-}
-
-type constant int // some literal in the program
-
-func (c constant) eval(int) (int, error) { return int(c), nil }
-
-func doAdd(a, b expr) expr {
-	if a == constant(0) {
-		return b
-	}
-	if b == constant(0) {
-		return a
-	}
-	ac, aok := a.(constant)
-	bc, bok := b.(constant)
-	if aok && bok {
-		return ac + bc
-	}
-	return add{a, b}
-}
-
-type add struct {
-	x, y expr
-}
-
-func (o add) eval(m int) (int, error) {
-	a, err := o.x.eval(m)
-	if err != nil {
-		return 0, err
-	}
-	b, err := o.y.eval(m)
-	if err != nil {
-		return 0, err
-	}
-	return a + b, nil
-}
-
-func doMul(a, b expr) expr {
-	if a == constant(0) || b == constant(0) {
-		return constant(0)
-	}
-	if a == constant(1) {
-		return b
-	}
-	if b == constant(1) {
-		return a
-	}
-	ac, aok := a.(constant)
-	bc, bok := b.(constant)
-	if aok && bok {
-		return ac * bc
-	}
-	return mul{a, b}
-}
-
-type mul struct {
-	x, y expr
-}
-
-func (o mul) eval(m int) (int, error) {
-	a, err := o.x.eval(m)
-	if err != nil {
-		return 0, err
-	}
-	b, err := o.y.eval(m)
-	if err != nil {
-		return 0, err
-	}
-	return a * b, nil
-}
-
-func doDiv(a, b expr) expr {
-	if b == constant(1) {
-		return a
-	}
-	ac, aok := a.(constant)
-	bc, bok := b.(constant)
-	if aok && bok {
-		if bc == 0 {
-			log.Fatal("Input program always divides by zero")
-		}
-		return ac / bc
-	}
-	return div{a, b}
-}
-
-type div struct {
-	x, y expr
-}
-
-var errDivisionByZero = errors.New("division by zero")
-
-func (o div) eval(m int) (int, error) {
-	a, err := o.x.eval(m)
-	if err != nil {
-		return 0, err
-	}
-	b, err := o.y.eval(m)
-	if err != nil {
-		return 0, err
-	}
-	if b == 0 {
-		return 0, errDivisionByZero
-	}
-	return a / b, nil
-}
-
-func doMod(a, b expr) expr {
-	ac, aok := a.(constant)
-	bc, bok := b.(constant)
-	if aok && bok {
-		if ac < 0 || bc <= 0 {
-			log.Fatal("Input program always performs invalid modulus")
-		}
-		return ac % bc
-	}
-	return div{a, b}
-}
-
-type mod struct {
-	x, y expr
-}
-
-var errInvalidMod = errors.New("invalid mod operation")
-
-func (o mod) eval(m int) (int, error) {
-	a, err := o.x.eval(m)
-	if err != nil {
-		return 0, err
-	}
-	b, err := o.y.eval(m)
-	if err != nil {
-		return 0, err
-	}
-	if a < 0 || b <= 0 {
-		return 0, errInvalidMod
-	}
-	return a % b, nil
-}
-
-func doEql(a, b expr) expr {
-	ac, aok := a.(constant)
-	bc, bok := b.(constant)
-	if aok && bok {
-		if ac == bc {
-			return constant(1)
-		}
-		return constant(0)
-	}
-	return eql{a, b}
-}
-
-type eql struct {
-	x, y expr
-}
-
-func (e eql) eval(m int) (int, error) {
-	a, err := e.x.eval(m)
-	if err != nil {
-		return 0, err
-	}
-	b, err := e.y.eval(m)
-	if err != nil {
-		return 0, err
-	}
-	if a == b {
-		return 1, nil
-	}
-	return 0, nil
 }
