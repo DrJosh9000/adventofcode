@@ -47,12 +47,13 @@ func search(in []int) {
 
 func eval(in []int) bool {
 	w, x, y, z := 0, 0, 0, 0
-	z = (in[0] + 14) * 26
-	z += (in[1] + 8) * 26
-	z += (in[2] + 4) * 26
-	x = 1
+	z += in[0] + 14
+	z *= 26
+	z += in[1] + 8
+	z *= 26
+	z += in[2] + 4
+	z *= 26
 	z += in[3] + 10
-	w = in[4]
 	x = z % 26
 	z /= 26
 	x += -3
@@ -61,45 +62,18 @@ func eval(in []int) bool {
 	} else {
 		x = 1
 	}
-	y = 0
-	y += 25
-	y *= x
-	y++
-	z *= y
-	y = 0
-	y += w
-	y += 14
-	y *= x
-	z += y
-	w = in[5]
-	x = 0
-	x += z
-	if x < 0 {
-		return false
-	}
-	x %= 26
+	z *= 25*x + 1
+	z += (in[4] + 14) * x
+	x = z % 26
 	z /= 26
 	x += -4
-	if x == w {
-		x = 1
-	} else {
+	if x == in[5] {
 		x = 0
-	}
-	if x == 0 {
-		x = 1
 	} else {
-		x = 0
+		x = 1
 	}
-	y = 0
-	y += 25
-	y *= x
-	y++
-	z *= y
-	y = 0
-	y += w
-	y += 10
-	y *= x
-	z += y
+	z *= 25*x + 1
+	z += (in[5] + 10) * x
 	w = in[6]
 	x = 0
 	x += z
