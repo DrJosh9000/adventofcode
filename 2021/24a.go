@@ -87,21 +87,31 @@ func eval(in []int) bool {
 		}
 		switch token[0] {
 		case "add":
+			if token[2] == "1" {
+				fmt.Fprintf(tp, "\t%s++\n", token[1])
+				continue
+			}
 			fmt.Fprintf(tp, "\t%s += %s\n", token[1], token[2])
 		case "mul":
+			if token[2] == "0" {
+				fmt.Fprintf(tp, "\t%s = 0\n", token[1])
+				continue
+			}
 			fmt.Fprintf(tp, "\t%s *= %s\n", token[1], token[2])
 		case "div":
-			fmt.Fprintf(tp, `	if %s == 0 {
-		return false
-	}
-	%s /= %s
-`, token[2], token[1], token[2])
+			// seems to be a common occurrence
+			if token[2] == "1" {
+				continue
+			}
+			// looks like all the divisors are constants
+			fmt.Fprintf(tp, "\t%s /= %s\n", token[1], token[2])
 		case "mod":
-			fmt.Fprintf(tp, `	if %s < 0 || %s <= 0 {
+			// looks like all the divisors are constants here too
+			fmt.Fprintf(tp, `	if %s < 0 {
 		return false
 	}
 	%s %%= %s
-`, token[1], token[2], token[1], token[2])
+`, token[1], token[1], token[2])
 		case "eql":
 			fmt.Fprintf(tp, `	if %s == %s {
 		%s = 1
