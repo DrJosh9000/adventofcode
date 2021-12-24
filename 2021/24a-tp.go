@@ -6,15 +6,18 @@ import (
 )
 	
 func main() {
+	fmt.Println("starting search")
 	var wg sync.WaitGroup
-	for i := 1; i <= 9; i++ {
+	for i := 9; i >= 1; i-- {
 		i := i
-		wg.Add(1)
-		go func() {
-			in := make([]int, 0, 14)
-			search(append(in, i))
-			wg.Done()
-		}()
+		for j := 9; j >= 1; j-- {
+			j := j
+			wg.Add(1)
+			go func() {
+				search(append(make([]int, 0, 14), i, j))
+				wg.Done()
+			}()
+		}
 	}
 	wg.Wait()
 }
@@ -26,8 +29,8 @@ func search(in []int) {
 		}
 		return
 	}
-	for j := 1; j <= 9; j++ {
-		search(append(in, j))
+	for i := 9; i >= 1; i-- {
+		search(append(in, i))
 	}
 }
 
