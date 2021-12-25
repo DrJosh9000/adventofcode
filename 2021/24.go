@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"os/exec"
 	"strings"
 )
 
@@ -16,7 +15,7 @@ func main() {
 	}
 	defer f.Close()
 
-	tp, err := os.Create("24a-tp.go")
+	tp, err := os.Create("24-tp.go")
 	if err != nil {
 		log.Fatalf("Couldn't open intermediate: %v", err)
 	}
@@ -133,9 +132,11 @@ func eval(in []int) bool {
 		log.Fatalf("Couldn't close intermediate: %v", err)
 	}
 
-	cmd := exec.Command("go", "run", "24a-tp.go")
-	cmd.Stdout = os.Stdout
-	if err := cmd.Run(); err != nil {
-		log.Fatalf("Couldn't run intermediate: %v", err)
-	}
+	/*
+		cmd := exec.Command("go", "run", "24a-tp.go")
+		cmd.Stdout = os.Stdout
+		if err := cmd.Run(); err != nil {
+			log.Fatalf("Couldn't run intermediate: %v", err)
+		}
+	*/
 }
