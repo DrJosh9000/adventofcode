@@ -16,6 +16,12 @@ func main() {
 		log.Fatalf("Couldn't read input: %v", err)
 	}
 
+	dir := map[byte]image.Point{
+		'U': image.Pt(0, 1),
+		'D': image.Pt(0, -1),
+		'L': image.Pt(-1, 0),
+		'R': image.Pt(1, 0),
+	}
 	dm := []map[image.Point]int{
 		make(map[image.Point]int),
 		make(map[image.Point]int),
@@ -23,38 +29,17 @@ func main() {
 	for j, l := range strings.Split(string(f), "\n") {
 		var p image.Point
 		d := 0
-		relax := func() {
-			d++
-			if _, exists := dm[j][p]; !exists {
-				dm[j][p] = d
-			}
-
-		}
 		for _, token := range strings.Split(l, ",") {
 			n, err := strconv.Atoi(token[1:])
 			if err != nil {
 				log.Fatalf("Couldn't atoi: %v", err)
 			}
-			switch token[0] {
-			case 'U':
-				for i := 0; i < n; i++ {
-					p.Y++
-					relax()
-				}
-			case 'D':
-				for i := 0; i < n; i++ {
-					p.Y--
-					relax()
-				}
-			case 'L':
-				for i := 0; i < n; i++ {
-					p.X--
-					relax()
-				}
-			case 'R':
-				for i := 0; i < n; i++ {
-					p.X++
-					relax()
+			δ := dir[token[0]]
+			for i := 0; i < n; i++ {
+				p = p.Add(δ)
+				d++
+				if _, exists := dm[j][p]; !exists {
+					dm[j][p] = d
 				}
 			}
 		}
