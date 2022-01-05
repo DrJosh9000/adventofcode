@@ -13,10 +13,9 @@ func main() {
 	best := math.MinInt
 	s := []int{5, 6, 7, 8, 9}
 	for {
-		fmt.Print(s)
 		ch := []chan int{make(chan int, 1)}
 		for range s {
-			ch = append(ch, make(chan int, 1))
+			ch = append(ch, make(chan int))
 		}
 		for i, a := range amps {
 			go a.Run(ch[i], ch[i+1])
@@ -29,7 +28,6 @@ func main() {
 		for t = range ch[5] {
 			ch[0] <- t
 		}
-		fmt.Println("", t)
 		if t > best {
 			best = t
 		}
