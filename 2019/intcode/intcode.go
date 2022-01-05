@@ -12,12 +12,12 @@ type VM struct {
 	In, Out chan int
 }
 
+var pow10 = []int{1, 10, 100, 1000, 10000}
+
 func (vm *VM) Run() {
-	m := make([]int, len(vm.M))
-	copy(m, vm.M)
+	m := append([]int{}, vm.M...)
 
 	pc := 0
-	pow10 := []int{1, 10, 100, 1000, 10000}
 	opval := func(n int) int {
 		mode := (m[pc] / pow10[n+1]) % 10
 		switch mode {
@@ -40,7 +40,11 @@ vmLoop:
 			m[m[pc+3]] = opval(1) * opval(2)
 			pc += 4
 		case 3:
-			m[m[pc+1]] = <-vm.In
+			t, ok := <-vm.In
+			if !ok {
+				log.Fatal("Input channel closed")
+			}
+			m[m[pc+1]] = t
 			pc += 2
 		case 4:
 			vm.Out <- opval(1)
