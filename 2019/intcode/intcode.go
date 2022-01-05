@@ -7,21 +7,31 @@ import (
 	"strings"
 )
 
-type VM []int
+type VM map[int]int
 
 var pow10 = []int{1, 10, 100, 1000, 10000}
 
-func (vm VM) Run(in <-chan int, out chan<- int) {
-	m := append(VM{}, vm...)
+func (vm VM) Copy() VM {
+	m := make(VM, len(vm))
+	for i, x := range vm {
+		m[i] = x
+	}
+	return m
+}
 
-	pc := 0
-	opval := func(n int) int {
+func (vm VM) Run(in <-chan int, out chan<- int) {
+	m := vm.Copy()
+
+	pc, rb := 0, 0
+	opaddr := func(n int) int {
 		mode := (m[pc] / pow10[n+1]) % 10
 		switch mode {
 		case 0: // position mode
-			return m[m[pc+n]]
-		case 1: // immediate mode
 			return m[pc+n]
+		case 1: // immediate mode
+			return pc + n
+		case 2: // relative mode
+			return rb + m[pc+n]
 		}
 		log.Fatalf("Unimplemented mode %d", mode)
 		return 0
@@ -31,47 +41,50 @@ vmLoop:
 	for {
 		switch m[pc] % 100 {
 		case 1:
-			m[m[pc+3]] = opval(1) + opval(2)
+			m[opaddr(3)] = m[opaddr(1)] + m[opaddr(2)]
 			pc += 4
 		case 2:
-			m[m[pc+3]] = opval(1) * opval(2)
+			m[opaddr(3)] = m[opaddr(1)] * m[opaddr(2)]
 			pc += 4
 		case 3:
 			t, ok := <-in
 			if !ok {
 				log.Fatal("Input channel closed")
 			}
-			m[m[pc+1]] = t
+			m[opaddr(1)] = t
 			pc += 2
 		case 4:
-			out <- opval(1)
+			out <- m[opaddr(1)]
 			pc += 2
 		case 5:
-			if opval(1) != 0 {
-				pc = opval(2)
+			if m[opaddr(1)] != 0 {
+				pc = m[opaddr(2)]
 			} else {
 				pc += 3
 			}
 		case 6:
-			if opval(1) == 0 {
-				pc = opval(2)
+			if m[opaddr(1)] == 0 {
+				pc = m[opaddr(2)]
 			} else {
 				pc += 3
 			}
 		case 7:
-			if opval(1) < opval(2) {
-				m[m[pc+3]] = 1
+			if m[opaddr(1)] < m[opaddr(2)] {
+				m[opaddr(3)] = 1
 			} else {
-				m[m[pc+3]] = 0
+				m[opaddr(3)] = 0
 			}
 			pc += 4
 		case 8:
-			if opval(1) == opval(2) {
-				m[m[pc+3]] = 1
+			if m[opaddr(1)] == m[opaddr(2)] {
+				m[opaddr(3)] = 1
 			} else {
-				m[m[pc+3]] = 0
+				m[opaddr(3)] = 0
 			}
 			pc += 4
+		case 9: // "relative base offset"
+			rb += m[opaddr(1)]
+			pc += 2
 		case 99:
 			break vmLoop
 		default:
