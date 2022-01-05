@@ -9,26 +9,22 @@ import (
 
 func main() {
 	P := intcode.ReadProgram("inputs/7.txt")
-	amps := []*intcode.VM{
-		{M: P}, {M: P}, {M: P}, {M: P}, {M: P},
-	}
+	amps := []intcode.VM{P, P, P, P, P}
 	best := math.MinInt
 	s := []int{0, 1, 2, 3, 4}
 	for {
+		ch := []chan int{make(chan int)}
+		for range s {
+			ch = append(ch, make(chan int))
+		}
+		for i, a := range amps {
+			go a.Run(ch[i], ch[i+1])
+		}
 		for i, n := range s {
-			c := make(chan int, 2)
-			c <- n
-			amps[i].In = c
-			if i > 0 {
-				amps[i-1].Out = c
-			}
+			ch[i] <- n
 		}
-		amps[0].In <- 0
-		amps[4].Out = make(chan int)
-		for _, a := range amps {
-			go a.Run()
-		}
-		if t := <-amps[4].Out; t > best {
+		ch[0] <- 0
+		if t := <-ch[5]; t > best {
 			best = t
 		}
 		if !nextPerm(s) {

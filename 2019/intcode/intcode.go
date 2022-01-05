@@ -7,15 +7,12 @@ import (
 	"strings"
 )
 
-type VM struct {
-	M       []int
-	In, Out chan int
-}
+type VM []int
 
 var pow10 = []int{1, 10, 100, 1000, 10000}
 
-func (vm *VM) Run() {
-	m := append([]int{}, vm.M...)
+func (vm VM) Run(in <-chan int, out chan<- int) {
+	m := append(VM{}, vm...)
 
 	pc := 0
 	opval := func(n int) int {
@@ -40,14 +37,14 @@ vmLoop:
 			m[m[pc+3]] = opval(1) * opval(2)
 			pc += 4
 		case 3:
-			t, ok := <-vm.In
+			t, ok := <-in
 			if !ok {
 				log.Fatal("Input channel closed")
 			}
 			m[m[pc+1]] = t
 			pc += 2
 		case 4:
-			vm.Out <- opval(1)
+			out <- opval(1)
 			pc += 2
 		case 5:
 			if opval(1) != 0 {
@@ -81,17 +78,17 @@ vmLoop:
 			log.Fatalf("Invalid opcode %d", m[pc])
 		}
 	}
-	close(vm.Out)
+	close(out)
 }
 
-func ReadProgram(path string) []int {
+func ReadProgram(path string) VM {
 	f, err := os.ReadFile(path)
 	if err != nil {
 		log.Fatalf("Couldn't read input file: %v", err)
 	}
 
 	input := strings.Split(string(f), ",")
-	m := make([]int, len(input))
+	m := make(VM, len(input))
 	for i, s := range input {
 		n, err := strconv.Atoi(s)
 		if err != nil {

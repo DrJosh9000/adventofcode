@@ -7,19 +7,11 @@ import (
 )
 
 func main() {
-	vm := intcode.VM{
-		M:   intcode.ReadProgram("inputs/5.txt"),
-		In:  make(chan int, 1),
-		Out: make(chan int),
+	vm := intcode.ReadProgram("inputs/5.txt")
+	in, out := make(chan int), make(chan int)
+	go vm.Run(in, out)
+	in <- 5
+	for x := range out {
+		fmt.Println(x)
 	}
-	vm.In <- 5
-	done := make(chan struct{})
-	go func() {
-		for x := range vm.Out {
-			fmt.Println(x)
-		}
-		close(done)
-	}()
-	vm.Run()
-	<-done
 }
