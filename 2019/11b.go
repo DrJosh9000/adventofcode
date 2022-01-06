@@ -16,9 +16,7 @@ func main() {
 	in, out := make(chan int), make(chan int)
 	go vm.Run(in, out)
 
-	hull := map[image.Point]int{
-		{}: 1,
-	}
+	hull := map[image.Point]int{{}: 1}
 	p, o := image.Pt(0, 0), image.Pt(0, 1)
 commLoop:
 	for {
