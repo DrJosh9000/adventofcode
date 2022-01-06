@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"image"
 	"log"
 	"os"
@@ -34,15 +35,37 @@ func main() {
 		log.Fatalf("Couldn't scan: %v", err)
 	}
 
-	sort.Slice(asts, func(i, j int) bool {
-		l, r := asts[i].X*asts[j].Y, asts[j].X*asts[i].Y
-		if l == r {
-			return norm(asts[i]) < norm(asts[j])
-		}
-		return l > r
-	})
+	count := 0
+	for {
+		sort.Slice(asts, func(i, j int) bool {
+			qi, qj := quad(asts[i]), quad(asts[j])
+			if qi == qj {
+				sa := asts[i].X*asts[j].Y - asts[j].X*asts[i].Y
+				if sa == 0 {
+					return norm(asts[i]) < norm(asts[j])
+				}
+				return sa > 0
+			}
+			return qi < qj
+		})
 
-	// TODO
+		var newasts []image.Point
+		var slope image.Point
+		for _, p := range asts {
+			q := p.Div(gcd(abs(p.X), abs(p.Y)))
+			if slope == q {
+				newasts = append(newasts, p)
+				continue
+			}
+			slope = q
+			count++
+			if count == 200 {
+				fmt.Println(p.Add(ims))
+				return
+			}
+		}
+		asts = newasts
+	}
 }
 
 func gcd(x, y int) int {
@@ -63,3 +86,16 @@ func abs(x int) int {
 }
 
 func norm(p image.Point) int { return abs(p.X) + abs(p.Y) }
+
+func quad(p image.Point) int {
+	if p.X >= 0 && p.Y < 0 {
+		return 0
+	}
+	if p.Y >= 0 && p.X > 0 {
+		return 1
+	}
+	if p.Y > 0 && p.X <= 0 {
+		return 2
+	}
+	return 3
+}
