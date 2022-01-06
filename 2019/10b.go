@@ -35,20 +35,20 @@ func main() {
 		log.Fatalf("Couldn't scan: %v", err)
 	}
 
+	sort.Slice(asts, func(i, j int) bool {
+		qi, qj := quad(asts[i]), quad(asts[j])
+		if qi == qj {
+			sa := asts[i].X*asts[j].Y - asts[j].X*asts[i].Y
+			if sa == 0 {
+				return norm(asts[i]) < norm(asts[j])
+			}
+			return sa > 0
+		}
+		return qi < qj
+	})
+
 	count := 0
 	for {
-		sort.Slice(asts, func(i, j int) bool {
-			qi, qj := quad(asts[i]), quad(asts[j])
-			if qi == qj {
-				sa := asts[i].X*asts[j].Y - asts[j].X*asts[i].Y
-				if sa == 0 {
-					return norm(asts[i]) < norm(asts[j])
-				}
-				return sa > 0
-			}
-			return qi < qj
-		})
-
 		var newasts []image.Point
 		var slope image.Point
 		for _, p := range asts {
