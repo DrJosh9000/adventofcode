@@ -7,31 +7,35 @@ import (
 	"strings"
 )
 
-type VM map[int]int
+type VM struct {
+	m      map[int]int
+	pc, rb int
+}
 
 var pow10 = []int{1, 10, 100, 1000, 10000}
 
-func (vm VM) Copy() VM {
-	m := make(VM, len(vm))
-	for i, x := range vm {
+func (vm *VM) Copy() *VM {
+	m := make(map[int]int, len(vm.m))
+	for i, x := range vm.m {
 		m[i] = x
 	}
-	return m
+	return &VM{m: m, pc: vm.pc, rb: vm.rb}
 }
 
-func (vm VM) Run(in <-chan int, out chan<- int) {
-	m := vm.Copy()
+func (vm *VM) Peek(a int) int { return vm.m[a] }
 
-	pc, rb := 0, 0
+func (vm *VM) Poke(a, v int) { vm.m[a] = v }
+
+func (vm *VM) Run(in <-chan int, out chan<- int) {
 	opaddr := func(n int) int {
-		mode := (m[pc] / pow10[n+1]) % 10
+		mode := (vm.m[vm.pc] / pow10[n+1]) % 10
 		switch mode {
 		case 0: // position mode
-			return m[pc+n]
+			return vm.m[vm.pc+n]
 		case 1: // immediate mode
-			return pc + n
+			return vm.pc + n
 		case 2: // relative mode
-			return rb + m[pc+n]
+			return vm.rb + vm.m[vm.pc+n]
 		}
 		log.Fatalf("Unimplemented mode %d", mode)
 		return 0
@@ -39,69 +43,72 @@ func (vm VM) Run(in <-chan int, out chan<- int) {
 
 vmLoop:
 	for {
-		switch m[pc] % 100 {
+		switch vm.m[vm.pc] % 100 {
 		case 1:
-			m[opaddr(3)] = m[opaddr(1)] + m[opaddr(2)]
-			pc += 4
+			vm.m[opaddr(3)] = vm.m[opaddr(1)] + vm.m[opaddr(2)]
+			vm.pc += 4
 		case 2:
-			m[opaddr(3)] = m[opaddr(1)] * m[opaddr(2)]
-			pc += 4
+			vm.m[opaddr(3)] = vm.m[opaddr(1)] * vm.m[opaddr(2)]
+			vm.pc += 4
 		case 3:
 			t, ok := <-in
 			if !ok {
-				log.Fatal("Input channel closed")
+				// Input channel closed. Returning temporarily halts the machine
+				// in its current state so it could be resumed with a new input
+				// channel later on.
+				return
 			}
-			m[opaddr(1)] = t
-			pc += 2
+			vm.m[opaddr(1)] = t
+			vm.pc += 2
 		case 4:
-			out <- m[opaddr(1)]
-			pc += 2
+			out <- vm.m[opaddr(1)]
+			vm.pc += 2
 		case 5:
-			if m[opaddr(1)] != 0 {
-				pc = m[opaddr(2)]
+			if vm.m[opaddr(1)] != 0 {
+				vm.pc = vm.m[opaddr(2)]
 			} else {
-				pc += 3
+				vm.pc += 3
 			}
 		case 6:
-			if m[opaddr(1)] == 0 {
-				pc = m[opaddr(2)]
+			if vm.m[opaddr(1)] == 0 {
+				vm.pc = vm.m[opaddr(2)]
 			} else {
-				pc += 3
+				vm.pc += 3
 			}
 		case 7:
-			if m[opaddr(1)] < m[opaddr(2)] {
-				m[opaddr(3)] = 1
+			if vm.m[opaddr(1)] < vm.m[opaddr(2)] {
+				vm.m[opaddr(3)] = 1
 			} else {
-				m[opaddr(3)] = 0
+				vm.m[opaddr(3)] = 0
 			}
-			pc += 4
+			vm.pc += 4
 		case 8:
-			if m[opaddr(1)] == m[opaddr(2)] {
-				m[opaddr(3)] = 1
+			if vm.m[opaddr(1)] == vm.m[opaddr(2)] {
+				vm.m[opaddr(3)] = 1
 			} else {
-				m[opaddr(3)] = 0
+				vm.m[opaddr(3)] = 0
 			}
-			pc += 4
+			vm.pc += 4
 		case 9: // "relative base offset"
-			rb += m[opaddr(1)]
-			pc += 2
+			vm.rb += vm.m[opaddr(1)]
+			vm.pc += 2
 		case 99:
 			break vmLoop
 		default:
-			log.Fatalf("Invalid opcode %d", m[pc])
+			log.Fatalf("Invalid opcode %d", vm.m[vm.pc])
 		}
 	}
 	close(out)
 }
 
-func ReadProgram(path string) VM {
+func ReadProgram(path string) *VM {
 	f, err := os.ReadFile(path)
 	if err != nil {
 		log.Fatalf("Couldn't read input file: %v", err)
 	}
 
 	input := strings.Split(string(f), ",")
-	m := make(VM, len(input))
+	m := make(map[int]int, len(input))
 	for i, s := range input {
 		n, err := strconv.Atoi(s)
 		if err != nil {
@@ -109,5 +116,5 @@ func ReadProgram(path string) VM {
 		}
 		m[i] = n
 	}
-	return m
+	return &VM{m: m}
 }

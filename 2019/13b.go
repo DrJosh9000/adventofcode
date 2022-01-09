@@ -9,7 +9,7 @@ import (
 
 func main() {
 	vm := intcode.ReadProgram("inputs/13.txt")
-	vm[0] = 2
+	vm.Poke(0, 2)
 	in, out := make(chan int), make(chan int)
 	go vm.Run(in, out)
 

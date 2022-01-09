@@ -9,7 +9,7 @@ import (
 
 func main() {
 	P := intcode.ReadProgram("inputs/7.txt")
-	amps := []intcode.VM{P, P, P, P, P}
+	amps := []*intcode.VM{P, P, P, P, P}
 	best := math.MinInt
 	s := []int{5, 6, 7, 8, 9}
 	for {
@@ -18,6 +18,7 @@ func main() {
 			ch = append(ch, make(chan int))
 		}
 		for i, a := range amps {
+			a = a.Copy()
 			go a.Run(ch[i], ch[i+1])
 		}
 		for i, n := range s {
