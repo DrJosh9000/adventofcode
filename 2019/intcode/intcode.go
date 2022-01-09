@@ -27,6 +27,8 @@ func (vm *VM) Peek(a int) int { return vm.m[a] }
 func (vm *VM) Poke(a, v int) { vm.m[a] = v }
 
 func (vm *VM) Run(in <-chan int, out chan<- int) {
+	defer close(out)
+
 	opaddr := func(n int) int {
 		mode := (vm.m[vm.pc] / pow10[n+1]) % 10
 		switch mode {
@@ -41,7 +43,6 @@ func (vm *VM) Run(in <-chan int, out chan<- int) {
 		return 0
 	}
 
-vmLoop:
 	for {
 		switch vm.m[vm.pc] % 100 {
 		case 1:
@@ -54,8 +55,8 @@ vmLoop:
 			t, ok := <-in
 			if !ok {
 				// Input channel closed. Returning temporarily halts the machine
-				// in its current state so it could be resumed with a new input
-				// channel later on.
+				// in its current state so it could be resumed with new input
+				// and output channels later on.
 				return
 			}
 			vm.m[opaddr(1)] = t
@@ -93,12 +94,11 @@ vmLoop:
 			vm.rb += vm.m[opaddr(1)]
 			vm.pc += 2
 		case 99:
-			break vmLoop
+			return
 		default:
 			log.Fatalf("Invalid opcode %d", vm.m[vm.pc])
 		}
 	}
-	close(out)
 }
 
 func ReadProgram(path string) *VM {
