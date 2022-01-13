@@ -52,7 +52,6 @@ func main() {
 		}
 	}
 
-	best := math.MaxInt
 	s := state2{
 		p: [4]image.Point{
 			start.Add(image.Pt(-1, -1)),
@@ -62,35 +61,38 @@ func main() {
 		},
 	}
 	dist := map[state2]int{s: 0}
-	pq := &priqueue2{s}
+	done := make(map[state2]bool)
+	pq := &priqueue2{{state2: s}}
 	for pq.Len() > 0 {
-		s = heap.Pop(pq).(state2)
-		if false {
-			fmt.Println(s)
-		}
-		s.d = 0
-		if s.k == goal && dist[s] < best {
-			best = dist[s]
-			continue
+		s = heap.Pop(pq).(qitem2).state2
+		done[s] = true
+		if s.k == goal {
+			fmt.Println(dist[s])
+			break
 		}
 		for r := 0; r < 4; r++ {
-			for _, ns := range fill2(maze, s, r) {
-				nd := ns.d + dist[s]
-				ns.d = 0
-				if od, seen := dist[ns]; seen && nd >= od {
+			for _, ni := range fill2(maze, s, r) {
+				if done[ni.state2] {
 					continue
 				}
-				dist[ns] = nd
-				heap.Push(pq, ns)
+				ni.d += dist[s]
+				if od, seen := dist[ni.state2]; seen && od <= ni.d {
+					continue
+				}
+				dist[ni.state2] = ni.d
+				heap.Push(pq, ni)
 			}
 		}
 	}
-	fmt.Println(best)
 }
 
 type state2 struct {
 	p [4]image.Point
 	k uint
+}
+
+type qitem2 struct {
+	state2
 	d int
 }
 
@@ -109,12 +111,12 @@ func (s state2) String() string {
 	return sb.String()
 }
 
-type priqueue2 []state2
+type priqueue2 []qitem2
 
 func (pq priqueue2) Len() int            { return len(pq) }
 func (pq priqueue2) Less(i, j int) bool  { return pq[i].d < pq[j].d }
 func (pq priqueue2) Swap(i, j int)       { pq[i], pq[j] = pq[j], pq[i] }
-func (pq *priqueue2) Push(x interface{}) { *pq = append(*pq, x.(state2)) }
+func (pq *priqueue2) Push(x interface{}) { *pq = append(*pq, x.(qitem2)) }
 func (pq *priqueue2) Pop() interface{} {
 	n1 := len(*pq) - 1
 	i := (*pq)[n1]
@@ -135,11 +137,11 @@ func makeGrid(h, w, v int) [][]int {
 	return out
 }
 
-func fill2(maze [][]byte, s state2, robot int) []state2 {
+func fill2(maze [][]byte, s state2, robot int) []qitem2 {
 	bounds := image.Rect(0, 0, len(maze[0]), len(maze))
 	dist := makeGrid(len(maze), len(maze[0]), math.MaxInt)
 	dist[s.p[robot].Y][s.p[robot].X] = 0
-	var out []state2
+	var out []qitem2
 	p, q := image.Point{}, []image.Point{s.p[robot]}
 	for len(q) > 0 {
 		p, q = q[0], q[1:]
@@ -166,9 +168,11 @@ func fill2(maze [][]byte, s state2, robot int) []state2 {
 			if 'a' <= b && b <= 'z' {
 				if k := uint(1) << (b - 'a'); s.k&k == 0 {
 					s.p[robot] = t
-					out = append(out, state2{
-						p: s.p,
-						k: s.k | k,
+					out = append(out, qitem2{
+						state2: state2{
+							p: s.p,
+							k: s.k | k,
+						},
 						d: dist[t.Y][t.X],
 					})
 				}

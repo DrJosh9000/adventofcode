@@ -34,33 +34,38 @@ func main() {
 			goal |= 1 << (b - 'a')
 		}
 	}
-	best := math.MaxInt
 	s := state{p: poi['@']}
 	dist := map[state]int{s: 0}
-	pq := &priqueue{s}
+	done := make(map[state]bool)
+	pq := &priqueue{qitem{state: s}}
 	for pq.Len() > 0 {
-		s = heap.Pop(pq).(state)
-		s.d = 0
-		if s.k == goal && dist[s] < best {
-			best = dist[s]
-			continue
+		s = heap.Pop(pq).(qitem).state
+		done[s] = true
+		if s.k == goal {
+			fmt.Println(dist[s])
+			break
 		}
-		for _, ns := range fill(maze, s) {
-			nd := ns.d + dist[s]
-			ns.d = 0
-			if od, seen := dist[ns]; seen && nd >= od {
+		for _, ni := range fill(maze, s) {
+			if done[ni.state] {
 				continue
 			}
-			dist[ns] = nd
-			heap.Push(pq, ns)
+			ni.d += dist[s]
+			if od, seen := dist[ni.state]; seen && od <= ni.d {
+				continue
+			}
+			dist[ni.state] = ni.d
+			heap.Push(pq, ni)
 		}
 	}
-	fmt.Println(best)
 }
 
 type state struct {
 	p image.Point
 	k uint
+}
+
+type qitem struct {
+	state
 	d int
 }
 
@@ -76,12 +81,12 @@ func (s state) String() string {
 	return sb.String()
 }
 
-type priqueue []state
+type priqueue []qitem
 
 func (pq priqueue) Len() int            { return len(pq) }
 func (pq priqueue) Less(i, j int) bool  { return pq[i].d < pq[j].d }
 func (pq priqueue) Swap(i, j int)       { pq[i], pq[j] = pq[j], pq[i] }
-func (pq *priqueue) Push(x interface{}) { *pq = append(*pq, x.(state)) }
+func (pq *priqueue) Push(x interface{}) { *pq = append(*pq, x.(qitem)) }
 func (pq *priqueue) Pop() interface{} {
 	n1 := len(*pq) - 1
 	i := (*pq)[n1]
@@ -102,11 +107,11 @@ func makeGrid(h, w, v int) [][]int {
 	return out
 }
 
-func fill(maze [][]byte, s state) []state {
+func fill(maze [][]byte, s state) []qitem {
 	bounds := image.Rect(0, 0, len(maze[0]), len(maze))
 	dist := makeGrid(len(maze), len(maze[0]), math.MaxInt)
 	dist[s.p.Y][s.p.X] = 0
-	var out []state
+	var out []qitem
 	p, q := image.Point{}, []image.Point{s.p}
 	for len(q) > 0 {
 		p, q = q[0], q[1:]
@@ -131,13 +136,18 @@ func fill(maze [][]byte, s state) []state {
 			q = append(q, t)
 			dist[t.Y][t.X] = dist[p.Y][p.X] + 1
 			if 'a' <= b && b <= 'z' {
-				if k := uint(1) << (b - 'a'); s.k&k == 0 {
-					out = append(out, state{
+				k := uint(1) << (b - 'a')
+				if s.k&k != 0 {
+					// already have this key
+					continue
+				}
+				out = append(out, qitem{
+					state: state{
 						p: t,
 						k: s.k | k,
-						d: dist[t.Y][t.X],
-					})
-				}
+					},
+					d: dist[t.Y][t.X],
+				})
 			}
 		}
 	}
