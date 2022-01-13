@@ -115,6 +115,19 @@ func fill(maze [][]byte, s state) []qitem {
 	p, q := image.Point{}, []image.Point{s.p}
 	for len(q) > 0 {
 		p, q = q[0], q[1:]
+
+		if b := maze[p.Y][p.X]; 'a' <= b && b <= 'z' {
+			if k := uint(1) << (b - 'a'); s.k&k == 0 {
+				out = append(out, qitem{
+					state: state{
+						p: p,
+						k: s.k | k,
+					},
+					d: dist[p.Y][p.X],
+				})
+			}
+		}
+
 		for _, d := range steps {
 			t := p.Add(d)
 			if !t.In(bounds) {
@@ -135,20 +148,6 @@ func fill(maze [][]byte, s state) []qitem {
 			}
 			q = append(q, t)
 			dist[t.Y][t.X] = dist[p.Y][p.X] + 1
-			if 'a' <= b && b <= 'z' {
-				k := uint(1) << (b - 'a')
-				if s.k&k != 0 {
-					// already have this key
-					continue
-				}
-				out = append(out, qitem{
-					state: state{
-						p: t,
-						k: s.k | k,
-					},
-					d: dist[t.Y][t.X],
-				})
-			}
 		}
 	}
 	return out
