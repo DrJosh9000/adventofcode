@@ -36,7 +36,7 @@ func randInst() inst {
 }
 
 type prog struct {
-	i [15]inst
+	i [14]inst
 	l int
 }
 
@@ -46,7 +46,7 @@ func (p prog) String() string {
 		in := p.i[i]
 		fmt.Fprintf(&b, "%s %s %s\n", opcodes[in.opcode], rregs[in.in], rwregs[in.out])
 	}
-	fmt.Fprintf(&b, "RUN\n\n")
+	fmt.Fprintf(&b, "AND D J\nRUN\n\n")
 	return b.String()
 }
 
@@ -86,7 +86,7 @@ func (p *prog) mutate() {
 		i := rand.Intn(p.l)
 		p.i[i] = randInst()
 	case 1: // insert an instruction
-		if p.l >= 15 {
+		if p.l >= 14 {
 			break
 		}
 		p.i[p.l] = randInst()
@@ -122,7 +122,7 @@ func main() {
 	pool := make(map[prog]int)
 	for i := 0; len(pool) < N; i++ {
 		var p prog
-		p.l = (i % 14) + 1
+		p.l = (i % 13) + 1
 		for j := 0; j < p.l; j++ {
 			p.i[j] = randInst()
 		}
