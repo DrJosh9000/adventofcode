@@ -8,8 +8,8 @@ import (
 )
 
 type VM struct {
-	m      map[int]int
-	pc, rb int
+	m          map[int]int
+	pc, rb, cc int
 }
 
 var pow10 = []int{1, 10, 100, 1000, 10000}
@@ -19,8 +19,12 @@ func (vm *VM) Copy() *VM {
 	for i, x := range vm.m {
 		m[i] = x
 	}
-	return &VM{m: m, pc: vm.pc, rb: vm.rb}
+	vm0 := *vm
+	vm0.m = m
+	return &vm0
 }
+
+func (vm *VM) CycleCount() int { return vm.cc }
 
 func (vm *VM) Peek(a int) int { return vm.m[a] }
 
@@ -44,6 +48,7 @@ func (vm *VM) Run(in <-chan int, out chan<- int) {
 	}
 
 	for {
+		vm.cc++
 		switch vm.m[vm.pc] % 100 {
 		case 1:
 			vm.m[opaddr(3)] = vm.m[opaddr(1)] + vm.m[opaddr(2)]

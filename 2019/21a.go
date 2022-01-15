@@ -11,10 +11,11 @@ func main() {
 	in, out := make(chan int), make(chan int)
 	go vm.Run(in, out)
 
-	// Obtained by trial and error
-	input := `NOT A J
-NOT C T
-OR T J
+	input := `NOT T T
+AND A T
+AND B T
+AND C T
+NOT T J
 AND D J
 WALK
 
