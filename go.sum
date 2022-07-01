@@ -1,8 +1,8 @@
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
 gioui.org v0.0.0-20210308172011-57750fc8a0a6/go.mod h1:RSH6KIUZ0p2xy5zHDxgAM4zumjgTw83q2ge/PI+yyw8=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
-github.com/DrJosh9000/exp v0.0.0-20220119033740-6a506c30dd2e h1:zPASXqsZaEt6W3osZdYkIoeE80erEp/asWIeKzhW2lk=
-github.com/DrJosh9000/exp v0.0.0-20220119033740-6a506c30dd2e/go.mod h1:S/JJ5vrsNMFf4ZCQ6CqhGiLGmDiP26HNbOAUWpAH0vU=
+github.com/DrJosh9000/exp v0.0.0-20220630020402-76d53b49ec06 h1:tkW9l+2IK+v1E6oNtYLoAJ6eLbfAuNxtwHWXGoEWhIU=
+github.com/DrJosh9000/exp v0.0.0-20220630020402-76d53b49ec06/go.mod h1:S/JJ5vrsNMFf4ZCQ6CqhGiLGmDiP26HNbOAUWpAH0vU=
 github.com/ajstarks/svgo v0.0.0-20180226025133-644b8db467af/go.mod h1:K08gAheRH3/J6wwsYMMT4xOr94bZjxIelGM0+d/wbFw=
 github.com/ajstarks/svgo v0.0.0-20210923152817-c3b6e2f0c527 h1:NImof/JkF93OVWZY+PINgl6fPtQyF6f+hNUtZ0QZA1c=
 github.com/ajstarks/svgo v0.0.0-20210923152817-c3b6e2f0c527/go.mod h1:K08gAheRH3/J6wwsYMMT4xOr94bZjxIelGM0+d/wbFw=
