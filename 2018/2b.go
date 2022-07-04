@@ -17,24 +17,26 @@ func main() {
 			d := 0
 			p := -1
 			for j := range a {
-				if a[j] != b[j] {
-					d++
-					if d > 1 {
-						continue idsLoop
-					}
-					p = j
+				if a[j] == b[j] {
+					continue
 				}
-			}
-			if d == 1 {
-				for j, r := range a {
-					if j == p {
-						continue
-					}
-					fmt.Printf("%c", r)
+				d++
+				if d > 1 {
+					continue idsLoop
 				}
-				fmt.Println()
-				return
+				p = j
 			}
+			if d != 1 {
+				continue
+			}
+			for j, r := range a {
+				if j == p {
+					continue
+				}
+				fmt.Printf("%c", r)
+			}
+			fmt.Println()
+			return
 		}
 	}
 }
