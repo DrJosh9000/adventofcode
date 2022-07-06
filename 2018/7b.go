@@ -28,17 +28,35 @@ func main() {
 			q = append(q, u)
 		}
 	}
-	for len(q) > 0 {
-		sort.Slice(q, func(i, j int) bool { return q[i] < q[j] })
-		u := q[0]
-		fmt.Printf("%c", u)
-		q = q[1:]
-		for _, v := range g[u] {
-			p[v]--
-			if p[v] == 0 {
+	
+	active := make(map[rune]int)
+	clock := 0
+	for len(q) > 0 || len(active) > 0 {
+		//fmt.Println(active)
+		for u := range active {
+			active[u]--
+			if active[u] != 0 {
+				continue
+			}
+			delete(active, u)
+			for _, v := range g[u] {
+				p[v]--
+				if p[v] != 0 {
+					continue
+				}
 				q = append(q, v)
 			}
 		}
+		
+		for len(q) > 0 && len(active) < 5 {
+			sort.Slice(q, func(i, j int) bool { return q[i] < q[j] })
+			u := q[0]
+			active[u] = int(u) - 4  // 60 + letter value
+			q = q[1:]
+		}
+		
+		clock++
 	}
-	fmt.Println()
+	
+	fmt.Println(clock-1)
 }
