@@ -11,6 +11,8 @@ import (
 	"github.com/DrJosh9000/exp/algo"
 )
 
+const ATK = 3
+
 var teams = map[byte]string{
 	'E': "Elves",
 	'G': "Goblins",
@@ -27,7 +29,7 @@ func isAdjacent(p, q image.Point) bool {
 type unit struct {
 	pt image.Point
 	team byte
-	hp, atk int
+	hp int
 }
 
 func (u *unit) alive() bool {
@@ -107,7 +109,7 @@ func (u *unit) takeTurn(grid [][]byte, units []*unit) bool {
 	}
 	
 	// Attack!
-	targ.hp -= u.atk
+	targ.hp -= ATK
 	if !targ.alive() {
 		// It died!
 		grid[targ.pt.Y][targ.pt.X] = '.'
@@ -186,6 +188,20 @@ func bestAdjacent(grid [][]byte, src image.Point, targets []*unit) (image.Point,
 	return dest, nil
 }
 
+func combat(grid [][]byte, units []*unit) int {
+	for round := 0; ; round++ {
+		// Determine turn order and cull dead units.
+		units = sortUnits(units)
+		
+		// Each unit takes a turn.
+		for _, u := range units {
+			if !u.takeTurn(grid, units) {
+				return round
+			}
+		}
+	}
+}
+
 func main() {
 	var grid [][]byte
 	var units []*unit
@@ -193,44 +209,36 @@ func main() {
 	exp.MustForEachLineIn("inputs/15.txt", func(line string) {
 		row := []byte(line)
 		for i, c := range row {
-			if c == 'E' || c == 'G' {
-				units = append(units, &unit{
-					pt: image.Pt(i, j),
-					team: c,
-					hp: 200,
-					atk: 3,
-				})
+			if !(c == 'E' || c == 'G') {
+				continue
 			}
+			units = append(units, &unit{
+				pt: image.Pt(i, j),
+				team: c,
+				hp: 200,
+			})
 		}
 		grid = append(grid, row)
 		j++
 	})
 	
-	for round := 0; ; round++ {
-		// Determine turn order and cull dead units.
-		units = sortUnits(units)
-		
-		// Each unit takes a turn.
-		for _, u := range units {
-			if u.takeTurn(grid, units) {
-				continue
-			}
-			// Combat ends.
-			for _, r := range grid {
-				fmt.Println(string(r))
-			}
-			hpsum := 0
-			for _, u := range units {
-				fmt.Println(u)
-				if !u.alive() {
-					continue
-				}
-				hpsum += u.hp
-			}
-			fmt.Println("Combat ends after", round, "full rounds")
-			fmt.Println(teams[u.team], "win with", hpsum, "total hit points left")
-			fmt.Println("Outcome:", round, "*", hpsum, "=", round * hpsum)
-			return
-		}
+	rounds := combat(grid, units)
+	units = sortUnits(units)
+	
+	// Combat ends.
+	for _, r := range grid {
+		fmt.Println(string(r))
 	}
+	hpsum := 0
+	team := teams[units[0].team]
+	for _, u := range units {
+		fmt.Println(u)
+		if !u.alive() {
+			break
+		}
+		hpsum += u.hp
+	}
+	fmt.Println("Combat ends after", rounds, "full rounds")
+	fmt.Println(team, "win with", hpsum, "total hit points left")
+	fmt.Println("Outcome:", rounds, "*", hpsum, "=", rounds * hpsum)
 }
