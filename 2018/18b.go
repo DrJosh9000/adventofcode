@@ -1,3 +1,4 @@
+
 package main
 
 import (
@@ -55,8 +56,7 @@ func main() {
 	for m := 0; m < 1000; m++ {
 		str := stringise()
 		if x, seen := hist[str]; seen {
-			period := m - x
-			fmt.Println(scores[(target - x) % period + x])
+			fmt.Println(scores[(target - x) % (m - x) + x])
 			return
 		}
 		hist[str] = m
