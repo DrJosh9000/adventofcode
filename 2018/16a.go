@@ -10,7 +10,7 @@ import (
 	"github.com/DrJosh9000/exp"
 )
 
-var errInvalidOp = errors.New("invalid operation)")
+var errInvalidOp = errors.New("invalid operation")
 
 func isreg(a int) bool {
 	return a >= 0 && a < 4
