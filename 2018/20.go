@@ -163,31 +163,25 @@ func main() {
 	}
 	input := strings.Trim(string(inputb), "^$")
 	
-	// tokenise the input
-	
 	tokens := tokenise(input)
-	//fmt.Println(tokens)
 		
-	// parse into a syntax tree
-	
 	e, _ := parseExpr(tokens)
 	if s := e.String(); s != input {
 		fmt.Println("got: ", s)
 		fmt.Println("want:", input)
 		os.Exit(1)
 	}
-	
-	// traverse the syntax tree to fill in the "regular" map
-	
+		
 	m := map[image.Point]int{}
 	traverse(m, e, image.Pt(0, 0))
-	
-	// explore the map to find the furthest room
-	
-	maxd := 0
+		
+	onek, maxd := 0, 0
 	algo.FloodFill(image.Pt(0, 0), func(p image.Point, d int) ([]image.Point, error) {
 		if d > maxd {
 			maxd = d
+		}
+		if d >= 1000 {
+			onek++
 		}
 		var next []image.Point
 		for c, b := range bits {
@@ -197,5 +191,6 @@ func main() {
 		}
 		return next, nil
 	})
-	fmt.Println(maxd)
+	fmt.Println("Furthest room distance:", maxd)
+	fmt.Println("At least 1000 away:", onek)
 }
