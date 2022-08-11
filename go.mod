@@ -3,7 +3,7 @@ module github.com/DrJosh9000/adventofcode
 go 1.18
 
 require (
-	github.com/DrJosh9000/exp v0.0.0-20220704052207-7c55acb128bd
+	github.com/DrJosh9000/exp v0.0.0-20220811002157-f71f28beae70
 	github.com/bearmini/bitstream-go v0.0.0-20190121230027-bec1c9ea0d3c
 	golang.org/x/exp v0.0.0-20220713135740-79cabaa25d75
 	gonum.org/v1/plot v0.10.0
@@ -18,5 +18,5 @@ require (
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	golang.org/x/image v0.0.0-20210628002857-a66eb6448b8d // indirect
-	golang.org/x/text v0.3.6 // indirect
+	golang.org/x/text v0.3.7 // indirect
 )
