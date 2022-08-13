@@ -78,6 +78,7 @@ var bots []nanobot
 
 func search(bounds nanobot) (count, norm int) {
 	r := bounds.r / 2
+	// This is incomplete, but was enough to spit out the answer for me
 	next := []nanobot{
 		{bounds.x - r, bounds.y, bounds.z, r},
 		{bounds.x + r, bounds.y, bounds.z, r},
