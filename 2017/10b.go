@@ -40,7 +40,7 @@ func main() {
 	
 	dense := make([]byte, 16)
 	for i := 0; i < 16; i++ {
-		dense[i] = algo.Reduce(circle[i*16:(i+1)*16], func(x, y byte) byte {
+		dense[i] = algo.Foldl(circle[i*16:(i+1)*16], func(x, y byte) byte {
 			return x ^ y
 		})
 	}

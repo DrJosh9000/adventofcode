@@ -3,6 +3,8 @@ gioui.org v0.0.0-20210308172011-57750fc8a0a6/go.mod h1:RSH6KIUZ0p2xy5zHDxgAM4zum
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/DrJosh9000/exp v0.0.0-20220829061752-8bd3ff3c3f05 h1:A5XO97IMQ0GrNHE7dA8p+Z1ehZsT4zF9XGYY5vISfEg=
 github.com/DrJosh9000/exp v0.0.0-20220829061752-8bd3ff3c3f05/go.mod h1:S/JJ5vrsNMFf4ZCQ6CqhGiLGmDiP26HNbOAUWpAH0vU=
+github.com/DrJosh9000/exp v0.0.0-20220830041748-acfafb12d3d1 h1:5clCAqfJlKBkKQUDo6gc4G1Fve/TRA0ngI0Ry6U8BvI=
+github.com/DrJosh9000/exp v0.0.0-20220830041748-acfafb12d3d1/go.mod h1:S/JJ5vrsNMFf4ZCQ6CqhGiLGmDiP26HNbOAUWpAH0vU=
 github.com/ajstarks/svgo v0.0.0-20180226025133-644b8db467af/go.mod h1:K08gAheRH3/J6wwsYMMT4xOr94bZjxIelGM0+d/wbFw=
 github.com/ajstarks/svgo v0.0.0-20210923152817-c3b6e2f0c527 h1:NImof/JkF93OVWZY+PINgl6fPtQyF6f+hNUtZ0QZA1c=
 github.com/ajstarks/svgo v0.0.0-20210923152817-c3b6e2f0c527/go.mod h1:K08gAheRH3/J6wwsYMMT4xOr94bZjxIelGM0+d/wbFw=
