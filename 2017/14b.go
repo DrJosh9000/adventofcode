@@ -61,9 +61,6 @@ func main() {
 			}
 		}
 	}
-	reps := make(map[image.Point]struct{})
-	for p := range d {
-		reps[d.Find(p)] = struct{}{}
-	}
-	fmt.Println(len(reps))
+
+	fmt.Println(len(d.Reps()))
 }

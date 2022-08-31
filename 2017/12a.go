@@ -17,13 +17,6 @@ func main() {
 			d.Union(src, dst)
 		}
 	})
-	
-	root := d.Find("0")
-	count := 0
-	for x := range d {
-		if d.Find(x) == root {
-			count++
-		}
-	}
-	fmt.Println(count)
+		
+	fmt.Println(len(d.Sets()[d.Find("0")]))
 }

@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/DrJosh9000/exp"
+	"github.com/DrJosh9000/exp/algo"
 )
 
 const numBanks = 16
@@ -26,7 +27,7 @@ func main() {
 	})
 	//fmt.Println(banks)
 	
-	seen := map[config]struct{}{
+	seen := algo.Set[config]{
 		banks: {},
 	}
 	cycles := 0
@@ -52,6 +53,6 @@ func main() {
 			fmt.Println(cycles)
 			return
 		}
-		seen[banks] = struct{}{}
+		seen.Insert(banks)
 	}
 }

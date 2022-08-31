@@ -18,9 +18,5 @@ func main() {
 		}
 	})
 	
-	groups := make(map[string]struct{})
-	for x := range d {
-		groups[d.Find(x)] = struct{}{}
-	}
-	fmt.Println(len(groups))
+	fmt.Println(len(d.Reps()))
 }
