@@ -1,10 +1,10 @@
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
 gioui.org v0.0.0-20210308172011-57750fc8a0a6/go.mod h1:RSH6KIUZ0p2xy5zHDxgAM4zumjgTw83q2ge/PI+yyw8=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
-github.com/DrJosh9000/exp v0.0.0-20220831034646-70b0a3abe8d5 h1:pS9Aiec8u2rLmojMp91X5+s6DmnGhh2StBMN7Wx9wc4=
-github.com/DrJosh9000/exp v0.0.0-20220831034646-70b0a3abe8d5/go.mod h1:S/JJ5vrsNMFf4ZCQ6CqhGiLGmDiP26HNbOAUWpAH0vU=
 github.com/DrJosh9000/exp v0.0.0-20220831065036-cb45c969a5e7 h1:As+fzS4pehsyUSfd80e/Vdouck9ZlhonE0PVk3v3Z4U=
 github.com/DrJosh9000/exp v0.0.0-20220831065036-cb45c969a5e7/go.mod h1:S/JJ5vrsNMFf4ZCQ6CqhGiLGmDiP26HNbOAUWpAH0vU=
+github.com/DrJosh9000/exp v0.0.0-20220901004646-c4d0edda8257 h1:Dwa0DujVjZbuAco0pevSABMo9VjiX0vwFb8AxdP7GeI=
+github.com/DrJosh9000/exp v0.0.0-20220901004646-c4d0edda8257/go.mod h1:S/JJ5vrsNMFf4ZCQ6CqhGiLGmDiP26HNbOAUWpAH0vU=
 github.com/ajstarks/svgo v0.0.0-20180226025133-644b8db467af/go.mod h1:K08gAheRH3/J6wwsYMMT4xOr94bZjxIelGM0+d/wbFw=
 github.com/ajstarks/svgo v0.0.0-20210923152817-c3b6e2f0c527 h1:NImof/JkF93OVWZY+PINgl6fPtQyF6f+hNUtZ0QZA1c=
 github.com/ajstarks/svgo v0.0.0-20210923152817-c3b6e2f0c527/go.mod h1:K08gAheRH3/J6wwsYMMT4xOr94bZjxIelGM0+d/wbFw=
