@@ -19,6 +19,10 @@ func main() {
 		log.Fatalf("Usage: %s YEAR", os.Args[0])
 	}
 
+	if _, err := os.Stat(strconv.Itoa(year)); err == nil {
+		log.Fatalf("%d already exists; cowardly refusing to overwrite", year)
+	}
+
 	type values struct {
 		Y, D int
 		P    string
