@@ -2,21 +2,12 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"strconv"
 
 	"github.com/DrJosh9000/exp"
 )
 
 func main() {
-	var nums []int
-	exp.MustForEachLineIn("inputs/1.txt", func(line string) {
-		n, err := strconv.Atoi(line)
-		if err != nil {
-			log.Fatalf("Parsing line: %v", err)
-		}
-		nums = append(nums, n)
-	})
+	nums := exp.MustReadInts("inputs/1.txt", "\n")
 	dupes := make(map[int]bool)
 	total := 0
 	for {
