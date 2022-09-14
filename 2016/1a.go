@@ -6,17 +6,11 @@ import (
 	"strconv"
 
 	"github.com/DrJosh9000/exp"
+	"github.com/DrJosh9000/exp/algo"
 )
 
 // Advent of Code 2016
 // Day 1, part a
-
-func abs(x int) int {
-	if x < 0 {
-		return -x
-	}
-	return x
-}
 
 func main() {
 	p, d := image.Pt(0, 0), image.Pt(0, -1)
@@ -28,5 +22,5 @@ func main() {
 		}
 		p = p.Add(d.Mul(exp.Must(strconv.Atoi(step[1:]))))
 	}
-	fmt.Println(abs(p.X) + abs(p.Y))
+	fmt.Println(algo.Abs(p.X) + algo.Abs(p.Y))
 }
