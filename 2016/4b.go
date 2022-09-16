@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"sort"
 	"strconv"
 	"strings"
 
@@ -25,12 +24,8 @@ func main() {
 			}
 		}
 		cs := algo.Keys(lc)
-		sort.Slice(cs, func(i, j int) bool {
-			if lc[cs[i]] == lc[cs[j]] {
-				return cs[i] < cs[j]
-			}
-			return lc[cs[i]] > lc[cs[j]]
-		})
+		algo.SortAsc(cs)
+		algo.SortByMapDesc(cs, lc)
 		if string(cs[:5]) != parts[len(parts)-1] {
 			// decoy
 			continue
