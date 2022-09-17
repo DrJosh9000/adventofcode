@@ -6,6 +6,7 @@ import (
 
 	"github.com/DrJosh9000/exp"
 	"github.com/DrJosh9000/exp/algo"
+	"golang.org/x/exp/maps"
 )
 
 type particle struct {
@@ -116,7 +117,7 @@ func main() {
 
 	// March forward, removing particles that collide from both
 	// the swarm and from all future collisions.
-	coords := algo.Keys(collisions)
+	coords := maps.Keys(collisions)
 	sort.Slice(coords, func(i, j int) bool {
 		return coords[i].time < coords[j].time
 	})

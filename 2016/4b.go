@@ -7,6 +7,7 @@ import (
 
 	"github.com/DrJosh9000/exp"
 	"github.com/DrJosh9000/exp/algo"
+	"golang.org/x/exp/maps"
 )
 
 // Advent of Code 2016
@@ -23,7 +24,7 @@ func main() {
 				lc[c]++
 			}
 		}
-		cs := algo.Keys(lc)
+		cs := maps.Keys(lc)
 		algo.SortAsc(cs)
 		algo.SortByMapDesc(cs, lc)
 		if string(cs[:5]) != parts[len(parts)-1] {

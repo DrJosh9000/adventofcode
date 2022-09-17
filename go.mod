@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/DrJosh9000/exp v0.0.0-20220917093156-c449b7fa3a26
 	github.com/bearmini/bitstream-go v0.0.0-20190121230027-bec1c9ea0d3c
-	golang.org/x/exp v0.0.0-20220713135740-79cabaa25d75
+	golang.org/x/exp v0.0.0-20220916125017-b168a2c6b86b
 	gonum.org/v1/plot v0.10.0
 )
 
