@@ -2,20 +2,18 @@ package main
 
 import (
 	"fmt"
-	"strconv"
-	"strings"
 
 	"github.com/DrJosh9000/exp"
-	"github.com/DrJosh9000/exp/algo"
+	"github.com/DrJosh9000/exp/parse"
 )
 
 // Advent of Code 2016
 // Day 3, part b
 
 func main() {
-	var col [3][]int
+	var col [][]int
 	for _, line := range exp.MustReadLines("inputs/3.txt") {
-		tri := exp.Must(algo.MapOrErr(strings.Fields(line), strconv.Atoi))
+		tri := exp.Must(parse.Ints(line))
 		for i := range tri {
 			col[i] = append(col[i], tri[i])
 		}

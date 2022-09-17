@@ -2,11 +2,9 @@ package main
 
 import (
 	"fmt"
-	"strconv"
-	"strings"
 
 	"github.com/DrJosh9000/exp"
-	"github.com/DrJosh9000/exp/algo"
+	"github.com/DrJosh9000/exp/parse"
 )
 
 // Advent of Code 2016
@@ -16,7 +14,7 @@ func main() {
 	count := 0
 lineLoop:
 	for _, line := range exp.MustReadLines("inputs/3.txt") {
-		tri := exp.Must(algo.MapOrErr(strings.Fields(line), strconv.Atoi))
+		tri := exp.Must(parse.Ints(line))
 		for i := range tri {
 			for j := range tri {
 				if i == j {

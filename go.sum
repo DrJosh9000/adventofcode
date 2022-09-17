@@ -7,6 +7,8 @@ github.com/DrJosh9000/exp v0.0.0-20220914234425-35ab6bad1487 h1:HW9wf7LAjqQCJVbJ
 github.com/DrJosh9000/exp v0.0.0-20220914234425-35ab6bad1487/go.mod h1:S/JJ5vrsNMFf4ZCQ6CqhGiLGmDiP26HNbOAUWpAH0vU=
 github.com/DrJosh9000/exp v0.0.0-20220916113515-4eda9d8b8341 h1:Z4TxFtHg6jj5LAs6qK3QUF116ssUhxDsmEdLZ4efQcs=
 github.com/DrJosh9000/exp v0.0.0-20220916113515-4eda9d8b8341/go.mod h1:S/JJ5vrsNMFf4ZCQ6CqhGiLGmDiP26HNbOAUWpAH0vU=
+github.com/DrJosh9000/exp v0.0.0-20220917093156-c449b7fa3a26 h1:wMj/sa6xkI/9XFCmhjx2ofOOgitr5hHpsdrziUVTd/g=
+github.com/DrJosh9000/exp v0.0.0-20220917093156-c449b7fa3a26/go.mod h1:S/JJ5vrsNMFf4ZCQ6CqhGiLGmDiP26HNbOAUWpAH0vU=
 github.com/ajstarks/svgo v0.0.0-20180226025133-644b8db467af/go.mod h1:K08gAheRH3/J6wwsYMMT4xOr94bZjxIelGM0+d/wbFw=
 github.com/ajstarks/svgo v0.0.0-20210923152817-c3b6e2f0c527 h1:NImof/JkF93OVWZY+PINgl6fPtQyF6f+hNUtZ0QZA1c=
 github.com/ajstarks/svgo v0.0.0-20210923152817-c3b6e2f0c527/go.mod h1:K08gAheRH3/J6wwsYMMT4xOr94bZjxIelGM0+d/wbFw=
