@@ -13,12 +13,14 @@ import (
 
 // Gratuitous concurrency continues...
 
-var bots = make(map[int]*bot)
-var outputs = []chan int{
-	make(chan int, 1),
-	make(chan int, 1),
-	make(chan int, 1),
-}
+var (
+	bots    = make(map[int]*bot)
+	outputs = []chan int{
+		make(chan int, 1),
+		make(chan int, 1),
+		make(chan int, 1),
+	}
+)
 
 type bot struct {
 	input  chan int
