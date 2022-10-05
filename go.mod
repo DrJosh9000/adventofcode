@@ -3,7 +3,7 @@ module github.com/DrJosh9000/adventofcode
 go 1.19
 
 require (
-	github.com/DrJosh9000/exp v0.0.0-20220929033343-41213f90e869
+	github.com/DrJosh9000/exp v0.0.0-20221005060856-2d5c55b21d05
 	github.com/bearmini/bitstream-go v0.0.0-20190121230027-bec1c9ea0d3c
 	golang.org/x/exp v0.0.0-20220916125017-b168a2c6b86b
 	gonum.org/v1/plot v0.10.0
