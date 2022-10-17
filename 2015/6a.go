@@ -22,25 +22,15 @@ func main() {
 		var r image.Rectangle
 		exp.Must(fmt.Sscanf(f[n1-2], "%d,%d", &r.Min.X, &r.Min.Y))
 		exp.Must(fmt.Sscanf(f[n1], "%d,%d", &r.Max.X, &r.Max.Y))
+		r.Max.X++
+		r.Max.Y++
 		switch {
 		case strings.HasPrefix(line, "turn on"):
-			for x := r.Min.X; x <= r.Max.X; x++ {
-				for y := r.Min.Y; y <= r.Max.Y; y++ {
-					g[y][x] = true
-				}
-			}
+			g.FillRect(r, true)
 		case strings.HasPrefix(line, "turn off"):
-			for x := r.Min.X; x <= r.Max.X; x++ {
-				for y := r.Min.Y; y <= r.Max.Y; y++ {
-					g[y][x] = false
-				}
-			}
+			g.FillRect(r, false)
 		case strings.HasPrefix(line, "toggle"):
-			for x := r.Min.X; x <= r.Max.X; x++ {
-				for y := r.Min.Y; y <= r.Max.Y; y++ {
-					g[y][x] = !g[y][x]
-				}
-			}
+			g.MapRect(r, func(x bool) bool { return !x })
 		}
 	}
 
