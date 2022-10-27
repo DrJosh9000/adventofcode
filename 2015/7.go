@@ -108,7 +108,7 @@ func main() {
 	a := wires["a"]
 	fmt.Println(a)
 
-	circuit[b] = gate{out: "b", op: unary{strconv.Itoa(int(a))}.id}
+	circuit[b] = gate{out: "b", op: func() uint16 { return a }}
 	sim()
 	fmt.Println(wires["a"])
 }
