@@ -10,7 +10,7 @@ import (
 )
 
 // Advent of Code 2015
-// Day 7, part a
+// Day 7
 
 var wires map[string]uint16
 
