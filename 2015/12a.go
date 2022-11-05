@@ -1,0 +1,45 @@
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"log"
+
+	"github.com/DrJosh9000/exp"
+)
+
+// Advent of Code 2015
+// Day 12, part a
+
+func sum(o any) int {
+	s := 0
+	switch x := o.(type) {
+	case map[string]any:
+		for _, y := range x {
+			s += sum(y)
+		}
+	case []any:
+		for _, y := range x {
+			s += sum(y)
+		}
+	case float64:
+		s += int(x)
+	case string, bool:
+		// skip
+	default:
+		log.Fatalf("unsupported type: %T", o)
+	}
+	return s
+}
+
+func main() {
+	s := 0
+	for _, line := range exp.MustReadLines("inputs/12.txt") {
+		var o any
+		if err := json.Unmarshal([]byte(line), &o); err != nil {
+			log.Fatalf("Couldn't unmarshal JSON: %v", err)
+		}
+		s += sum(o)
+	}
+	fmt.Println(s)
+}
