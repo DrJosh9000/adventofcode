@@ -26,7 +26,7 @@ func main() {
 	}
 
 	const T = 2503
-	for i := 0; i < 2503; i++ {
+	for i := 0; i < T; i++ {
 		maxd := 0
 		var winners []int
 		for j, d := range deers {
