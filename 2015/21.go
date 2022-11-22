@@ -10,7 +10,7 @@ import (
 )
 
 // Advent of Code 2015
-// Day 21, part a
+// Day 21
 
 type item struct{ cost, dmg, arm int }
 
