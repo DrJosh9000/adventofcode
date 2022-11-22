@@ -19,10 +19,7 @@ func main() {
 		for j := i; j <= target; j += i {
 			h[j] += i
 		}
-	}
-
-	for i, p := range h {
-		if p >= target {
+		if h[i] >= target {
 			fmt.Println(i)
 			return
 		}

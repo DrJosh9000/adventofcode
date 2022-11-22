@@ -14,23 +14,16 @@ import (
 func main() {
 	target := exp.Must(strconv.Atoi(os.Args[1]))
 
-	type house struct {
-		n, p int
-	}
-	h := make(map[int]int)
-	ch := make(chan house)
-	go func() {
-		for i := 1; ; i++ {
-			for j := 1; j <= 50; j++ {
-				h[i*j] += 11 * i
-			}
-			ch <- house{i, h[i]}
+	var h []int
+	for i := 1; ; i++ {
+		if len(h) <= 50*i {
+			h = append(h, make([]int, 50*i-len(h)+1)...)
 		}
-	}()
-
-	for h := range ch {
-		if h.p >= target {
-			fmt.Println(h.n)
+		for j := 1; j <= 50; j++ {
+			h[i*j] += 11 * i
+		}
+		if h[i] >= target {
+			fmt.Println(i)
 			return
 		}
 	}
