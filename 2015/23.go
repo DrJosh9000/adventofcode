@@ -16,24 +16,24 @@ func main() {
 	program := exp.MustReadLines("inputs/23.txt")
 
 	run, err := emu.Transpile(program, map[string]emu.TranslatorFunc{
-		"hlf": func(line int, args []string) (impl string, jumpTargets []int, err error) {
+		"hlf": func(line int, args []string) (string, []int, error) {
 			return fmt.Sprintf("r[%d] /= 2", args[0][0]-'a'), nil, nil
 		},
-		"tpl": func(line int, args []string) (impl string, jumpTargets []int, err error) {
+		"tpl": func(line int, args []string) (string, []int, error) {
 			return fmt.Sprintf("r[%d] *= 3", args[0][0]-'a'), nil, nil
 		},
-		"inc": func(line int, args []string) (impl string, jumpTargets []int, err error) {
+		"inc": func(line int, args []string) (string, []int, error) {
 			return fmt.Sprintf("r[%d]++", args[0][0]-'a'), nil, nil
 		},
-		"jmp": func(line int, args []string) (impl string, jumpTargets []int, err error) {
+		"jmp": func(line int, args []string) (string, []int, error) {
 			o := exp.Must(strconv.Atoi(args[0]))
 			return fmt.Sprintf("goto l%d", o+line), []int{o + line}, nil
 		},
-		"jie": func(line int, args []string) (impl string, jumpTargets []int, err error) {
+		"jie": func(line int, args []string) (string, []int, error) {
 			o := exp.Must(strconv.Atoi(args[1]))
 			return fmt.Sprintf("if r[%d] %% 2 == 0 { goto l%d }", args[0][0]-'a', o+line), []int{o + line}, nil
 		},
-		"jio": func(line int, args []string) (impl string, jumpTargets []int, err error) {
+		"jio": func(line int, args []string) (string, []int, error) {
 			o := exp.Must(strconv.Atoi(args[1]))
 			return fmt.Sprintf("if r[%d] == 1 { goto l%d }", args[0][0]-'a', o+line), []int{o + line}, nil
 		},
