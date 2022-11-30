@@ -52,8 +52,9 @@ func main() {
 
 	parts := []string{"a", "b"}
 	for d := 1; d <= 25; d++ {
+		parts := parts
 		if d == 25 {
-			parts = parts[:1]
+			parts = []string{""}
 		}
 		for _, p := range parts {
 			f, err := os.Create(fmt.Sprintf("%d/%d%s.go", year, d, p))

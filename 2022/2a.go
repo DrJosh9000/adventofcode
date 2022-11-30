@@ -7,12 +7,12 @@ import (
 	"github.com/DrJosh9000/exp"
 )
 
-// Advent of Code {{.Y}}
-// Day {{.D}}{{if .P}}, part {{.P}}{{end}}
+// Advent of Code 2022
+// Day 2, part a
 
 func main() {
 	sum := 0
-	for _, line := range exp.MustReadLines("inputs/{{.D}}.txt") {
+	for _, line := range exp.MustReadLines("inputs/2.txt") {
 		sum += exp.Must(strconv.Atoi(line))
 	}
 	fmt.Println(sum)
