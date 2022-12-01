@@ -5,15 +5,24 @@ import (
 	"strconv"
 
 	"github.com/DrJosh9000/exp"
+	"github.com/DrJosh9000/exp/algo"
 )
 
 // Advent of Code 2022
 // Day 1, part b
 
 func main() {
+	var elves []int
 	sum := 0
 	for _, line := range exp.MustReadLines("inputs/1.txt") {
+		if line == "" {
+			elves = append(elves, sum)
+			sum = 0
+			continue
+		}
 		sum += exp.Must(strconv.Atoi(line))
 	}
-	fmt.Println(sum)
+	elves = append(elves, sum)
+	algo.SortDesc(elves)
+	fmt.Println(algo.Sum(elves[:3]))
 }
