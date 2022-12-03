@@ -14,13 +14,9 @@ func main() {
 	sum := 0
 	for _, line := range exp.MustReadLines("inputs/3.txt") {
 		l, r := make(algo.Set[rune]), make(algo.Set[rune])
-		for i, c := range line {
-			if i < len(line)/2 {
-				l.Insert(c)
-			} else {
-				r.Insert(c)
-			}
-		}
+		h := len(line) / 2
+		l.Insert([]rune(line[:h])...)
+		r.Insert([]rune(line[h:])...)
 		for c := range l.Intersection(r) {
 			if c > 'a' {
 				sum += int(c) - 'a' + 1

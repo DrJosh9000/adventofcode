@@ -17,9 +17,7 @@ func main() {
 		g := input[gi:][:3]
 		s := make([]algo.Set[rune], 3)
 		for i, line := range g {
-			for _, c := range line {
-				s[i] = s[i].Insert(c)
-			}
+			s[i] = s[i].Insert([]rune(line)...)
 		}
 
 		for c := range algo.Intersection(s...) {
