@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/DrJosh9000/exp"
 )
@@ -11,9 +10,13 @@ import (
 // Day 4, part b
 
 func main() {
-	sum := 0
+	count := 0
 	for _, line := range exp.MustReadLines("inputs/4.txt") {
-		sum += exp.Must(strconv.Atoi(line))
+		var a, b, c, d int
+		exp.Must(fmt.Sscanf(line, "%d-%d,%d-%d", &a, &b, &c, &d))
+		if (a >= c && a <= d) || (b >= c && b <= d) || (c >= a && c <= b) || (d >= a && d <= b) {
+			count++
+		}
 	}
-	fmt.Println(sum)
+	fmt.Println(count)
 }
