@@ -2,18 +2,25 @@ package main
 
 import (
 	"fmt"
-	"strconv"
+	"os"
 
 	"github.com/DrJosh9000/exp"
+	"github.com/DrJosh9000/exp/algo"
 )
 
 // Advent of Code 2022
 // Day 6, part b
 
 func main() {
-	sum := 0
-	for _, line := range exp.MustReadLines("inputs/6.txt") {
-		sum += exp.Must(strconv.Atoi(line))
+	input := exp.Must(os.ReadFile("inputs/6.txt"))
+
+	for i := range input[13:] {
+		s := algo.SetFromSlice(input[i:][:14])
+		if len(s) != 14 {
+			continue
+		}
+
+		fmt.Println(i + 14)
+		return
 	}
-	fmt.Println(sum)
 }

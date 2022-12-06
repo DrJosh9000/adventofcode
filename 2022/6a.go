@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"strconv"
+	"os"
 
 	"github.com/DrJosh9000/exp"
 )
@@ -11,9 +11,14 @@ import (
 // Day 6, part a
 
 func main() {
-	sum := 0
-	for _, line := range exp.MustReadLines("inputs/6.txt") {
-		sum += exp.Must(strconv.Atoi(line))
+	input := exp.Must(os.ReadFile("inputs/6.txt"))
+
+	for i := range input[3:] {
+		b := input[i:][:4]
+		if b[0] == b[1] || b[0] == b[2] || b[0] == b[3] || b[1] == b[2] || b[1] == b[3] || b[2] == b[3] {
+			continue
+		}
+		fmt.Println(i + 4)
+		return
 	}
-	fmt.Println(sum)
 }
