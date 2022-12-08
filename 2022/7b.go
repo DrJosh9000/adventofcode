@@ -53,6 +53,8 @@ func main() {
 		case strings.HasPrefix(line, "$"):
 			cmd = strings.TrimPrefix(line, "$ ")
 			switch {
+			case cmd == "cd /":
+				pwd = root
 			case cmd == "cd ..":
 				pwd = pwd.p
 			case strings.HasPrefix(cmd, "cd"):
