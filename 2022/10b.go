@@ -13,15 +13,12 @@ import (
 // Day 10, part b
 
 func main() {
-	g := grid.Make[byte](6, 40)
-	g.Fill(' ')
+	g := grid.Make[bool](6, 40)
 	x := 1
 	c := 0
 
 	draw := func() {
-		if x-1 <= c%40 && x+1 >= c%40 {
-			g[c/40][c%40] = '#'
-		}
+		g[c/40][c%40] = x-1 <= c%40 && x+1 >= c%40
 	}
 
 	for _, line := range exp.MustReadLines("inputs/10.txt") {
@@ -39,7 +36,5 @@ func main() {
 		}
 	}
 
-	for _, r := range g {
-		fmt.Println(string(r))
-	}
+	fmt.Println(g)
 }

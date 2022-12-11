@@ -13,7 +13,6 @@ import (
 // Day 11, part a
 
 type monkey struct {
-	num    int
 	items  []int
 	op     rune
 	opB    any
@@ -42,31 +41,27 @@ func main() {
 	var m *monkey
 	for _, line := range exp.MustReadLines("inputs/11.txt") {
 		line = strings.TrimSpace(line)
+		var mnum int
+		var opb string
 		switch {
-		case strings.HasPrefix(line, "Monkey"):
+		case exp.Smatchf(line, "Monkey %d:", &mnum):
 			m = new(monkey)
 			monkeys = append(monkeys, m)
-			exp.Must(fmt.Sscanf(line, "Monkey %d:", &m.num))
 		case strings.HasPrefix(line, "Starting items:"):
 			line = strings.TrimPrefix(line, "Starting items: ")
 			for _, i := range strings.Split(line, ", ") {
 				m.items = append(m.items, exp.Must(strconv.Atoi(i)))
 			}
-		case strings.HasPrefix(line, "Operation:"):
-			var opb string
-			exp.Must(fmt.Sscanf(line, "Operation: new = old %c %s", &m.op, &opb))
+		case exp.Smatchf(line, "Operation: new = old %c %s", &m.op, &opb):
 			n, err := strconv.Atoi(opb)
 			if err != nil {
 				m.opB = opb
 			} else {
 				m.opB = n
 			}
-		case strings.HasPrefix(line, "Test:"):
-			exp.Must(fmt.Sscanf(line, "Test: divisible by %d", &m.mod))
-		case strings.HasPrefix(line, "If true:"):
-			exp.Must(fmt.Sscanf(line, "If true: throw to monkey %d", &m.dtrue))
-		case strings.HasPrefix(line, "If false:"):
-			exp.Must(fmt.Sscanf(line, "If false: throw to monkey %d", &m.dfalse))
+		case exp.Smatchf(line, "Test: divisible by %d", &m.mod):
+		case exp.Smatchf(line, "If true: throw to monkey %d", &m.dtrue):
+		case exp.Smatchf(line, "If false: throw to monkey %d", &m.dfalse):
 		}
 	}
 

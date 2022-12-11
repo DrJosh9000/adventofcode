@@ -11,46 +11,25 @@ import (
 // Advent of Code 2022
 // Day 9, part b
 
-func norm(p image.Point) int {
-	return algo.Max(algo.Abs(p.X), algo.Abs(p.Y))
-}
-
 func main() {
 	visited := make(algo.Set[image.Point])
-	snake := []image.Point{{}, {}, {}, {}, {}, {}, {}, {}, {}, {}}
+	ran := algo.Range[int]{-1, 1}
+	snake := make([]image.Point, 10)
 	for _, line := range exp.MustReadLines("inputs/9.txt") {
 		var d rune
 		var s int
 		exp.Must(fmt.Sscanf(line, "%c %d", &d, &s))
 		for i := 0; i < s; i++ {
-			switch d {
-			case 'R':
-				snake[0] = snake[0].Add(image.Pt(1, 0))
-			case 'L':
-				snake[0] = snake[0].Add(image.Pt(-1, 0))
-			case 'U':
-				snake[0] = snake[0].Add(image.Pt(0, -1))
-			case 'D':
-				snake[0] = snake[0].Add(image.Pt(0, 1))
-			}
+			snake[0] = snake[0].Add(algo.ULDR[d])
 			for j := range snake[1:] {
 				delta := snake[j].Sub(snake[j+1])
-				if norm(delta) > 1 {
-					step := delta
-					if delta.X < -1 {
-						step.X = -1
-					}
-					if delta.X > 1 {
-						step.X = 1
-					}
-					if delta.Y < -1 {
-						step.Y = -1
-					}
-					if delta.Y > 1 {
-						step.Y = 1
-					}
-					snake[j+1] = snake[j+1].Add(step)
+				if algo.Linfty(delta) <= 1 {
+					continue
 				}
+				step := delta
+				step.X = ran.Clamp(step.X)
+				step.Y = ran.Clamp(step.Y)
+				snake[j+1] = snake[j+1].Add(step)
 			}
 
 			visited.Insert(snake[9])

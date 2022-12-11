@@ -16,7 +16,7 @@ func main() {
 	x := 1
 	c := 1
 	sum := 0
-	want := algo.Set[int]{20: {}, 60: {}, 100: {}, 140: {}, 180: {}, 220: {}}
+	want := algo.MakeSet(20, 60, 100, 140, 180, 220)
 	for _, line := range exp.MustReadLines("inputs/10.txt") {
 		fs := strings.Fields(line)
 		if want.Contains(c) {
