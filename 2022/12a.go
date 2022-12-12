@@ -1,19 +1,54 @@
 package main
 
 import (
+	"errors"
 	"fmt"
-	"strconv"
+	"image"
 
 	"github.com/DrJosh9000/exp"
+	"github.com/DrJosh9000/exp/algo"
+	"github.com/DrJosh9000/exp/grid"
 )
 
 // Advent of Code 2022
 // Day 12, part a
 
 func main() {
-	sum := 0
-	for _, line := range exp.MustReadLines("inputs/12.txt") {
-		sum += exp.Must(strconv.Atoi(line))
+	g := exp.Must(grid.BytesFromStrings(exp.MustReadLines("inputs/12.txt")))
+
+	bounds := g.Bounds()
+
+	var start, end image.Point
+	for y, row := range g {
+		for x, c := range row {
+			switch c {
+			case 'S':
+				start = image.Pt(x, y)
+			case 'E':
+				end = image.Pt(x, y)
+			}
+		}
 	}
-	fmt.Println(sum)
+
+	g[start.Y][start.X] = 'a'
+	g[end.Y][end.X] = 'z'
+
+	algo.FloodFill(start, func(p image.Point, d int) ([]image.Point, error) {
+		if p == end {
+			fmt.Println(d)
+			return nil, errors.New("all done")
+		}
+		var next []image.Point
+		for _, step := range algo.Neigh4 {
+			t := p.Add(step)
+			if !t.In(bounds) {
+				continue
+			}
+			if g[t.Y][t.X] <= g[p.Y][p.X]+1 {
+				next = append(next, t)
+			}
+		}
+
+		return next, nil
+	})
 }
