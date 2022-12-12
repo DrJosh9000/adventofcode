@@ -59,9 +59,9 @@ func main() {
 			n, err := strconv.Atoi(opb)
 			if err != nil {
 				m.opB = opb
-			} else {
-				m.opB = n
+				break
 			}
+			m.opB = n
 		case exp.Smatchf(line, "Test: divisible by %d", &m.mod):
 		case exp.Smatchf(line, "If true: throw to monkey %d", &m.dtrue):
 		case exp.Smatchf(line, "If false: throw to monkey %d", &m.dfalse):
