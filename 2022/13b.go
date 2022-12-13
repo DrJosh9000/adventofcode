@@ -47,10 +47,8 @@ func cmp(l, r any) int {
 }
 
 func main() {
-	packets := []any{
-		[]any{[]any{2.0}},
-		[]any{[]any{6.0}},
-	}
+	div1, div2 := []any{[]any{2.0}}, []any{[]any{6.0}}
+	packets := []any{div1, div2}
 
 	for _, line := range exp.MustReadLines("inputs/13.txt") {
 		if line == "" {
@@ -67,15 +65,7 @@ func main() {
 
 	prod := 1
 	for i, p := range packets {
-		q, ok := p.([]any)
-		if !ok || len(q) != 1 {
-			continue
-		}
-		r, ok := q[0].([]any)
-		if !ok || len(r) != 1 {
-			continue
-		}
-		if r[0] == 2.0 || r[0] == 6.0 {
+		if cmp(p, div1) == 0 || cmp(p, div2) == 0 {
 			prod *= (i + 1)
 		}
 	}
