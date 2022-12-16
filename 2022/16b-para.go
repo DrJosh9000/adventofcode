@@ -37,10 +37,10 @@ func mergeMax[K comparable, V constraints.Ordered](m ...map[K]V) map[K]V {
 	return mt
 }
 
-type state struct {
-	p1, p2 int
-	open   uint
-}
+// type state struct {
+// 	p1, p2 int
+// 	open   uint
+// }
 
 type staterel struct {
 	s state
