@@ -3,4 +3,5 @@ go.work
 go.work.sum
 */inputs
 */inputs/*
-*/cpu.pprof
+*/*.prof
+*/*.pprof

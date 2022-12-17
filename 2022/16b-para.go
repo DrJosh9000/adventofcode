@@ -4,153 +4,54 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"os/signal"
 	"runtime"
 	"runtime/pprof"
+	"sort"
 	"strings"
+	"sync"
+	"sync/atomic"
 
 	"github.com/DrJosh9000/exp"
-	"golang.org/x/exp/constraints"
 )
 
 // Advent of Code 2022
 // Day 16, part b
 
-const timelimit = 26
-
 type valve struct {
 	name    string
-	rate    int
+	rate    int32
 	tunsrc  []string
 	tunnels []int
 }
 
-func mergeMax[K comparable, V constraints.Ordered](m ...map[K]V) map[K]V {
-	mt := make(map[K]V)
-	for _, m := range m {
-		for k, v := range m {
-			if w, ex := mt[k]; !ex || w < v {
-				mt[k] = v
-			}
-		}
-	}
-	return mt
+type state uint
+
+// 6 + 6 + 15 = 27
+
+func (s state) p1() int {
+	return int(s) >> 21
 }
 
-// type state struct {
-// 	p1, p2 int
-// 	open   uint
-// }
-
-type staterel struct {
-	s state
-	r int
+func (s state) p2() int {
+	return (int(s) >> 15) & 0x3f
 }
 
-func merge(outs ...[]staterel) map[state]int {
-	s := 0
-	for _, o := range outs {
-		s += len(o)
-	}
-	mt := make(map[state]int, s)
-	for _, o := range outs {
-		for _, sr := range o {
-			if w, ex := mt[sr.s]; !ex || w < sr.r {
-				mt[sr.s] = sr.r
-			}
-		}
-	}
-	return mt
+func (s state) open() uint {
+	return uint(s) & 0x7fff
 }
 
-type info struct {
-	maxrel  int
-	valves  []*valve
-	allopen uint
-}
-
-func (i *info) worker(t int, input []staterel) []staterel {
-	out := make([]staterel, 0, 10*len(input))
-	for _, sr := range input {
-		s, r := sr.s, sr.r
-
-		v1 := i.valves[s.p1]
-		v2 := i.valves[s.p2]
-
-		// Both move
-		ns := s
-		for _, ns.p1 = range v1.tunnels {
-			for _, ns.p2 = range v2.tunnels {
-				out = append(out, staterel{ns, r})
-			}
-		}
-
-		if v1.rate > 0 && s.open&(1<<s.p1) == 0 {
-			// p1 has the option of opening a valve, while p2 moves
-			nr := r + (timelimit-t-1)*v1.rate
-			if i.maxrel < nr {
-				i.maxrel = nr
-			}
-			ns := s
-			ns.open |= 1 << s.p1
-			if ns.open != i.allopen {
-				for _, ns.p2 = range v2.tunnels {
-					out = append(out, staterel{ns, nr})
-				}
-			}
-		}
-
-		if v2.rate > 0 && s.open&(1<<s.p2) == 0 {
-			// p2 has the option of opening a valve, while p1 moves.
-			nr := r + (timelimit-t-1)*v2.rate
-			if i.maxrel < nr {
-				i.maxrel = nr
-			}
-			ns := s
-			ns.open |= 1 << s.p2
-			if ns.open != i.allopen {
-				for _, ns.p1 = range v1.tunnels {
-					out = append(out, staterel{ns, nr})
-				}
-			}
-		}
-
-		// also consider both opening, if that's possible
-		// ... make sure they are at separate valves!
-		if v1.rate > 0 && s.open&(1<<s.p1) == 0 && v2.rate > 0 && s.open&(1<<s.p2) == 0 && s.p1 != s.p2 {
-			nr := r + (timelimit-t-1)*(v1.rate+v2.rate)
-			if i.maxrel < nr {
-				i.maxrel = nr
-			}
-			ns := s
-			ns.open |= 1 << s.p1
-			ns.open |= 1 << s.p2
-			if ns.open != i.allopen {
-				out = append(out, staterel{ns, nr})
-			}
-		}
-	}
-	return out
+func pack(p1, p2 int, open uint) state {
+	return state(p1)<<21 | state(p2)<<15 | state(open)
 }
 
 func main() {
-	f := exp.Must(os.Create("cpu.pprof"))
-	defer f.Close()
-	pprof.StartCPUProfile(f)
+	cpuf := exp.Must(os.Create("cpu-16b-para.prof"))
+	defer cpuf.Close()
+	pprof.StartCPUProfile(cpuf)
 	defer pprof.StopCPUProfile()
 
-	sigch := make(chan os.Signal, 1)
-	signal.Notify(sigch, os.Interrupt)
-	go func() {
-		<-sigch
-		pprof.StopCPUProfile()
-		f.Close()
-		os.Exit(1)
-	}()
-
 	input := exp.MustReadLines("inputs/16.txt")
-	var inf info
-
+	var valves []*valve
 	for _, line := range input {
 		var v valve
 		a, b, ok := strings.Cut(line, ";")
@@ -161,19 +62,26 @@ func main() {
 		b = strings.TrimPrefix(b, " tunnels lead to valves ")
 		b = strings.TrimPrefix(b, " tunnel leads to valve ")
 		v.tunsrc = strings.Split(b, ", ")
-		inf.valves = append(inf.valves, &v)
+		valves = append(valves, &v)
 	}
+
+	// Put all the good ones first
+	sort.Slice(valves, func(i, j int) bool {
+		return valves[i].rate > valves[j].rate
+	})
+
+	var allopen uint
 
 	// Convert tunnels to indices
 	label := make(map[string]int)
-	for i, v := range inf.valves {
+	for i, v := range valves {
 		label[v.name] = i
 		if v.rate > 0 {
-			inf.allopen |= 1 << i
+			allopen |= 1 << i
 		}
 	}
 
-	for _, v := range inf.valves {
+	for _, v := range valves {
 		v.tunnels = make([]int, 0, len(v.tunsrc))
 		for _, t := range v.tunsrc {
 			if _, nope := label[t]; !nope {
@@ -186,44 +94,124 @@ func main() {
 	// Where do we start again?
 	aa := label["AA"]
 
-	tab := map[state]int{
-		{p1: aa, p2: aa}: 0,
+	const timelimit = 26
+
+	tab := make([]int32, 1<<27)
+	for i := range tab {
+		tab[i] = -1
+	}
+	tab[pack(aa, aa, 0)] = 0
+
+	var maxrel int32
+	upmax := func(r int32) {
+		for {
+			or := atomic.LoadInt32(&maxrel)
+			if or >= r {
+				break
+			}
+			if atomic.CompareAndSwapInt32(&maxrel, or, r) {
+				break
+			}
+		}
 	}
 
-	maxrel := 0
-	for t := 0; t < timelimit; t++ {
+	for t := int32(0); t < timelimit; t++ {
 		log.Printf("Commencing timestep %d - considering %d states\n", t, len(tab))
+		var valid int64
 
-		var srs []staterel
-		for s, r := range tab {
-			srs = append(srs, staterel{s, r})
+		t2 := make([]int32, 1<<27)
+		for i := range t2 {
+			t2[i] = -1
 		}
 
-		if len(srs) < runtime.NumCPU() {
-			out := inf.worker(t, srs)
-			tab = merge(out)
-			continue
-		}
-
-		chunkSize := len(srs) / runtime.NumCPU()
-		outch := make(chan []staterel)
-
-		for j := 0; j < runtime.NumCPU(); j++ {
-			j := j
-			go func() {
-				work := srs[j*chunkSize : (j+1)*chunkSize]
-				if j == runtime.NumCPU()-1 {
-					work = srs[j*chunkSize:]
+		upd := func(s state, r int32) {
+			for {
+				or := atomic.LoadInt32(&t2[s])
+				if or >= r {
+					break
 				}
-				outch <- inf.worker(t, work)
+				if atomic.CompareAndSwapInt32(&t2[s], or, r) {
+					break
+				}
+			}
+		}
+
+		N := runtime.NumCPU()
+		cs := len(tab) / N
+		var wg sync.WaitGroup
+		for i := 0; i < N; i++ {
+			// Splitting the work into contiguous chunks has better performance
+			// than splitting the states by modulus N.
+			start := i * cs
+			chunk := tab[start:]
+			if i < N-1 {
+				chunk = chunk[:cs]
+			}
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				var val int64
+				for si, r := range chunk {
+					if r < 0 {
+						continue
+					}
+					val++
+					s := state(si + start)
+					p1, p2, open := s.p1(), s.p2(), s.open()
+					v1 := valves[p1]
+					v2 := valves[p2]
+
+					// Both move
+					for _, j := range v1.tunnels {
+						for _, k := range v2.tunnels {
+							upd(pack(j, k, open), r)
+						}
+					}
+
+					if v1.rate > 0 && open&(1<<p1) == 0 {
+						// p1 has the option of opening a valve, while p2 moves
+						nr := r + (timelimit-t-1)*v1.rate
+						upmax(nr)
+						if open := open | 1<<p1; open != allopen {
+							for _, j := range v2.tunnels {
+								upd(pack(p1, j, open), nr)
+							}
+						}
+					}
+
+					if v2.rate > 0 && open&(1<<p2) == 0 {
+						// p2 has the option of opening a valve, while p1 moves.
+						nr := r + (timelimit-t-1)*v2.rate
+						upmax(nr)
+
+						if open := open | 1<<p2; open != allopen {
+							for _, j := range v1.tunnels {
+								upd(pack(j, p2, open), nr)
+							}
+						}
+					}
+
+					// also consider both opening, if that's possible
+					// ... make sure they are at separate valves!
+					if v1.rate > 0 && open&(1<<p1) == 0 && v2.rate > 0 && open&(1<<p2) == 0 && p1 != p2 {
+						nr := r + (timelimit-t-1)*(v1.rate+v2.rate)
+						upmax(nr)
+
+						if open := open | 1<<p1 | 1<<p2; open != allopen {
+							upd(pack(p1, p2, open), nr)
+						}
+					}
+				}
+
+				atomic.AddInt64(&valid, val)
 			}()
 		}
 
-		outs := make([][]staterel, 0, runtime.NumCPU())
-		for j := 0; j < runtime.NumCPU(); j++ {
-			outs = append(outs, <-outch)
-		}
-		tab = merge(outs...)
+		wg.Wait()
+
+		log.Printf("Ending timestep %d - considered %d valid states", t, valid)
+
+		tab = t2
 	}
 
 	fmt.Println(maxrel)

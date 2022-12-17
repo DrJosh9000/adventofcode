@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
+	"runtime/pprof"
 	"sort"
 	"strings"
 
@@ -40,6 +42,11 @@ func pack(p1, p2 int, open uint) state {
 }
 
 func main() {
+	cpuf := exp.Must(os.Create("cpu-16b-fast.prof"))
+	defer cpuf.Close()
+	pprof.StartCPUProfile(cpuf)
+	defer pprof.StopCPUProfile()
+
 	input := exp.MustReadLines("inputs/16.txt")
 	var valves []*valve
 	for _, line := range input {
