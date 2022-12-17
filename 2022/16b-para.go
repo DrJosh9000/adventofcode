@@ -101,6 +101,7 @@ func main() {
 		tab[i] = -1
 	}
 	tab[pack(aa, aa, 0)] = 0
+	t2 := make([]int32, 1<<27)
 
 	var maxrel int32
 	upmax := func(r int32) {
@@ -119,7 +120,6 @@ func main() {
 		log.Printf("Commencing timestep %d - considering %d states\n", t, len(tab))
 		var valid int64
 
-		t2 := make([]int32, 1<<27)
 		for i := range t2 {
 			t2[i] = -1
 		}
@@ -219,7 +219,7 @@ func main() {
 
 		log.Printf("Ending timestep %d - considered %d valid states", t, valid)
 
-		tab = t2
+		tab, t2 = t2, tab
 	}
 
 	fmt.Println(maxrel)
