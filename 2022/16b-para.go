@@ -151,6 +151,7 @@ func main() {
 			go func() {
 				defer wg.Done()
 				var val int64
+				var mrel int32
 				for si, r := range chunk {
 					if r < 0 {
 						continue
@@ -171,7 +172,9 @@ func main() {
 					if v1.rate > 0 && open&(1<<p1) == 0 {
 						// p1 has the option of opening a valve, while p2 moves
 						nr := r + (timelimit-t-1)*v1.rate
-						upmax(nr)
+						if nr > mrel {
+							mrel = nr
+						}
 						if open := open | 1<<p1; open != allopen {
 							for _, j := range v2.tunnels {
 								upd(pack(p1, j, open), nr)
@@ -182,7 +185,9 @@ func main() {
 					if v2.rate > 0 && open&(1<<p2) == 0 {
 						// p2 has the option of opening a valve, while p1 moves.
 						nr := r + (timelimit-t-1)*v2.rate
-						upmax(nr)
+						if nr > mrel {
+							mrel = nr
+						}
 
 						if open := open | 1<<p2; open != allopen {
 							for _, j := range v1.tunnels {
@@ -195,7 +200,9 @@ func main() {
 					// ... make sure they are at separate valves!
 					if v1.rate > 0 && open&(1<<p1) == 0 && v2.rate > 0 && open&(1<<p2) == 0 && p1 != p2 {
 						nr := r + (timelimit-t-1)*(v1.rate+v2.rate)
-						upmax(nr)
+						if nr > mrel {
+							mrel = nr
+						}
 
 						if open := open | 1<<p1 | 1<<p2; open != allopen {
 							upd(pack(p1, p2, open), nr)
@@ -204,6 +211,7 @@ func main() {
 				}
 
 				atomic.AddInt64(&valid, val)
+				upmax(mrel)
 			}()
 		}
 
