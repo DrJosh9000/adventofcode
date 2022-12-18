@@ -2,18 +2,39 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/DrJosh9000/exp"
+	"github.com/DrJosh9000/exp/algo"
 )
 
 // Advent of Code 2022
 // Day 18, part a
 
+var neigh = []algo.Vec3[int]{
+	{1, 0, 0},
+	{-1, 0, 0},
+	{0, 1, 0},
+	{0, -1, 0},
+	{0, 0, 1},
+	{0, 0, -1},
+}
+
 func main() {
-	sum := 0
+	lava := make(algo.Set[algo.Vec3[int]])
 	for _, line := range exp.MustReadLines("inputs/18.txt") {
-		sum += exp.Must(strconv.Atoi(line))
+		var v algo.Vec3[int]
+		exp.Must(fmt.Sscanf(line, "%d,%d,%d", &v[0], &v[1], &v[2]))
+		lava.Insert(v)
 	}
-	fmt.Println(sum)
+
+	sa := 0
+	for c := range lava {
+		for _, n := range neigh {
+			if !lava.Contains(c.Add(n)) {
+				sa++
+			}
+		}
+	}
+
+	fmt.Println(sa)
 }
