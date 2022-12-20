@@ -1,2 +1,2 @@
-#!/bin/bash
+#!/bin/zsh
 go run $1.go | tee /dev/stderr | tail -n1 | pbcopy
