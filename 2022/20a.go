@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"image"
 
 	"github.com/DrJosh9000/exp"
 	"github.com/DrJosh9000/exp/algo"
@@ -14,24 +13,23 @@ import (
 func main() {
 	input := exp.MustReadInts("inputs/20.txt", "\n")
 	N := len(input)
-	list := algo.ListFromSlice(algo.Map(input, func(x int) image.Point {
-		return image.Pt(x, x%(N-1))
-	}))
-	var zero *algo.ListNode[image.Point]
+	list := algo.ListFromSlice(input)
+	var zero *algo.ListNode[int]
 	for _, n := range list {
-		if n.Value.X == 0 {
+		if n.Value == 0 {
 			zero = n
 		}
 	}
 
 	for _, n := range list {
-		if n.Value.Y == 0 {
+		y := n.Value % (N - 1)
+		if y == 0 {
 			continue
 		}
 
 		n.Remove()
-		p := n.Succ(n.Value.Y)
-		if n.Value.Y < 0 {
+		p := n.Succ(y)
+		if y < 0 {
 			n.InsertBefore(p)
 		} else {
 			n.InsertAfter(p)
@@ -44,8 +42,8 @@ func main() {
 	p := zero
 	for i := 0; i < 3; i++ {
 		p = p.Succ(1000)
-		fmt.Printf("%d000th number is %d\n", i+1, p.Value.X)
-		sum += p.Value.X
+		fmt.Printf("%d000th number is %d\n", i+1, p.Value)
+		sum += p.Value
 	}
 
 	fmt.Println(sum)
