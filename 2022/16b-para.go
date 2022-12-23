@@ -28,20 +28,12 @@ type state uint
 
 // 6 + 6 + 15 = 27
 
-func (s state) p1() int {
-	return int(s) >> 21
-}
-
-func (s state) p2() int {
-	return (int(s) >> 15) & 0x3f
-}
-
-func (s state) open() uint {
-	return uint(s) & 0x7fff
+func (s state) unpack() (p1, p2 int, open uint) {
+	return int(s) & 0x3f, (int(s) >> 6) & 0x3f, uint(s) >> 12
 }
 
 func pack(p1, p2 int, open uint) state {
-	return state(p1)<<21 | state(p2)<<15 | state(open)
+	return state(open)<<12 | state(p2)<<6 | state(p1)
 }
 
 func main() {
@@ -158,7 +150,7 @@ func main() {
 					}
 					val++
 					s := state(si + start)
-					p1, p2, open := s.p1(), s.p2(), s.open()
+					p1, p2, open := s.unpack()
 					v1 := valves[p1]
 					v2 := valves[p2]
 
