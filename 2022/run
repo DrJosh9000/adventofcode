@@ -1,2 +1,7 @@
 #!/bin/zsh
-go run $1.go | tee /dev/stderr | tail -n1 | pbcopy
+set -eu
+
+solution="$(mktemp)"
+go build -o $solution $1.go
+(time $solution) | tee /dev/stderr | tail -n1 | pbcopy
+rm $solution
