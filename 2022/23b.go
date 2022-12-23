@@ -14,14 +14,9 @@ import (
 
 func main() {
 	gd := exp.MustReadByteGrid("inputs/23.txt")
-	elves := grid.Map(gd, func(b byte) bool {
-		return b == '#'
-	}).ToSparse()
-	for e, v := range elves {
-		if !v {
-			delete(elves, e)
-		}
-	}
+	elves := grid.MapToSparse(gd, func(b byte) (bool, bool) {
+		return true, b == '#'
+	})
 
 	step := []*struct {
 		e []image.Point
