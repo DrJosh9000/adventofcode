@@ -70,7 +70,9 @@ func main() {
 	}
 	steps := append(algo.Neigh4, image.Point{})
 
-	algo.FloodFill(state{p: start}, func(s state, t int) ([]state, error) {
+	algo.AStar(state{p: start}, func(s state) int {
+		return algo.L1(s.p.Sub(end))
+	}, func(s state, t int) (map[state]int, error) {
 		//fmt.Println(p, t)
 		if s.p == end {
 			fmt.Println(t)
@@ -80,7 +82,7 @@ func main() {
 		for t >= len(storm) {
 			evolve()
 		}
-		var next []state
+		next := make(map[state]int)
 		for _, d := range steps {
 			q := s.p.Add(d)
 			if !q.In(valley) && q != start && q != end {
@@ -89,7 +91,7 @@ func main() {
 			if len(storm[t][q]) > 0 {
 				continue
 			}
-			next = append(next, state{p: q, t: t})
+			next[state{p: q, t: t}] = 1
 		}
 		//fmt.Println(next)
 		return next, nil

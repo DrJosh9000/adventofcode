@@ -62,8 +62,18 @@ func main() {
 		wp1, wp2 bool
 	}
 	steps := append(algo.Neigh4, image.Point{})
+	startToEnd := algo.L1(start.Sub(end))
 
-	algo.FloodFill(state{p: start}, func(s state, t int) ([]state, error) {
+	algo.AStar(state{p: start}, func(s state) int {
+		switch {
+		case s.wp1 && s.wp2:
+			return algo.L1(s.p.Sub(end))
+		case s.wp1:
+			return startToEnd + algo.L1(s.p.Sub(start))
+		default:
+			return 2*startToEnd + algo.L1(s.p.Sub(end))
+		}
+	}, func(s state, t int) (map[state]int, error) {
 		switch {
 		case s.p == end && s.wp1 && s.wp2:
 			fmt.Println(t)
@@ -78,7 +88,7 @@ func main() {
 		for t >= len(storm) {
 			evolve()
 		}
-		var next []state
+		next := make(map[state]int)
 		for _, d := range steps {
 			q := s.p.Add(d)
 			if !q.In(valley) && q != start && q != end {
@@ -90,7 +100,7 @@ func main() {
 			s2 := s
 			s2.p = q
 			s2.t = t
-			next = append(next, s2)
+			next[s2] = 1
 		}
 		return next, nil
 	})
