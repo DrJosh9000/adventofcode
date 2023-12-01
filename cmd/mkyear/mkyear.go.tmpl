@@ -1,0 +1,19 @@
+package main
+
+import (
+	"fmt"
+	"strconv"
+
+	"github.com/DrJosh9000/exp"
+)
+
+// Advent of Code {{.Y}}
+// Day {{.D}}{{if .P}}, part {{.P}}{{end}}
+
+func main() {
+	sum := 0
+	for _, line := range exp.MustReadLines("{{.Y}}/inputs/{{.D}}.txt") {
+		sum += exp.Must(strconv.Atoi(line))
+	}
+	fmt.Println(sum)
+}
