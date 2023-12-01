@@ -13,3 +13,11 @@ or seek inspiration in this repo, particularly for
 * or even efficiency.
 
 You have been warned!
+
+## Hints
+
+```shell
+go run ./cmd/mkyear 2023
+./fetch.sh
+./run.sh 1a
+```
