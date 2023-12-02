@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/DrJosh9000/exp"
 )
@@ -13,7 +12,16 @@ import (
 func main() {
 	sum := 0
 	for _, line := range exp.MustReadLines("2023/inputs/1.txt") {
-		sum += exp.Must(strconv.Atoi(line))
+		first, last := -1, -1
+		for _, d := range line {
+			if d >= '0' && d <= '9' {
+				if first == -1 {
+					first = int(d - '0')
+				}
+				last = int(d - '0')
+			}
+		}
+		sum += first*10 + last
 	}
 	fmt.Println(sum)
 }
