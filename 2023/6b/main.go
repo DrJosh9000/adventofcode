@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/DrJosh9000/exp"
 )
@@ -11,9 +12,24 @@ import (
 // Day 6, part b
 
 func main() {
-	sum := 0
-	for _, line := range exp.MustReadLines("2023/inputs/6.txt") {
-		sum += exp.Must(strconv.Atoi(line))
+	lines := exp.MustReadLines("2023/inputs/6.txt")
+
+	t := exp.Must(strconv.Atoi(strings.ReplaceAll(strings.TrimPrefix(lines[0], "Time:"), " ", "")))
+	d := exp.Must(strconv.Atoi(strings.ReplaceAll(strings.TrimPrefix(lines[1], "Distance:"), " ", "")))
+
+	mins := 0
+	for ; mins < t; mins++ {
+		if mins*(t-mins) > d {
+			break
+		}
 	}
-	fmt.Println(sum)
+	maxs := t
+	for ; maxs >= 0; maxs-- {
+		if maxs*(t-maxs) > d {
+			break
+		}
+	}
+
+	fmt.Println(maxs - mins + 1)
+
 }
