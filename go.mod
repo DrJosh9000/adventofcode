@@ -3,7 +3,7 @@ module github.com/DrJosh9000/adventofcode
 go 1.21.4
 
 require (
-	github.com/DrJosh9000/exp v0.0.0-20231208035458-3ce5c5c7034e
+	github.com/DrJosh9000/exp v0.0.0-20231208040427-ddbcb9843bd1
 	github.com/bearmini/bitstream-go v0.0.0-20190121230027-bec1c9ea0d3c
 	github.com/mitchellh/go-z3 v0.0.0-20191228203228-4cbedeba863f
 	golang.org/x/exp v0.0.0-20231127185646-65229373498e

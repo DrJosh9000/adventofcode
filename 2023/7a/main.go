@@ -1,7 +1,9 @@
 package main
 
 import (
+	"cmp"
 	"fmt"
+	"slices"
 	"strings"
 
 	"github.com/DrJosh9000/exp"
@@ -70,19 +72,19 @@ func main() {
 		input = append(input, hand)
 	}
 
-	algo.SortSlice(input, func(a, b handBid) bool {
+	slices.SortFunc(input, func(a, b handBid) int {
 		at, bt := handType(a.hand), handType(b.hand)
 		if at != bt {
-			return at < bt
+			return cmp.Compare(at, bt)
 		}
 		for k := 0; k < 5; k++ {
 			ac, bc := a.hand[k], b.hand[k]
 			if ac == bc {
 				continue
 			}
-			return strings.IndexByte(cards, ac) < strings.IndexByte(cards, bc)
+			return cmp.Compare(strings.IndexByte(cards, ac), strings.IndexByte(cards, bc))
 		}
-		return false
+		return 0
 	})
 
 	sum := 0

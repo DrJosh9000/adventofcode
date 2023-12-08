@@ -14,6 +14,8 @@ github.com/DrJosh9000/exp v0.0.0-20231208030557-cfd8166f8ff3 h1:6FLtPaBBZQOQQ6CI
 github.com/DrJosh9000/exp v0.0.0-20231208030557-cfd8166f8ff3/go.mod h1:ngBFE+ZWFK30zOdEPu46I7KkSHROY2u/nj3T2TPmzKA=
 github.com/DrJosh9000/exp v0.0.0-20231208035458-3ce5c5c7034e h1:pButQ9uWzU78j9NFugf5QBTRgxylXtmUo3q9wkLfEmQ=
 github.com/DrJosh9000/exp v0.0.0-20231208035458-3ce5c5c7034e/go.mod h1:ngBFE+ZWFK30zOdEPu46I7KkSHROY2u/nj3T2TPmzKA=
+github.com/DrJosh9000/exp v0.0.0-20231208040427-ddbcb9843bd1 h1:4H5b9sVu0753x13uq51zNqcyZuWoVMaNVDCriqQzIoQ=
+github.com/DrJosh9000/exp v0.0.0-20231208040427-ddbcb9843bd1/go.mod h1:ngBFE+ZWFK30zOdEPu46I7KkSHROY2u/nj3T2TPmzKA=
 github.com/ajstarks/deck v0.0.0-20200831202436-30c9fc6549a9/go.mod h1:JynElWSGnm/4RlzPXRlREEwqTHAN3T56Bv2ITsFT3gY=
 github.com/ajstarks/deck/generate v0.0.0-20210309230005-c3f852c02e19/go.mod h1:T13YZdzov6OU0A1+RfKZiZN9ca6VeKdBdyDV+BY97Tk=
 github.com/ajstarks/svgo v0.0.0-20180226025133-644b8db467af/go.mod h1:K08gAheRH3/J6wwsYMMT4xOr94bZjxIelGM0+d/wbFw=
