@@ -90,10 +90,7 @@ func main() {
 				}
 
 				intersectAny = true
-				for _, rem := range subtract(ci.rng, rx) {
-					if rem.IsEmpty() {
-						continue
-					}
+				for _, rem := range algo.RangeSubtract(ci.rng, rx) {
 					nci := catIdx{cat: ci.cat, rng: rem}
 					//log.Printf("pushing %v (subtract)", nci)
 					q = append(q, nci)
@@ -117,22 +114,4 @@ func main() {
 	}
 
 	fmt.Println(minLoc)
-}
-
-func subtract(a, b algo.Range[int]) []algo.Range[int] {
-	if b.Min <= a.Min && b.Max >= a.Max {
-		return nil
-	}
-	if b.Min >= a.Min && b.Max <= a.Max {
-		return []algo.Range[int]{
-			{Min: a.Min, Max: b.Min},
-			{Min: b.Max + 1, Max: a.Max},
-		}
-	}
-	if b.Min >= a.Min {
-		a.Max = min(a.Max, b.Min-1)
-	} else {
-		a.Min = max(a.Min, b.Max+1)
-	}
-	return []algo.Range[int]{a}
 }
