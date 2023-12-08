@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/DrJosh9000/exp"
 )
@@ -10,10 +9,13 @@ import (
 // Advent of Code 2023
 // Day 13, part a
 
+const inputPath = "2023/inputs/13.txt"
+
 func main() {
+	lines := exp.MustReadLines(inputPath)
 	sum := 0
-	for _, line := range exp.MustReadLines("2023/inputs/13.txt") {
-		sum += exp.Must(strconv.Atoi(line))
+	for _, line := range lines {
+		sum += exp.MustAtoi(line)
 	}
 	fmt.Println(sum)
 }
