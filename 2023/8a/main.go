@@ -13,9 +13,28 @@ const inputPath = "2023/inputs/8.txt"
 
 func main() {
 	lines := exp.MustReadLines(inputPath)
-	sum := 0
-	for _, line := range lines {
-		sum += exp.MustAtoi(line)
+
+	type node struct {
+		l, r string
 	}
-	fmt.Println(sum)
+	m := make(map[string]node)
+
+	inst := lines[0]
+	for _, line := range lines[2:] {
+		m[line[0:3]] = node{l: line[7:10], r: line[12:15]}
+	}
+	//fmt.Println(inst, m)
+
+	step := 0
+	pos := "AAA"
+	for pos != "ZZZ" {
+		switch inst[step%len(inst)] {
+		case 'L':
+			pos = m[pos].l
+		case 'R':
+			pos = m[pos].r
+		}
+		step++
+	}
+	fmt.Println(step)
 }
