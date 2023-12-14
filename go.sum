@@ -3,14 +3,8 @@ git.sr.ht/~sbinet/cmpimg v0.1.0/go.mod h1:FU12psLbF4TfNXkKH2ZZQ29crIqoiqTZmeQ7dk
 git.sr.ht/~sbinet/gg v0.5.0 h1:6V43j30HM623V329xA9Ntq+WJrMjDxRjuAB1LFWF5m8=
 git.sr.ht/~sbinet/gg v0.5.0/go.mod h1:G2C0eRESqlKhS7ErsNey6HHrqU1PwsnCQlekFi9Q2Oo=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
-github.com/DrJosh9000/exp v0.0.0-20231208040427-ddbcb9843bd1 h1:4H5b9sVu0753x13uq51zNqcyZuWoVMaNVDCriqQzIoQ=
-github.com/DrJosh9000/exp v0.0.0-20231208040427-ddbcb9843bd1/go.mod h1:ngBFE+ZWFK30zOdEPu46I7KkSHROY2u/nj3T2TPmzKA=
-github.com/DrJosh9000/exp v0.0.0-20231208042458-c4dd6d8d5b43 h1:O9d3tQzo2v63twe7Ipg6AnfytYTt5wcN7EcpxaubRwc=
-github.com/DrJosh9000/exp v0.0.0-20231208042458-c4dd6d8d5b43/go.mod h1:ngBFE+ZWFK30zOdEPu46I7KkSHROY2u/nj3T2TPmzKA=
-github.com/DrJosh9000/exp v0.0.0-20231209045610-c9fc2c1ad616 h1:1Ii5BfaTTVG9+xlMsfBrH2BacuT3z7CLdZuX3Eai9jA=
-github.com/DrJosh9000/exp v0.0.0-20231209045610-c9fc2c1ad616/go.mod h1:ngBFE+ZWFK30zOdEPu46I7KkSHROY2u/nj3T2TPmzKA=
-github.com/DrJosh9000/exp v0.0.0-20231209055111-7adfbd912745 h1:XYgDLa2Zg4tjnPMd5fDhIFA7JDy8jRHoQbk7boLRDb4=
-github.com/DrJosh9000/exp v0.0.0-20231209055111-7adfbd912745/go.mod h1:ngBFE+ZWFK30zOdEPu46I7KkSHROY2u/nj3T2TPmzKA=
+github.com/DrJosh9000/exp v0.0.0-20231214055414-996413e50c89 h1:d/xetZTo4X26lP6UglhP7G13y+HLrouqe677q2LJZCM=
+github.com/DrJosh9000/exp v0.0.0-20231214055414-996413e50c89/go.mod h1:ngBFE+ZWFK30zOdEPu46I7KkSHROY2u/nj3T2TPmzKA=
 github.com/ajstarks/deck v0.0.0-20200831202436-30c9fc6549a9/go.mod h1:JynElWSGnm/4RlzPXRlREEwqTHAN3T56Bv2ITsFT3gY=
 github.com/ajstarks/deck/generate v0.0.0-20210309230005-c3f852c02e19/go.mod h1:T13YZdzov6OU0A1+RfKZiZN9ca6VeKdBdyDV+BY97Tk=
 github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b h1:slYM766cy2nI3BwyRiyQj/Ud48djTMtMebDqepE95rw=
