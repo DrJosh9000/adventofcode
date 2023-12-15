@@ -17,12 +17,12 @@ func main() {
 	g := exp.MustReadByteGrid(inputPath)
 
 	loads := make([]int, 1, 101)
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 200; i++ {
 		g = spinCycle(g)
 		loads = append(loads, load(g))
 	}
 
-	fmt.Println(algo.CyclicPredict(loads, 1_000_000_000))
+	fmt.Println(algo.IntegerPredict(loads, 1_000_000_000))
 }
 
 func load(g grid.Dense[byte]) int {
