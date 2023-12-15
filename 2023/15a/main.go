@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/DrJosh9000/exp"
 )
@@ -15,7 +16,15 @@ func main() {
 	lines := exp.MustReadLines(inputPath)
 	sum := 0
 	for _, line := range lines {
-		sum += exp.MustAtoi(line)
+		for _, token := range strings.Split(line, ",") {
+			h := 0
+			for _, c := range token {
+				h += int(c)
+				h *= 17
+				h %= 256
+			}
+			sum += h
+		}
 	}
 	fmt.Println(sum)
 }
