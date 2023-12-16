@@ -63,7 +63,7 @@ func countEnergised(g grid.Dense[byte], b beam) int {
 		energised.Insert(b.p)
 		µ.Unlock()
 
-		switch g[b.p.Y][b.p.X] {
+		switch g.At(b.p) {
 		case '.':
 			b.p = b.p.Add(b.d)
 			q.Push(b)

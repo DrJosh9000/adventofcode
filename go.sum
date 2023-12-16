@@ -3,8 +3,8 @@ git.sr.ht/~sbinet/cmpimg v0.1.0/go.mod h1:FU12psLbF4TfNXkKH2ZZQ29crIqoiqTZmeQ7dk
 git.sr.ht/~sbinet/gg v0.5.0 h1:6V43j30HM623V329xA9Ntq+WJrMjDxRjuAB1LFWF5m8=
 git.sr.ht/~sbinet/gg v0.5.0/go.mod h1:G2C0eRESqlKhS7ErsNey6HHrqU1PwsnCQlekFi9Q2Oo=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
-github.com/DrJosh9000/exp v0.0.0-20231216044906-659dccbf0020 h1:AOMP2Lja5kfCpAHbD+UtrZl/hxd3zj8Pfu1wqT6y/8c=
-github.com/DrJosh9000/exp v0.0.0-20231216044906-659dccbf0020/go.mod h1:ngBFE+ZWFK30zOdEPu46I7KkSHROY2u/nj3T2TPmzKA=
+github.com/DrJosh9000/exp v0.0.0-20231216052713-bba646a4c4d6 h1:A01piO/VG8uqDq0MaHY++EaYV1TMkCtOBSpRywzs2VA=
+github.com/DrJosh9000/exp v0.0.0-20231216052713-bba646a4c4d6/go.mod h1:ngBFE+ZWFK30zOdEPu46I7KkSHROY2u/nj3T2TPmzKA=
 github.com/ajstarks/deck v0.0.0-20200831202436-30c9fc6549a9/go.mod h1:JynElWSGnm/4RlzPXRlREEwqTHAN3T56Bv2ITsFT3gY=
 github.com/ajstarks/deck/generate v0.0.0-20210309230005-c3f852c02e19/go.mod h1:T13YZdzov6OU0A1+RfKZiZN9ca6VeKdBdyDV+BY97Tk=
 github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b h1:slYM766cy2nI3BwyRiyQj/Ud48djTMtMebDqepE95rw=
