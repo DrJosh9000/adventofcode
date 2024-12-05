@@ -5,7 +5,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 func main() {

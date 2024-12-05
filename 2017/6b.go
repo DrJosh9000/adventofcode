@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 const numBanks = 16
@@ -24,7 +24,7 @@ func main() {
 			banks[i] = n
 		}
 	})
-	
+
 	seen := map[config]int{
 		banks: 0,
 	}
@@ -44,7 +44,7 @@ func main() {
 			blocks--
 		}
 		cycles++
-				
+
 		if c, s := seen[banks]; s {
 			fmt.Println(cycles - c)
 			return

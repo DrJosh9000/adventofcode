@@ -5,8 +5,8 @@ import (
 	"strings"
 	"sync/atomic"
 
-	"github.com/DrJosh9000/exp"
-	"github.com/DrJosh9000/exp/para"
+	"drjosh.dev/exp"
+	"drjosh.dev/exp/para"
 )
 
 // Advent of Code 2023

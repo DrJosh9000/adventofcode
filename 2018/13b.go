@@ -5,7 +5,7 @@ import (
 	"image"
 	"sort"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 type dirtrack struct {
@@ -19,7 +19,7 @@ var dirs = map[rune]image.Point{
 	'v': {0, 1},
 }
 
-var nextDir = map[dirtrack]rune {
+var nextDir = map[dirtrack]rune{
 	// existing carts = straight track
 	{'>', '>'}: '>',
 	{'<', '<'}: '<',
@@ -41,16 +41,16 @@ var nextDir = map[dirtrack]rune {
 	{'v', '+'}: 'v',
 	// turns
 	{'>', '\\'}: 'v',
-	{'>', '/'}: '^',
+	{'>', '/'}:  '^',
 	{'<', '\\'}: '^',
-	{'<', '/'}: 'v',
+	{'<', '/'}:  'v',
 	{'^', '\\'}: '<',
-	{'^', '/'}: '>',
+	{'^', '/'}:  '>',
 	{'v', '\\'}: '>',
-	{'v', '/'}: '<',
+	{'v', '/'}:  '<',
 }
 
-type bias int 
+type bias int
 
 const (
 	left = bias(iota)
@@ -64,25 +64,25 @@ type dirbias struct {
 	b bias
 }
 
-var crossings = map[dirbias]rune {
-	{'>', left}: '^',
+var crossings = map[dirbias]rune{
+	{'>', left}:     '^',
 	{'>', straight}: '>',
-	{'>', right}: 'v',
-	{'<', left}: 'v',
+	{'>', right}:    'v',
+	{'<', left}:     'v',
 	{'<', straight}: '<',
-	{'<', right}: '^',
-	{'^', left}: '<',
+	{'<', right}:    '^',
+	{'^', left}:     '<',
 	{'^', straight}: '^',
-	{'^', right}: '>',
-	{'v', left}: '>',
+	{'^', right}:    '>',
+	{'v', left}:     '>',
 	{'v', straight}: 'v',
-	{'v', right}: '<',
+	{'v', right}:    '<',
 }
 
 type cart struct {
 	image.Point
-	d rune
-	b bias
+	d    rune
+	b    bias
 	dead bool
 }
 
@@ -112,13 +112,13 @@ func main() {
 			if isCart(x) {
 				carts = append(carts, cart{
 					Point: image.Pt(c, r),
-					d: x,
+					d:     x,
 				})
 			}
 		}
 		r++
 	})
-	
+
 	for tick := 0; ; tick++ {
 		sortCarts(carts)
 		for i, c := range carts {

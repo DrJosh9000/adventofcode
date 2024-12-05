@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 type set[T comparable] map[T]struct{}
@@ -154,12 +154,12 @@ func battle(armies [2][]*group) [2]int {
 				}
 			}
 		}
-		
+
 		// Nobody chose any targets...draw?
 		if len(targ) == 0 {
 			return [2]int{-1, -1}
 		}
-	
+
 		// Attacking
 		gs := make([]*group, 0, len(targ))
 		for g := range targ {
@@ -168,7 +168,7 @@ func battle(armies [2][]*group) [2]int {
 		sort.Slice(gs, func(i, j int) bool {
 			return gs[i].ini > gs[j].ini
 		})
-	
+
 		for _, g := range gs {
 			if g.units <= 0 {
 				continue
@@ -179,7 +179,7 @@ func battle(armies [2][]*group) [2]int {
 			}
 			h.units -= g.dmgTo(h) / h.hp
 		}
-	
+
 		var units [2]int
 		for i, a := range armies {
 			for _, g := range a {
@@ -189,7 +189,7 @@ func battle(armies [2][]*group) [2]int {
 				units[i] += g.units
 			}
 		}
-	
+
 		if units[0] == 0 || units[1] == 0 {
 			return units
 		}
@@ -198,7 +198,7 @@ func battle(armies [2][]*group) [2]int {
 
 func main() {
 	armies := readInput()
-	
+
 	fmt.Println("Smallest boost:", sort.Search(1e6, func(boost int) bool {
 		fmt.Println("Trying boost", boost)
 		a0 := copy(armies)

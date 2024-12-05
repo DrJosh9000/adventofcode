@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 type inst struct {

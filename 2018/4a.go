@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 func main() {
@@ -32,11 +32,11 @@ func main() {
 			e: parts[1],
 		})
 	})
-	
+
 	sort.Slice(recs, func(i, j int) bool {
 		return recs[i].t.Before(recs[j].t)
 	})
-	
+
 	type gm struct {
 		guard, minute int
 	}
@@ -50,10 +50,10 @@ func main() {
 			for i := t; i < r.t.Minute(); i++ {
 				chart[gm{guard: guard, minute: i}]++
 			}
-		
+
 		case r.e == "falls asleep":
 			t = r.t.Minute()
-		
+
 		default: // begins shift
 			n, err := strconv.Atoi(strings.TrimPrefix(strings.TrimSuffix(r.e, " begins shift"), "Guard #"))
 			if err != nil {
@@ -69,7 +69,7 @@ func main() {
 			guard = g
 		}
 	}
-	
+
 	max = math.MinInt
 	var best gm
 	for m, x := range chart {
@@ -81,5 +81,5 @@ func main() {
 			best = m
 		}
 	}
-	fmt.Println(best.guard, best.minute, best.guard * best.minute)
+	fmt.Println(best.guard, best.minute, best.guard*best.minute)
 }

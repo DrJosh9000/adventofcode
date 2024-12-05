@@ -7,7 +7,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/DrJosh9000/exp/algo"
+	"drjosh.dev/exp/algo"
 )
 
 func main() {

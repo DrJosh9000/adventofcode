@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 func main() {
@@ -13,7 +13,7 @@ func main() {
 		exp.Must(fmt.Sscanf(line, "%d: %d", &d, &r))
 		fw[d] = r
 	})
-	
+
 	sev := 0
 	for d, r := range fw {
 		if d%((r-1)*2) == 0 {

@@ -8,7 +8,7 @@ import (
 	"math"
 	"os"
 
-	"github.com/DrJosh9000/exp/algo"
+	"drjosh.dev/exp/algo"
 )
 
 func main() {
@@ -57,8 +57,8 @@ func main() {
 					}
 					outer := (q.X == 2 || q.Y == 2 || q.X == len(maze[y])-3 || q.Y == len(maze)-3)
 					n := node{
-						label:string([]byte{b, c}),
-						inner: !outer, 
+						label: string([]byte{b, c}),
+						inner: !outer,
 					}
 					poi[n] = q
 					rpoi[q] = n
@@ -86,7 +86,7 @@ func main() {
 			t := dist[p.Y][p.X]
 			if en, ok := rpoi[p]; ok && p != start {
 				graph[sn] = append(graph[sn], algo.WeightedItem[node, int]{
-					Item: en,
+					Item:   en,
 					Weight: t,
 				})
 			}
@@ -112,7 +112,7 @@ func main() {
 			return nil, fmt.Errorf("all done")
 		}
 		// adjust response depending on current layer
-		var out []algo.WeightedItem[node, int] 
+		var out []algo.WeightedItem[node, int]
 		if layer := n.layer; layer == 0 {
 			// AA and ZZ portals work, but no other outer portals
 			for _, nn := range graph[n] {
@@ -126,7 +126,7 @@ func main() {
 					Item: node{
 						label: n.label,
 						inner: false,
-						layer: layer+1,
+						layer: layer + 1,
 					},
 					Weight: 1,
 				})
@@ -151,7 +151,7 @@ func main() {
 					label: n.label,
 					inner: !n.inner,
 					layer: layer,
-				}, 
+				},
 				Weight: 1,
 			})
 		}

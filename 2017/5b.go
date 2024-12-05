@@ -5,7 +5,7 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 func main() {
@@ -17,7 +17,7 @@ func main() {
 		}
 		offsets = append(offsets, n)
 	})
-	
+
 	steps, ip := 0, 0
 	for ip < len(offsets) {
 		steps++

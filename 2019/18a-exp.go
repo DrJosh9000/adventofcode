@@ -9,7 +9,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/DrJosh9000/exp/algo"
+	"drjosh.dev/exp/algo"
 )
 
 func main() {
@@ -88,7 +88,7 @@ func fill(maze [][]byte, s state) []algo.WeightedItem[state, int] {
 		p, q = q[0], q[1:]
 
 		if b := maze[p.Y][p.X]; 'a' <= b && b <= 'z' {
-			if k := uint(1)<<(b-'a'); s.k&k == 0 {
+			if k := uint(1) << (b - 'a'); s.k&k == 0 {
 				out = append(out, algo.WeightedItem[state, int]{
 					Item: state{
 						p: p,

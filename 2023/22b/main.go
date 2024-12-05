@@ -6,9 +6,9 @@ import (
 	"slices"
 	"sync/atomic"
 
-	"github.com/DrJosh9000/exp"
-	"github.com/DrJosh9000/exp/algo"
-	"github.com/DrJosh9000/exp/para"
+	"drjosh.dev/exp"
+	"drjosh.dev/exp/algo"
+	"drjosh.dev/exp/para"
 )
 
 // Advent of Code 2023

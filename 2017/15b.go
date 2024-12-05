@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 func main() {
@@ -11,11 +11,11 @@ func main() {
 	const mask = 0xffff
 	factor := [2]int{16807, 48271}
 	div := [2]int{4, 8}
-	gch := [2]chan int{ make(chan int), make(chan int) }
+	gch := [2]chan int{make(chan int), make(chan int)}
 	gen := func(x, f, d int, ch chan int) {
 		for {
 			x = (x * f) % mod
-			if x % d == 0 {
+			if x%d == 0 {
 				ch <- x
 			}
 		}
@@ -27,12 +27,11 @@ func main() {
 		n := g - 'A'
 		go gen(s, factor[n], div[n], gch[n])
 	})
-	
-	
+
 	judge := 0
 	for i := 0; i < 5_000_000; i++ {
 		a, b := <-gch[0], <-gch[1]
-		if a & mask == b & mask {
+		if a&mask == b&mask {
 			judge++
 		}
 	}

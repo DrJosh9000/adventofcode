@@ -9,7 +9,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/DrJosh9000/exp/algo"
+	"drjosh.dev/exp/algo"
 )
 
 func main() {
@@ -69,7 +69,7 @@ func main() {
 		}
 		var out []algo.WeightedItem[state2, int]
 		for r := 0; r < 4; r++ {
-		 	out = append(out, fill2(maze, s, r)...)
+			out = append(out, fill2(maze, s, r)...)
 		}
 		return out, nil
 	}

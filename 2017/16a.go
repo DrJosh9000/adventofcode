@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 func main() {
@@ -14,13 +14,13 @@ func main() {
 		line[i] = byte(i)
 		rev[i] = byte(i)
 	}
-	
+
 	steps := strings.Split(strings.TrimSpace(string(exp.Must(os.ReadFile("inputs/16.txt")))), ",")
-	
+
 	for _, step := range steps {
 		switch step[0] {
 		case 's':
-			var n int 
+			var n int
 			exp.Must(fmt.Sscanf(step, "s%d", &n))
 			var l [16]byte
 			for i := range line {
@@ -43,7 +43,7 @@ func main() {
 			rev[line[i]], rev[line[j]] = i, j
 		}
 	}
-	
+
 	for _, c := range line {
 		fmt.Printf("%c", c+'a')
 	}

@@ -6,7 +6,7 @@ import (
 	"log"
 	"math"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 type span struct {
@@ -27,7 +27,7 @@ func main() {
 		if f == 'x' {
 			xr, yr = yr, xr
 		}
-		
+
 		for y := yr.min; y <= yr.max; y++ {
 			for x := xr.min; x <= xr.max; x++ {
 				plot[image.Pt(x, y)] = struct{}{}
@@ -40,7 +40,7 @@ func main() {
 			yrange.max = yr.max
 		}
 	})
-	
+
 	oldplot := len(plot)
 	up, down, left, right := image.Pt(0, -1), image.Pt(0, 1), image.Pt(-1, 0), image.Pt(1, 0)
 	seen := make(map[image.Point]struct{})
@@ -58,14 +58,14 @@ func main() {
 		if p.Y >= yrange.min {
 			seen[p] = struct{}{}
 		}
-		
+
 		below := p.Add(down)
 		if _, filled := plot[below]; !filled {
 			// flow downwards
 			q[below] = struct{}{}
 			continue
 		}
-		
+
 		lw, rw, hole := false, false, false // left wall, right wall
 		for p := p.Add(left); ; p = p.Add(left) {
 			// hit wall to the left?
@@ -96,7 +96,7 @@ func main() {
 				break
 			}
 		}
-		
+
 		if lw && rw && !hole {
 			// go back up one, and fill the line
 			q[p.Add(up)] = struct{}{}
@@ -116,5 +116,5 @@ func main() {
 		}
 	}
 	fmt.Println("Reachable tiles:", len(seen))
-	fmt.Println("Retained:", len(plot) - oldplot)
+	fmt.Println("Retained:", len(plot)-oldplot)
 }

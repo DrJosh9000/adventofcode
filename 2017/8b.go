@@ -5,8 +5,8 @@ import (
 	"log"
 	"math"
 
-	"github.com/DrJosh9000/exp"
-	"github.com/DrJosh9000/exp/algo"
+	"drjosh.dev/exp"
+	"drjosh.dev/exp/algo"
 )
 
 var operation = map[string]func(int, int) int {

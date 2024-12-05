@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/DrJosh9000/exp"
-	"github.com/DrJosh9000/exp/algo"
+	"drjosh.dev/exp"
+	"drjosh.dev/exp/algo"
 )
 
 func main() {
@@ -17,6 +17,6 @@ func main() {
 			d.Union(src, dst)
 		}
 	})
-	
+
 	fmt.Println(len(d.Reps()))
 }

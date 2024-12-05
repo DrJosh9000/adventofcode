@@ -1,4 +1,3 @@
-
 package main
 
 import (
@@ -6,7 +5,7 @@ import (
 	"image"
 	"strings"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 var neighs = []image.Point{
@@ -24,7 +23,7 @@ func main() {
 		}
 		y++
 	})
-	
+
 	// ...looks periodic, after a bit...
 	score := func() int {
 		trees, lys := 0, 0
@@ -38,7 +37,7 @@ func main() {
 		}
 		return trees * lys
 	}
-	
+
 	stringise := func() string {
 		var sb strings.Builder
 		for y := 0; y < 50; y++ {
@@ -48,11 +47,11 @@ func main() {
 		}
 		return sb.String()
 	}
-	
+
 	var scores []int
 	hist := make(map[string]int)
 	const target = 1_000_000_000
-	
+
 	for m := 0; m < 1000; m++ {
 		str := stringise()
 		if x, seen := hist[str]; seen {
@@ -61,7 +60,7 @@ func main() {
 		}
 		hist[str] = m
 		scores = append(scores, score())
-		
+
 		s2 := make(map[image.Point]rune, len(state))
 		for p, c := range state {
 			s2[p] = c
@@ -106,5 +105,5 @@ func main() {
 		}
 		state = s2
 	}
-	
+
 }

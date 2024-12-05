@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 type set[T comparable] map[T]struct{}
@@ -23,7 +23,7 @@ func abs(x int) int {
 }
 
 func dist(p, q point) int {
-	return abs(p.x - q.x) + abs(p.y - q.y) + abs(p.z - q.z) + abs(p.t - q.t)
+	return abs(p.x-q.x) + abs(p.y-q.y) + abs(p.z-q.z) + abs(p.t-q.t)
 }
 
 func main() {
@@ -47,7 +47,7 @@ func main() {
 		}
 		pts = append(pts, p)
 	})
-	
+
 	cons := make(set[int])
 	for i := range pts {
 		for up[i] != up[up[i]] {

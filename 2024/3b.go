@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 //go:embed inputs/3.txt

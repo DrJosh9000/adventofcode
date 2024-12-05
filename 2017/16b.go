@@ -5,8 +5,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/DrJosh9000/exp"
-	"github.com/DrJosh9000/exp/algo"
+	"drjosh.dev/exp"
+	"drjosh.dev/exp/algo"
 )
 
 // Each round of the dance produces a permutation of the items.

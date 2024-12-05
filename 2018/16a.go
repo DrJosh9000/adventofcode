@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 var errInvalidOp = errors.New("invalid operation")
@@ -190,13 +190,13 @@ var ops = []operation{
 
 func main() {
 	/*
-	possible := make([]uint16, 16)
-	for i := range possible {
-		possible[i] = ^uint16(0)
-	}
-	// possible[n] = bitset of ops that opcode n could still represent
+		possible := make([]uint16, 16)
+		for i := range possible {
+			possible[i] = ^uint16(0)
+		}
+		// possible[n] = bitset of ops that opcode n could still represent
 	*/
-	
+
 	wantBefore := true
 	var before state
 	var opcode, a, b, c int
@@ -206,7 +206,7 @@ func main() {
 		switch {
 		case strings.TrimSpace(line) == "":
 			break
-			
+
 		case strings.HasPrefix(line, "Before:"):
 			if !wantBefore {
 				log.Fatal("Unexpected Before line")
@@ -215,7 +215,7 @@ func main() {
 			if _, err := fmt.Sscanf(line, "Before: [%d, %d, %d, %d]", &before[0], &before[1], &before[2], &before[3]); err != nil {
 				log.Fatalf("Couldn't scan line %q: %v", line, err)
 			}
-			
+
 		case strings.HasPrefix(line, "After:"):
 			if wantBefore {
 				log.Fatal("Unexpected After line")
@@ -225,9 +225,9 @@ func main() {
 			if _, err := fmt.Sscanf(line, "After: [%d, %d, %d, %d]", &want[0], &want[1], &want[2], &want[3]); err != nil {
 				log.Fatalf("Couldn't scan line %q: %v", line, err)
 			}
-			
+
 			examples++
-			
+
 			pass := 0
 			for _, op := range ops {
 				got, err := op(before, a, b, c)
@@ -239,18 +239,17 @@ func main() {
 			if pass >= 3 {
 				count++
 			}
-			
+
 		case !wantBefore:
 			if _, err := fmt.Sscanf(line, "%d %d %d %d", &opcode, &a, &b, &c); err != nil {
 				log.Fatalf("Couldn't scan line %q: %v", line, err)
 			}
-		
+
 		default:
 			// Reached the test program
 			fmt.Println(count, "out of", examples)
 			os.Exit(0)
 		}
 	})
-	
-	
+
 }

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 type particle struct {
@@ -29,7 +29,7 @@ func main() {
 		exp.Must(fmt.Sscanf(line, "p=<%d,%d,%d>, v=<%d,%d,%d>, a=<%d,%d,%d>", &p.pos[0], &p.pos[1], &p.pos[2], &p.vel[0], &p.vel[1], &p.vel[2], &p.acc[0], &p.acc[1], &p.acc[2]))
 		swarm = append(swarm, p)
 	})
-	
+
 	var best int
 	ban, bvn, bpn := math.MaxInt, math.MaxInt, math.MaxInt
 	for i, p := range swarm {
@@ -57,6 +57,6 @@ func main() {
 			bpn = pn
 		}
 	}
-	
+
 	fmt.Println(best)
 }

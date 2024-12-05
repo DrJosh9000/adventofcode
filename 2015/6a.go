@@ -5,8 +5,8 @@ import (
 	"image"
 	"strings"
 
-	"github.com/DrJosh9000/exp"
-	"github.com/DrJosh9000/exp/grid"
+	"drjosh.dev/exp"
+	"drjosh.dev/exp/grid"
 )
 
 // Advent of Code 2015

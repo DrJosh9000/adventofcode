@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/DrJosh9000/exp"
-	"github.com/DrJosh9000/exp/algo"
+	"drjosh.dev/exp"
+	"drjosh.dev/exp/algo"
 )
 
 const numBanks = 16
@@ -26,7 +26,7 @@ func main() {
 		}
 	})
 	//fmt.Println(banks)
-	
+
 	seen := algo.Set[config]{
 		banks: {},
 	}
@@ -46,9 +46,9 @@ func main() {
 			blocks--
 		}
 		cycles++
-		
+
 		//fmt.Println(banks)
-		
+
 		if _, s := seen[banks]; s {
 			fmt.Println(cycles)
 			return

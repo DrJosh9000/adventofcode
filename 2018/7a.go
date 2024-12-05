@@ -5,7 +5,7 @@ import (
 	"log"
 	"sort"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 func main() {
@@ -21,7 +21,7 @@ func main() {
 		p[u] = p[u] // NB: if u \notin p, p[u] == 0
 		p[v]++
 	})
-	
+
 	var q []rune
 	for u, n := range p {
 		if n == 0 {

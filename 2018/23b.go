@@ -6,7 +6,7 @@ import (
 	"math"
 	"sync"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 type nanobot struct {

@@ -1,16 +1,16 @@
 module github.com/DrJosh9000/adventofcode
 
-go 1.21.4
+go 1.23.4
 
 require (
-	github.com/DrJosh9000/exp v0.0.0-20231226044058-8f0fe02ec6d4
 	github.com/bearmini/bitstream-go v0.0.0-20190121230027-bec1c9ea0d3c
 	github.com/mitchellh/go-z3 v0.0.0-20191228203228-4cbedeba863f
-	golang.org/x/exp v0.0.0-20231127185646-65229373498e
+	golang.org/x/exp v0.0.0-20241108190413-2d47ceb2692f
 	gonum.org/v1/plot v0.14.0
 )
 
 require (
+	drjosh.dev/exp v0.0.0-20241203101534-9c7e24cb149c // indirect
 	git.sr.ht/~sbinet/gg v0.5.0 // indirect
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b // indirect
 	github.com/campoy/embedmd v1.0.0 // indirect

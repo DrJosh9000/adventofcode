@@ -5,7 +5,7 @@ import (
 	"image"
 	"log"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 func main() {
@@ -13,7 +13,7 @@ func main() {
 	exp.MustForEachLineIn("inputs/19.txt", func(line string) {
 		tubes = append(tubes, line)
 	})
-	
+
 	startx := -1
 	for i, c := range tubes[0] {
 		if c == '|' {
@@ -24,7 +24,7 @@ func main() {
 	if startx == -1 {
 		log.Fatal("Couldn't find start position")
 	}
-	
+
 	steps := 0
 	p := image.Pt(startx, 0)
 	d := image.Pt(0, 1)
@@ -50,6 +50,6 @@ loop:
 		p = p.Add(d)
 		steps++
 	}
-		
+
 	fmt.Printf("%s\n%d steps\n", string(letters), steps)
 }

@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 type set[T comparable] map[T]struct{}

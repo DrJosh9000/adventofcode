@@ -4,17 +4,17 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	
-	"github.com/DrJosh9000/exp"
+
+	"drjosh.dev/exp"
 )
 
 func main() {
 	input := exp.Must(strconv.Atoi(os.Args[1]))
-	
+
 	length := 1
 	pos := 0
 	last := -1
-	
+
 	for i := 1; i <= 50_000_000; i++ {
 		pos += input
 		pos %= length
@@ -24,6 +24,6 @@ func main() {
 			last = i
 		}
 	}
-	
+
 	fmt.Println(last)
 }

@@ -7,12 +7,12 @@ import (
 	"strings"
 	"sync/atomic"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 type inst struct {
 	opcode string
-	args []any
+	args   []any
 }
 
 // A goroutine deadlock is fatal, not a panic, so can't be caught in a defer.
@@ -28,8 +28,10 @@ func run(prog []inst, id int, inch <-chan int, outch chan<- int) {
 	}
 	eval := func(arg any) int {
 		switch x := arg.(type) {
-		case string: return regs[x]
-		case int: return x
+		case string:
+			return regs[x]
+		case int:
+			return x
 		}
 		log.Fatalf("Bad arg type %T [must be string or int]", arg)
 		return -666
@@ -90,7 +92,7 @@ func main() {
 		}
 		prog = append(prog, in)
 	})
-	
+
 	p0in := make(chan int, 10000)
 	p1in := make(chan int, 10000)
 	go run(prog, 0, p0in, p1in)

@@ -6,7 +6,7 @@ import (
 	"log"
 	"math"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 var step = []image.Point{
@@ -48,7 +48,7 @@ func main() {
 			bounds.Max.Y = p.Y
 		}
 	})
-	
+
 	count := 0
 	var p image.Point
 	for p.X = bounds.Min.X; p.X <= bounds.Max.X; p.X++ {
@@ -62,6 +62,6 @@ func main() {
 			}
 		}
 	}
-	
+
 	fmt.Println(count)
 }

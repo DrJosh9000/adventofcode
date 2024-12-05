@@ -5,7 +5,7 @@ import (
 	"math"
 	"strconv"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 // Advent of Code 2022

@@ -6,8 +6,8 @@ import (
 	"image"
 	"strings"
 
-	"github.com/DrJosh9000/exp/algo"
-	"github.com/DrJosh9000/exp/grid"
+	"drjosh.dev/exp/algo"
+	"drjosh.dev/exp/grid"
 )
 
 //go:embed inputs/4.txt

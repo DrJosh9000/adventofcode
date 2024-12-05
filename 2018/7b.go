@@ -5,7 +5,7 @@ import (
 	"log"
 	"sort"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 func main() {
@@ -21,14 +21,14 @@ func main() {
 		p[u] = p[u] // NB: if u \notin p, p[u] == 0
 		p[v]++
 	})
-	
+
 	var q []rune
 	for u, n := range p {
 		if n == 0 {
 			q = append(q, u)
 		}
 	}
-	
+
 	active := make(map[rune]int)
 	clock := 0
 	for len(q) > 0 || len(active) > 0 {
@@ -47,16 +47,16 @@ func main() {
 				q = append(q, v)
 			}
 		}
-		
+
 		for len(q) > 0 && len(active) < 5 {
 			sort.Slice(q, func(i, j int) bool { return q[i] < q[j] })
 			u := q[0]
-			active[u] = int(u) - 4  // 60 + letter value
+			active[u] = int(u) - 4 // 60 + letter value
 			q = q[1:]
 		}
-		
+
 		clock++
 	}
-	
-	fmt.Println(clock-1)
+
+	fmt.Println(clock - 1)
 }

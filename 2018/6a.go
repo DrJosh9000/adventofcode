@@ -6,7 +6,7 @@ import (
 	"log"
 	"math"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 var step = []image.Point{
@@ -48,7 +48,7 @@ func main() {
 			bounds.Max.Y = p.Y
 		}
 	})
-	
+
 	nearest := func(p image.Point) int {
 		min := math.MaxInt
 		best := -1
@@ -61,13 +61,13 @@ func main() {
 			if t < min {
 				min = t
 				best = i
-			} 
+			}
 		}
 		return best
 	}
 
 	// We want a L1 discrete Voronoi diagram ...
-	// Here's a simple way. Test each point in the bounds against each 
+	// Here's a simple way. Test each point in the bounds against each
 	// point in the list to see which is closest.
 	sizes := make([]int, len(pts))
 	var p image.Point
@@ -79,7 +79,7 @@ func main() {
 			}
 		}
 	}
-	
+
 	// Consider the boundary to find points within infinite cells.
 	cand := make(map[int]struct{})
 	for i := range pts {
@@ -105,7 +105,7 @@ func main() {
 			delete(cand, t)
 		}
 	}
-	
+
 	max := math.MinInt
 	for i := range cand {
 		if sizes[i] > max {

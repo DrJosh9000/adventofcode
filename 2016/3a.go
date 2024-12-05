@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/DrJosh9000/exp"
-	"github.com/DrJosh9000/exp/parse"
+	"drjosh.dev/exp"
+	"drjosh.dev/exp/parse"
 )
 
 // Advent of Code 2016

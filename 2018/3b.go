@@ -1,11 +1,11 @@
- package main
+package main
 
 import (
 	"fmt"
 	"image"
 	"log"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 type claim struct {
@@ -25,7 +25,7 @@ func main() {
 			b: image.Rect(x, y, x+w, y+h),
 		})
 	})
-	
+
 outerLoop:
 	for i, c := range claims {
 		for j, d := range claims {

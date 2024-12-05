@@ -5,13 +5,13 @@ import (
 	"log"
 	"strings"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 type node struct {
-	name string
+	name   string
 	weight int
-	above []string
+	above  []string
 }
 
 func main() {

@@ -8,8 +8,8 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/DrJosh9000/exp"
-	"github.com/DrJosh9000/exp/algo"
+	"drjosh.dev/exp"
+	"drjosh.dev/exp/algo"
 )
 
 // Advent of Code 2016

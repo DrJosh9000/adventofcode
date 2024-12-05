@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"os"
+	"strings"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 func abs(x int) int {
@@ -24,7 +24,7 @@ func min(x, y int) int {
 
 func main() {
 	path := strings.Split(strings.TrimSpace(string(exp.Must(os.ReadFile("inputs/11.txt")))), ",")
-	
+
 	n, ne, nw := 0, 0, 0
 	for _, step := range path {
 		switch step {
@@ -36,23 +36,23 @@ func main() {
 		case "se": nw--
 		}
 	}
-	
+
 	// normalise ne,nw and se,sw
 	switch {
-	case ne > 0 && nw > 0: 	
+	case ne > 0 && nw > 0:
 		// nw,ne = ne,nw = n
 		m := min(ne, nw)
 		n += m
 		ne -= m
 		nw -= m
-	case ne < 0 && nw < 0:	
+	case ne < 0 && nw < 0:
 		// sw,se = se,sw = s
 		m := min(abs(ne), abs(nw))
 		n -= m
 		ne += m
 		nw += m
 	}
-	
+
 	// normalise n,s{e,w} and s,n{e,w}
 	// (nb: ne,se faster than n,se,se)
 	switch {
@@ -63,7 +63,7 @@ func main() {
 		ne -= m
 		nw -= m
 	case n < 0 && nw > 0:
-		// s,nw = nw,s = sw	
+		// s,nw = nw,s = sw
 		m := min(abs(n), nw)
 		n += m
 		nw -= m
@@ -81,6 +81,6 @@ func main() {
 		nw += m
 		ne += m
 	}
-		
+
 	fmt.Println(abs(n) + abs(ne) + abs(nw))
 }

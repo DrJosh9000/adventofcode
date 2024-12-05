@@ -5,14 +5,14 @@ import (
 	"log"
 	"strings"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 type node struct {
-	name string
+	name        string
 	weight, stw int
-	aboveKey []string
-	above []*node
+	aboveKey    []string
+	above       []*node
 }
 
 func main() {
@@ -39,7 +39,7 @@ func main() {
 			n.above = append(n.above, nodes[a])
 		}
 	}
-	
+
 	var root *node
 	for k, n := range pred {
 		if n == 0 {
@@ -47,8 +47,8 @@ func main() {
 			break
 		}
 	}
-	
-	var sumWeights func(*node) int 
+
+	var sumWeights func(*node) int
 	sumWeights = func(n *node) int {
 		if n.stw != 0 {
 			return n.stw
@@ -59,9 +59,9 @@ func main() {
 		}
 		return n.stw
 	}
-	
+
 	sumWeights(root)
-	
+
 	var search func(*node) bool
 	search = func(n *node) bool {
 		if len(n.above) <= 1 {
@@ -96,6 +96,6 @@ func main() {
 		}
 		return true
 	}
-	
+
 	search(root)
 }

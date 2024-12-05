@@ -7,7 +7,7 @@ import (
 	"math/bits"
 	"strings"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 var errInvalidOp = errors.New("invalid operation")
@@ -194,7 +194,7 @@ func main() {
 		possible[i] = ^uint16(0)
 	}
 	// possible[n] = bitset of ops that opcode n could still represent
-	
+
 	known := make(map[int]operation)
 	executing := false
 	wantBefore := true
@@ -204,7 +204,7 @@ func main() {
 		switch {
 		case strings.TrimSpace(line) == "":
 			break
-			
+
 		case strings.HasPrefix(line, "Before:"):
 			if !wantBefore {
 				log.Fatal("Unexpected Before line")
@@ -213,7 +213,7 @@ func main() {
 			if _, err := fmt.Sscanf(line, "Before: [%d, %d, %d, %d]", &before[0], &before[1], &before[2], &before[3]); err != nil {
 				log.Fatalf("Couldn't scan line %q: %v", line, err)
 			}
-			
+
 		case strings.HasPrefix(line, "After:"):
 			if wantBefore {
 				log.Fatal("Unexpected After line")
@@ -223,9 +223,9 @@ func main() {
 			if _, err := fmt.Sscanf(line, "After: [%d, %d, %d, %d]", &want[0], &want[1], &want[2], &want[3]); err != nil {
 				log.Fatalf("Couldn't scan line %q: %v", line, err)
 			}
-			
+
 			for i, op := range ops {
-				if possible[opcode] & (1 << i) == 0 {
+				if possible[opcode]&(1<<i) == 0 {
 					continue
 				}
 				got, err := op(before, a, b, c)
@@ -233,12 +233,12 @@ func main() {
 					possible[opcode] &^= 1 << i
 				}
 			}
-			
+
 		case !wantBefore:
 			if _, err := fmt.Sscanf(line, "%d %d %d %d", &opcode, &a, &b, &c); err != nil {
 				log.Fatalf("Couldn't scan line %q: %v", line, err)
 			}
-		
+
 		default:
 			// Reached the test program.
 			if !executing {
@@ -264,7 +264,7 @@ func main() {
 				// Done, let's execute.
 				executing = true
 			}
-			
+
 			if _, err := fmt.Sscanf(line, "%d %d %d %d", &opcode, &a, &b, &c); err != nil {
 				log.Fatalf("Couldn't scan line %q: %v", line, err)
 			}
@@ -275,6 +275,6 @@ func main() {
 			prod = np
 		}
 	})
-	
+
 	fmt.Println(prod[0])
 }

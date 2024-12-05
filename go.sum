@@ -1,12 +1,14 @@
+drjosh.dev/exp v0.0.0-20241203101534-9c7e24cb149c h1:PtrGOcy5j/gICNPmaFdTBNAeA9nJIRiXVngyy5cyqcg=
+drjosh.dev/exp v0.0.0-20241203101534-9c7e24cb149c/go.mod h1:2IjSkX6trkPeoB1lTkEuPsyf6HBuuvWEbl0BMPMDbqU=
 git.sr.ht/~sbinet/cmpimg v0.1.0 h1:E0zPRk2muWuCqSKSVZIWsgtU9pjsw3eKHi8VmQeScxo=
 git.sr.ht/~sbinet/cmpimg v0.1.0/go.mod h1:FU12psLbF4TfNXkKH2ZZQ29crIqoiqTZmeQ7dkp/pxE=
 git.sr.ht/~sbinet/gg v0.5.0 h1:6V43j30HM623V329xA9Ntq+WJrMjDxRjuAB1LFWF5m8=
 git.sr.ht/~sbinet/gg v0.5.0/go.mod h1:G2C0eRESqlKhS7ErsNey6HHrqU1PwsnCQlekFi9Q2Oo=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
-github.com/DrJosh9000/exp v0.0.0-20231216052713-bba646a4c4d6 h1:A01piO/VG8uqDq0MaHY++EaYV1TMkCtOBSpRywzs2VA=
-github.com/DrJosh9000/exp v0.0.0-20231216052713-bba646a4c4d6/go.mod h1:ngBFE+ZWFK30zOdEPu46I7KkSHROY2u/nj3T2TPmzKA=
-github.com/DrJosh9000/exp v0.0.0-20231226044058-8f0fe02ec6d4 h1:FaGlZQAB35au43cMm2zLbnwmOEhf0c8UMQT+KjtQPtk=
-github.com/DrJosh9000/exp v0.0.0-20231226044058-8f0fe02ec6d4/go.mod h1:ngBFE+ZWFK30zOdEPu46I7KkSHROY2u/nj3T2TPmzKA=
+drjosh.dev/exp v0.0.0-20231216052713-bba646a4c4d6 h1:A01piO/VG8uqDq0MaHY++EaYV1TMkCtOBSpRywzs2VA=
+drjosh.dev/exp v0.0.0-20231216052713-bba646a4c4d6/go.mod h1:ngBFE+ZWFK30zOdEPu46I7KkSHROY2u/nj3T2TPmzKA=
+drjosh.dev/exp v0.0.0-20231226044058-8f0fe02ec6d4 h1:FaGlZQAB35au43cMm2zLbnwmOEhf0c8UMQT+KjtQPtk=
+drjosh.dev/exp v0.0.0-20231226044058-8f0fe02ec6d4/go.mod h1:ngBFE+ZWFK30zOdEPu46I7KkSHROY2u/nj3T2TPmzKA=
 github.com/ajstarks/deck v0.0.0-20200831202436-30c9fc6549a9/go.mod h1:JynElWSGnm/4RlzPXRlREEwqTHAN3T56Bv2ITsFT3gY=
 github.com/ajstarks/deck/generate v0.0.0-20210309230005-c3f852c02e19/go.mod h1:T13YZdzov6OU0A1+RfKZiZN9ca6VeKdBdyDV+BY97Tk=
 github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b h1:slYM766cy2nI3BwyRiyQj/Ud48djTMtMebDqepE95rw=
@@ -43,6 +45,8 @@ golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550/go.mod h1:yigFU9vqHzYiE8U
 golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9/go.mod h1:LzIPMQfyMNhhGPhUkYOs5KpL4U8rLKemX1yGLhDgUto=
 golang.org/x/exp v0.0.0-20231127185646-65229373498e h1:Gvh4YaCaXNs6dKTlfgismwWZKyjVZXwOPfIyUaqU3No=
 golang.org/x/exp v0.0.0-20231127185646-65229373498e/go.mod h1:iRJReGqOEeBhDZGkGbynYwcHlctCvnjTYIamk7uXpHI=
+golang.org/x/exp v0.0.0-20241108190413-2d47ceb2692f h1:XdNn9LlyWAhLVp6P/i8QYBW+hlyhrhei9uErw2B5GJo=
+golang.org/x/exp v0.0.0-20241108190413-2d47ceb2692f/go.mod h1:D5SMRVC3C2/4+F/DB1wZsLRnSNimn2Sp/NPsCrsv8ak=
 golang.org/x/image v0.14.0 h1:tNgSxAFe3jC4uYqvZdTr84SZoM1KfwdC9SKIFrLjFn4=
 golang.org/x/image v0.14.0/go.mod h1:HUYqC05R2ZcZ3ejNQsIHQDQiwWM4JBqmm6MKANTp4LE=
 golang.org/x/mod v0.3.0/go.mod h1:s0Qsj1ACt9ePp/hMypM3fl4fZqREWJwdYDEqhRiZZUA=

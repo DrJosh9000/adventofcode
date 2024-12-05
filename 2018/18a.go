@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"image"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 var neighs = []image.Point{
 	{-1, -1}, {0, -1}, {1, -1},
-	{-1, 0}, /* me */  {1, 0},
+	{-1, 0} /* me */, {1, 0},
 	{-1, 1}, {0, 1}, {1, 1},
 }
 
@@ -22,7 +22,7 @@ func main() {
 		}
 		y++
 	})
-	
+
 	for m := 0; m < 10; m++ {
 		s2 := make(map[image.Point]rune, len(state))
 		for p, c := range state {
@@ -68,7 +68,7 @@ func main() {
 		}
 		state = s2
 	}
-	
+
 	trees, lys := 0, 0
 	for _, c := range state {
 		switch c {

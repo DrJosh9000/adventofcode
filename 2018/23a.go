@@ -3,7 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
-	"github.com/DrJosh9000/exp"
+
+	"drjosh.dev/exp"
 )
 
 type nanobot struct {
@@ -35,7 +36,7 @@ func main() {
 		}
 		bots = append(bots, bot)
 	})
-	
+
 	count := 0
 	for _, b := range bots {
 		if dist(b, bots[best]) <= maxr {

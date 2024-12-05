@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/DrJosh9000/exp"
-	"github.com/DrJosh9000/exp/emu"
+	"drjosh.dev/exp"
+	"drjosh.dev/exp/emu"
 )
 
 // Advent of Code 2016

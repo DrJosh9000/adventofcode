@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 func main() {
@@ -20,13 +20,13 @@ func main() {
 			}
 			row = append(row, n)
 		}
-		
+
 		for i := range row {
 			for j := range row {
 				if i == j {
 					continue
 				}
-				if row[i] % row[j] == 0 {
+				if row[i]%row[j] == 0 {
 					sum += row[i] / row[j]
 					return
 				}

@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"os"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 type grid2[T any] [2][2]T

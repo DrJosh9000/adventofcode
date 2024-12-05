@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/DrJosh9000/exp"
-	"github.com/DrJosh9000/exp/algo"
+	"drjosh.dev/exp"
+	"drjosh.dev/exp/algo"
 	"golang.org/x/exp/maps"
 )
 

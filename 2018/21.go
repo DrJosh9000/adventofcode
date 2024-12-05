@@ -7,7 +7,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 // Approach:
@@ -16,7 +16,7 @@ import (
 // Hint: it looks like a toy RNG
 
 var tmpl = template.Must(template.New("trans_rights.go").Parse(`package main
-	
+
 func run(r0 int) {
 	var r1, r2, r3, r4, r5 int
 	for {
@@ -43,13 +43,13 @@ func relop(op string, a, b, c int) string {
 func imop(op string, a, b, c int) string {
 	if a == c {
 		return fmt.Sprintf("r%d %s= %d", c, op, b)
-	} 
+	}
 	return fmt.Sprintf("r%d = r%d %s %d", c, a, op, b)
 }
 
 func main() {
 	type program struct {
-		IP int
+		IP      int
 		Program []string
 	}
 	p := program{}
@@ -60,13 +60,13 @@ func main() {
 			}
 			return
 		}
-		
+
 		var opcode string
 		var a, b, c int
 		if _, err := fmt.Sscanf(line, "%s %d %d %d", &opcode, &a, &b, &c); err != nil {
 			log.Fatalf("Couldn't parse instruction: %v", err)
 		}
-		
+
 		var impl string
 		switch opcode {
 		case "addr":
@@ -118,7 +118,7 @@ func main() {
 		}
 		p.Program = append(p.Program, impl)
 	})
-	
+
 	f, err := os.Create("21a-tp.go")
 	if err != nil {
 		log.Fatalf("Couldn't create file: %v", err)
@@ -130,6 +130,6 @@ func main() {
 	if err := f.Close(); err != nil {
 		log.Fatalf("Couldn't close file: %v", err)
 	}
-	
+
 	log.Print("Transpiled the program...good luck!")
 }

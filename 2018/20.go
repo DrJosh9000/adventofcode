@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/DrJosh9000/exp/algo"
+	"drjosh.dev/exp/algo"
 )
 
 type set[K comparable] map[K]struct{}
@@ -22,7 +22,7 @@ func tokenise(input string) []string {
 				tokens = append(tokens, input[tstart:i])
 			}
 			tokens = append(tokens, input[i:i+1])
-			tstart = i+1
+			tstart = i + 1
 		}
 	}
 	if len(input) > tstart {
@@ -133,7 +133,7 @@ func traverse(m map[image.Point]int, c any, p image.Point) set[image.Point] {
 			rm = nrm
 		}
 		return rm
-		
+
 	case branch:
 		for _, b := range x {
 			for q := range traverse(m, b, p) {
@@ -141,7 +141,7 @@ func traverse(m map[image.Point]int, c any, p image.Point) set[image.Point] {
 			}
 		}
 		return rm
-	
+
 	case string:
 		for _, r := range x {
 			m[p] |= bits[r]
@@ -149,7 +149,7 @@ func traverse(m map[image.Point]int, c any, p image.Point) set[image.Point] {
 			m[p] |= bits[rev[r]]
 		}
 		rm[p] = struct{}{}
-		
+
 	default:
 		log.Fatalf("Encountered a %T in the AST", c)
 	}
@@ -162,19 +162,19 @@ func main() {
 		log.Fatalf("Couldn't read file: %v", err)
 	}
 	input := strings.Trim(string(inputb), "^$")
-	
+
 	tokens := tokenise(input)
-		
+
 	e, _ := parseExpr(tokens)
 	if s := e.String(); s != input {
 		fmt.Println("got: ", s)
 		fmt.Println("want:", input)
 		os.Exit(1)
 	}
-		
+
 	m := map[image.Point]int{}
 	traverse(m, e, image.Pt(0, 0))
-		
+
 	onek, maxd := 0, 0
 	algo.FloodFill(image.Pt(0, 0), func(p image.Point, d int) ([]image.Point, error) {
 		if d > maxd {
@@ -185,7 +185,7 @@ func main() {
 		}
 		var next []image.Point
 		for c, b := range bits {
-			if m[p] & b != 0 {
+			if m[p]&b != 0 {
 				next = append(next, p.Add(steps[c]))
 			}
 		}

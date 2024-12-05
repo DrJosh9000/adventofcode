@@ -1,4 +1,3 @@
-
 package main
 
 import (
@@ -7,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 type inst struct {
@@ -34,7 +33,7 @@ func main() {
 		}
 		prog = append(prog, in)
 	})
-	
+
 	regs := make(map[string]int)
 	eval := func(arg any) int {
 		switch x := arg.(type) {
@@ -49,7 +48,7 @@ func main() {
 	for {
 		in := prog[ip]
 		switch in.opcode {
-		case "snd": 
+		case "snd":
 			lastSnd = eval(in.args[0])
 		case "set":
 			regs[in.args[0].(string)] = eval(in.args[1])

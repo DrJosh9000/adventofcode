@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/DrJosh9000/exp"
+	"drjosh.dev/exp"
 )
 
 type fingerprint [26]int

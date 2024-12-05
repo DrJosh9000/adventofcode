@@ -7,8 +7,8 @@ import (
 	"math"
 	"sort"
 
-	"github.com/DrJosh9000/exp"
-	"github.com/DrJosh9000/exp/algo"
+	"drjosh.dev/exp"
+	"drjosh.dev/exp/algo"
 )
 
 const ATK = 3
@@ -27,9 +27,9 @@ func isAdjacent(p, q image.Point) bool {
 }
 
 type unit struct {
-	pt image.Point
+	pt   image.Point
 	team byte
-	hp int
+	hp   int
 }
 
 func (u *unit) alive() bool {
@@ -46,7 +46,7 @@ func (u *unit) takeTurn(grid [][]byte, units []*unit) bool {
 		// It's dead.
 		return true
 	}
-	
+
 	// Determine targets.
 	var targets, attack []*unit
 	for _, v := range units {
@@ -59,12 +59,12 @@ func (u *unit) takeTurn(grid [][]byte, units []*unit) bool {
 			attack = append(attack, v)
 		}
 	}
-	
+
 	if len(targets) == 0 {
 		// No targets remain - combat ends.
 		return false
 	}
-	
+
 	// If none are in range already, do a movement first.
 	if len(attack) == 0 {
 		dest, err := bestAdjacent(grid, u.pt, targets)
@@ -72,7 +72,7 @@ func (u *unit) takeTurn(grid [][]byte, units []*unit) bool {
 			// No reachable targets; turn ends.
 			return true
 		}
-		
+
 		// Find best step to take. This is just a search through the
 		// reverse paths (from dest back to squares next to u).
 		next, err := bestAdjacent(grid, dest, []*unit{u})
@@ -80,12 +80,12 @@ func (u *unit) takeTurn(grid [][]byte, units []*unit) bool {
 			// That's unexpected!
 			log.Fatalf("Couldn't find a reverse path when a forward path was already found?? %v", err)
 		}
-		
+
 		// Take the step.
 		grid[u.pt.Y][u.pt.X] = '.'
 		grid[next.Y][next.X] = u.team
 		u.pt = next
-		
+
 		// Okay, are any targets in range now?
 		for _, t := range targets {
 			if isAdjacent(u.pt, t.pt) {
@@ -93,12 +93,12 @@ func (u *unit) takeTurn(grid [][]byte, units []*unit) bool {
 			}
 		}
 	}
-	
+
 	if len(attack) == 0 {
 		// Moved but still not in range. End of turn.
 		return true
 	}
-	
+
 	// Attack.
 	// Pick target with lowest hp; among equals, first in reading order.
 	targ := attack[0]
@@ -107,17 +107,16 @@ func (u *unit) takeTurn(grid [][]byte, units []*unit) bool {
 			targ = t
 		}
 	}
-	
+
 	// Attack!
 	targ.hp -= ATK
 	if !targ.alive() {
 		// It died!
 		grid[targ.pt.Y][targ.pt.X] = '.'
 	}
-	
+
 	return true
 }
-
 
 // Determine the order of turns based on reading order. Remove any dead units.
 func sortUnits(s []*unit) []*unit {
@@ -130,7 +129,7 @@ func sortUnits(s []*unit) []*unit {
 		}
 		return s[i].alive() // => !s[j].alive()
 	})
-	
+
 	// Cull dead units.
 	for i, u := range s {
 		if u.alive() {
@@ -154,7 +153,7 @@ func bestAdjacent(grid [][]byte, src image.Point, targets []*unit) (image.Point,
 			}
 		}
 	}
-	
+
 	// Find distances to in-range points
 	algo.FloodFill(src, func(p image.Point, dist int) ([]image.Point, error) {
 		var out []image.Point
@@ -169,7 +168,7 @@ func bestAdjacent(grid [][]byte, src image.Point, targets []*unit) (image.Point,
 		}
 		return out, nil
 	})
-	
+
 	// Choose the destination (nearest in-range point; of those,
 	// the first in reading order).
 	var dest image.Point
@@ -179,12 +178,12 @@ func bestAdjacent(grid [][]byte, src image.Point, targets []*unit) (image.Point,
 			dest, dist = p, d
 		}
 	}
-	
+
 	if dist == math.MaxInt {
 		// No targets reachable - end turn.
 		return image.Point{}, fmt.Errorf("no path")
 	}
-	
+
 	return dest, nil
 }
 
@@ -192,7 +191,7 @@ func combat(grid [][]byte, units []*unit) int {
 	for round := 0; ; round++ {
 		// Determine turn order and cull dead units.
 		units = sortUnits(units)
-		
+
 		// Each unit takes a turn.
 		for _, u := range units {
 			if !u.takeTurn(grid, units) {
@@ -213,18 +212,18 @@ func main() {
 				continue
 			}
 			units = append(units, &unit{
-				pt: image.Pt(i, j),
+				pt:   image.Pt(i, j),
 				team: c,
-				hp: 200,
+				hp:   200,
 			})
 		}
 		grid = append(grid, row)
 		j++
 	})
-	
+
 	rounds := combat(grid, units)
 	units = sortUnits(units)
-	
+
 	// Combat ends.
 	for _, r := range grid {
 		fmt.Println(string(r))
@@ -240,5 +239,5 @@ func main() {
 	}
 	fmt.Println("Combat ends after", rounds, "full rounds")
 	fmt.Println(team, "win with", hpsum, "total hit points left")
-	fmt.Println("Outcome:", rounds, "*", hpsum, "=", rounds * hpsum)
+	fmt.Println("Outcome:", rounds, "*", hpsum, "=", rounds*hpsum)
 }
