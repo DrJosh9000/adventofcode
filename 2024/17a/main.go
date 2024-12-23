@@ -13,9 +13,14 @@ const inputPath = "2024/inputs/17.txt"
 
 func main() {
 	lines := exp.MustReadLines(inputPath)
-	sum := 0
+	var a, b, c int
 	for _, line := range lines {
-		sum += exp.MustAtoi(line)
+		var r rune
+		var x int
+		switch {
+		case exp.Smatchf(line, "Register %c: %d", &r, &x):
+
+		case exp.Cu
+		}
 	}
-	fmt.Println(sum)
 }

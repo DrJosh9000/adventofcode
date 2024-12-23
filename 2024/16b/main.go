@@ -35,8 +35,16 @@ func main() {
 	bestscore := math.MaxInt
 	var q []state
 
-	prev := exp.Must(algo.Dijkstra(
+	prev := exp.Must(algo.AStar(
 		state{p: start, d: image.Pt(-1, 0)},
+		func(s state) int {
+			q := s.p.Sub(end)
+			d := algo.L1(q)
+			if q.X != 0 && q.Y != 0 {
+				return d + 1000
+			}
+			return d
+		},
 		func(s state, score int) (iter.Seq2[state, int], error) {
 			return func(yield func(state, int) bool) {
 				if s.p == end {
